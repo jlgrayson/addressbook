@@ -1,6 +1,7 @@
 package de.rcpbuch.addressbook.data.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import de.rcpbuch.addressbook.data.Address;
@@ -17,6 +18,11 @@ public class RandomDataAddressService implements IAddressService {
 			rd.newData();
 		}
 		return addresses;
+	}
+
+	@Override
+	public String[] getAllCities() {
+		return Arrays.copyOf(RandomData.CITIES, RandomData.CITIES.length);
 	}
 
 }

@@ -6,7 +6,7 @@ public class RandomData {
 
 	private int seed;
 
-	private final String[] givenNames = new String[] { "Alexander", "Andreas", "Angela", "Angelika", "Barbara",
+	public static final String[] GIVEN_NAMES = new String[] { "Alexander", "Andreas", "Angela", "Angelika", "Barbara",
 			"Bernd", "Birgit", "Brigitte", "Bärbel", "Carl", "Christa", "Christiane", "Christine", "Dagmar", "Detlef",
 			"Dieter", "Elisabeth", "Elke", "Frank", "Gabriele", "Gerd", "Gerhard", "Gisela", "Gudrun", "Günter",
 			"Hans", "Heike", "Heinz", "Helga", "Helmut", "Holger", "Horst", "Ingrid", "Jens", "Joachim", "Jutta",
@@ -15,8 +15,8 @@ public class RandomData {
 			"Rüdiger", "Sabine", "Sigrid", "Silvia", "Susanne", "Thomas", "Ulrich", "Ulrike", "Ursula", "Ute", "Uwe",
 			"Werner", "Wolfgang" };
 
-	private final String[] lastNames = new String[] { "Müller", "Schmidt", "Schneider", "Fischer", "Weber", "Meyer",
-			"Wagner", "Becker", "Schulz", "Hoffmann", "Schäfer", "Koch", "Bauer", "Richter", "Klein", "Wolf",
+	public static final String[] LAST_NAMES = new String[] { "Müller", "Schmidt", "Schneider", "Fischer", "Weber",
+			"Meyer", "Wagner", "Becker", "Schulz", "Hoffmann", "Schäfer", "Koch", "Bauer", "Richter", "Klein", "Wolf",
 			"Schröder (Schneider)", "Neumann", "Schwarz", "Zimmermann", "Braun", "Krüger", "Hofmann", "Hartmann",
 			"Lange", "Schmitt", "Werner", "Schmitz", "Krause", "Meier", "Lehmann", "Schmid", "Schulze", "Maier",
 			"Köhler", "Herrmann", "König", "Walter", "Mayer", "Huber", "Kaiser", "Fuchs", "Peters", "Lang", "Scholz",
@@ -27,7 +27,7 @@ public class RandomData {
 			"Kuhn", "Kühn", "Pohl", "Engel", "Horn", "Busch", "Bergmann", "Thomas", "Voigt", "Sauer", "Arnold",
 			"Wolff", "Pfeiffer" };
 
-	private final String[] cities = new String[] { "Berlin", "Hamburg", "München", "Köln", "Frankfurt am Main",
+	public static final String[] CITIES = new String[] { "Berlin", "Hamburg", "München", "Köln", "Frankfurt am Main",
 			"Stuttgart", "Dortmund", "Essen", "Düsseldorf", "Bremen", "Hannover", "Leipzig", "Dresden", "Nürnberg",
 			"Duisburg", "Bochum", "Wuppertal", "Bielefeld", "Bonn", "Mannheim", "Karlsruhe", "Wiesbaden", "Münster",
 			"Gelsenkirchen", "Augsburg", "Mönchengladbach", "Aachen", "Braunschweig", "Chemnitz", "Kiel", "Krefeld",
@@ -54,11 +54,11 @@ public class RandomData {
 	}
 
 	public String someLastName() {
-		return someElement(lastNames);
+		return someElement(LAST_NAMES);
 	}
 
 	public String someGivenName() {
-		return someElement(givenNames);
+		return someElement(GIVEN_NAMES);
 	}
 
 	public <E> E someElement(E[] elements) {
@@ -70,7 +70,7 @@ public class RandomData {
 	}
 
 	public String someStreet() {
-		return someElement(lastNames) + "straße " + someNumber(1, 100);
+		return someElement(LAST_NAMES) + "straße " + someNumber(1, 100);
 	}
 
 	public String someZipCode() {
@@ -78,7 +78,7 @@ public class RandomData {
 	}
 
 	public String someCity() {
-		return someElement(cities);
+		return someElement(CITIES);
 	}
 
 	public String someDigits(int count) {
