@@ -1,6 +1,8 @@
 package de.rcpbuch.addressbook;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -18,10 +20,18 @@ public class SwtTestsViewPart extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 
-		Label label = new Label(parent, SWT.NONE);
+		final Label label = new Label(parent, SWT.NONE);
 		label.setText("Label");
 
-		Text text = new Text(parent, SWT.BORDER);
+		final Text text = new Text(parent, SWT.BORDER);
+		text.addModifyListener(new ModifyListener() {
+
+			@Override
+			public void modifyText(ModifyEvent e) {
+				label.setText(text.getText());
+			}
+
+		});
 
 		Button checkbox = new Button(parent, SWT.CHECK);
 		checkbox.setText("Checkbox");
