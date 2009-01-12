@@ -1,5 +1,9 @@
 package de.rcpbuch.addressbook;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -52,7 +56,7 @@ public class SwtTestsViewPart extends ViewPart {
 		city.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 		Button btn = new Button(parent, SWT.NONE);
-		btn.setText("Long running operation");
+		btn.setText("Calculate");
 		GridData gd = new GridData();
 		gd.horizontalSpan = 2;
 		btn.setLayoutData(gd);
@@ -60,11 +64,26 @@ public class SwtTestsViewPart extends ViewPart {
 
 			@Override
 			public void widgetSelected(SelectionEvent event) {
-				try {
-					Thread.sleep(3000);
-				} catch (InterruptedException e) {
-					throw new RuntimeException(e);
-				}
+				Job job = new Job("Some calculation") {
+
+					@Override
+					protected IStatus run(IProgressMonitor monitor) {
+						monitor.beginTask("Calculating", 50);
+						try {
+							for (int i = 0; i < 50; i++) {
+								Thread.sleep(100);
+								monitor.worked(1);
+							}
+						} catch (InterruptedException e) {
+							throw new RuntimeException(e);
+						}
+						System.out.println("finished");
+						return Status.OK_STATUS;
+					}
+
+				};
+
+				job.schedule();
 			}
 
 		});
