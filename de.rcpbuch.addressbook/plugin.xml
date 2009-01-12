@@ -27,6 +27,12 @@
             name="SWT Tests"
             restorable="true">
       </view>
+      <view
+            class="de.rcpbuch.addressbook.AdressListViewPart"
+            id="de.rcpbuch.addressbook.AdressListViewPart"
+            name="Adressen"
+            restorable="true">
+      </view>
    </extension>
 
 </plugin>
