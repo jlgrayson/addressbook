@@ -1,8 +1,8 @@
 package de.rcpbuch.addressbook;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.RowData;
-import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -19,32 +19,34 @@ public class SwtTestsViewPart extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 
-		parent.setLayout(new RowLayout(SWT.VERTICAL));
+		parent.setLayout(new GridLayout(2, false));
 
 		final Label labelName = new Label(parent, SWT.NONE);
 		labelName.setText("Name:");
-		labelName.setLayoutData(new RowData(80, SWT.DEFAULT));
 
-		new Text(parent, SWT.BORDER);
+		Text name = new Text(parent, SWT.BORDER);
+		name.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 		final Label labelStreet = new Label(parent, SWT.NONE);
 		labelStreet.setText("Straße:");
-		labelStreet.setLayoutData(new RowData(80, SWT.DEFAULT));
 
-		new Text(parent, SWT.BORDER);
+		Text street = new Text(parent, SWT.BORDER);
+		street.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 		final Label labelZipCity = new Label(parent, SWT.NONE);
-		labelZipCity.setText("PLZ/Ort");
-		labelZipCity.setLayoutData(new RowData(80, SWT.DEFAULT));
+		labelZipCity.setText("PLZ/Ort:");
 
-		Composite composite = new Composite(parent, SWT.NONE);
-		RowLayout rowLayout = new RowLayout(SWT.VERTICAL);
-		rowLayout.marginLeft = 0;
-		rowLayout.marginTop = 0;
-		composite.setLayout(rowLayout);
+		Composite zipCityComposite = new Composite(parent, SWT.NONE);
+		zipCityComposite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
-		new Text(composite, SWT.BORDER);
-		new Text(composite, SWT.BORDER);
+		GridLayout gridLayout = new GridLayout(2, false);
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
+		zipCityComposite.setLayout(gridLayout);
+
+		Text zip = new Text(zipCityComposite, SWT.BORDER);
+		Text city = new Text(zipCityComposite, SWT.BORDER);
+		city.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 	}
 
