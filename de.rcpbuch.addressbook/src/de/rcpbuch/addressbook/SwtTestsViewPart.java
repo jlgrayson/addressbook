@@ -4,9 +4,14 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.fieldassist.AutoCompleteField;
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
+import org.eclipse.jface.fieldassist.TextContentAdapter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -14,6 +19,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
+
+import de.rcpbuch.addressbook.data.AddressbookServices;
 
 public class SwtTestsViewPart extends ViewPart {
 
@@ -26,7 +33,9 @@ public class SwtTestsViewPart extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 
-		parent.setLayout(new GridLayout(2, false));
+		GridLayout layout = new GridLayout(2, false);
+		layout.marginRight = 10;
+		parent.setLayout(layout);
 
 		final Label labelName = new Label(parent, SWT.NONE);
 		labelName.setText("Name:");
@@ -54,6 +63,15 @@ public class SwtTestsViewPart extends ViewPart {
 		Text zip = new Text(zipCityComposite, SWT.BORDER);
 		Text city = new Text(zipCityComposite, SWT.BORDER);
 		city.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+
+		ControlDecoration decoration = new ControlDecoration(city, SWT.RIGHT | SWT.TOP);
+		Image errorImage = FieldDecorationRegistry.getDefault().getFieldDecoration(
+				FieldDecorationRegistry.DEC_CONTENT_PROPOSAL).getImage();
+
+		decoration.setImage(errorImage);
+		decoration.show();
+
+		new AutoCompleteField(city, new TextContentAdapter(), AddressbookServices.getAddressService().getAllCities());
 
 		Button btn = new Button(parent, SWT.NONE);
 		btn.setText("Calculate");
