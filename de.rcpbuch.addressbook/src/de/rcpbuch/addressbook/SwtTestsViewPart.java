@@ -1,9 +1,8 @@
 package de.rcpbuch.addressbook;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.layout.RowData;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -20,21 +19,33 @@ public class SwtTestsViewPart extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 
-		final Label label = new Label(parent, SWT.NONE);
-		label.setText("Label");
+		parent.setLayout(new RowLayout(SWT.VERTICAL));
 
-		final Text text = new Text(parent, SWT.BORDER);
-		text.addModifyListener(new ModifyListener() {
+		final Label labelName = new Label(parent, SWT.NONE);
+		labelName.setText("Name:");
+		labelName.setLayoutData(new RowData(80, SWT.DEFAULT));
 
-			@Override
-			public void modifyText(ModifyEvent e) {
-				label.setText(text.getText());
-			}
+		new Text(parent, SWT.BORDER);
 
-		});
+		final Label labelStreet = new Label(parent, SWT.NONE);
+		labelStreet.setText("Straße:");
+		labelStreet.setLayoutData(new RowData(80, SWT.DEFAULT));
 
-		Button checkbox = new Button(parent, SWT.CHECK);
-		checkbox.setText("Checkbox");
+		new Text(parent, SWT.BORDER);
+
+		final Label labelZipCity = new Label(parent, SWT.NONE);
+		labelZipCity.setText("PLZ/Ort");
+		labelZipCity.setLayoutData(new RowData(80, SWT.DEFAULT));
+
+		Composite composite = new Composite(parent, SWT.NONE);
+		RowLayout rowLayout = new RowLayout(SWT.VERTICAL);
+		rowLayout.marginLeft = 0;
+		rowLayout.marginTop = 0;
+		composite.setLayout(rowLayout);
+
+		new Text(composite, SWT.BORDER);
+		new Text(composite, SWT.BORDER);
+
 	}
 
 	@Override
