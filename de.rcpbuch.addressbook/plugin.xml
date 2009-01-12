@@ -19,5 +19,14 @@
             id="de.rcpbuch.addressbook.perspective">
       </perspective>
    </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="de.rcpbuch.addressbook.SwtTestsViewPart"
+            id="de.rcpbuch.addressbook.SwtTestsViewPart"
+            name="SWT Tests"
+            restorable="true">
+      </view>
+   </extension>
 
 </plugin>
