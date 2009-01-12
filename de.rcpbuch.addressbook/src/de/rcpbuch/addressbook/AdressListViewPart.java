@@ -26,6 +26,7 @@ import de.rcpbuch.addressbook.data.AddressbookServices;
 public class AdressListViewPart extends ViewPart {
 
 	public static final String VIEW_ID = AdressListViewPart.class.getName();
+	private TableViewer tableViewer;
 
 	public AdressListViewPart() {
 
@@ -37,7 +38,7 @@ public class AdressListViewPart extends ViewPart {
 		TableColumnLayout tableLayout = new TableColumnLayout();
 		parent.setLayout(tableLayout);
 
-		final TableViewer tableViewer = new TableViewer(parent);
+		tableViewer = new TableViewer(parent);
 		tableViewer.getTable().setHeaderVisible(true);
 		tableViewer.getTable().setLinesVisible(true);
 
@@ -165,4 +166,7 @@ public class AdressListViewPart extends ViewPart {
 
 	}
 
+	public void refresh() {
+		tableViewer.refresh();
+	}
 }

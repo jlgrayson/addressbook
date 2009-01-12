@@ -100,5 +100,20 @@
             name="Dublettenprüfung">
       </command>
    </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="de.rcpbuch.addressbook.AdressListRefreshHandler"
+            commandId="org.eclipse.ui.file.refresh">
+         <activeWhen>
+            <with
+                  variable="activePartId">
+               <equals
+                     value="de.rcpbuch.addressbook.AdressListViewPart">
+               </equals>
+            </with>
+         </activeWhen>
+      </handler>
+   </extension>
 
 </plugin>
