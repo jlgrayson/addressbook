@@ -1,8 +1,11 @@
 package de.rcpbuch.addressbook;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -47,6 +50,24 @@ public class SwtTestsViewPart extends ViewPart {
 		Text zip = new Text(zipCityComposite, SWT.BORDER);
 		Text city = new Text(zipCityComposite, SWT.BORDER);
 		city.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+
+		Button btn = new Button(parent, SWT.NONE);
+		btn.setText("Long running operation");
+		GridData gd = new GridData();
+		gd.horizontalSpan = 2;
+		btn.setLayoutData(gd);
+		btn.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+			}
+
+		});
 
 	}
 
