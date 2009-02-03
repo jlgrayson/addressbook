@@ -6,6 +6,7 @@ import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CellLabelProvider;
+import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.DialogCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
@@ -44,7 +45,6 @@ public class AdressListViewPart extends ViewPart {
 
 		TableViewerColumn colName = new TableViewerColumn(tableViewer, SWT.NONE);
 		colName.getColumn().setText("Name");
-		colName.getColumn().setWidth(200);
 		colName.setLabelProvider(new CellLabelProvider() {
 
 			@Override
@@ -83,7 +83,6 @@ public class AdressListViewPart extends ViewPart {
 
 		TableViewerColumn colStreet = new TableViewerColumn(tableViewer, SWT.NONE);
 		colStreet.getColumn().setText("Straße");
-		colStreet.getColumn().setWidth(200);
 		colStreet.setLabelProvider(new CellLabelProvider() {
 
 			@Override
@@ -95,21 +94,33 @@ public class AdressListViewPart extends ViewPart {
 		});
 		tableLayout.setColumnData(colStreet.getColumn(), new ColumnWeightData(25));
 
-		TableViewerColumn colZipCity = new TableViewerColumn(tableViewer, SWT.NONE);
-		colZipCity.getColumn().setText("PLZ/Ort");
-		colZipCity.getColumn().setWidth(200);
-		colZipCity.setLabelProvider(new CellLabelProvider() {
+		TableViewerColumn colZip = new TableViewerColumn(tableViewer, SWT.NONE);
+		colZip.getColumn().setText("PLZ");
+		colZip.setLabelProvider(new CellLabelProvider() {
 
 			@Override
 			public void update(ViewerCell cell) {
 				Address address = (Address) cell.getElement();
-				cell.setText(address.getZip() + " " + address.getCity());
+				cell.setText(address.getZip());
 			}
 
 		});
-		tableLayout.setColumnData(colZipCity.getColumn(), new ColumnWeightData(25));
+		tableLayout.setColumnData(colZip.getColumn(), new ColumnPixelData(80));
 
-		colZipCity.setEditingSupport(new EditingSupport(tableViewer) {
+		TableViewerColumn colCity = new TableViewerColumn(tableViewer, SWT.NONE);
+		colCity.getColumn().setText("Ort");
+		colCity.setLabelProvider(new CellLabelProvider() {
+
+			@Override
+			public void update(ViewerCell cell) {
+				Address address = (Address) cell.getElement();
+				cell.setText(address.getCity());
+			}
+
+		});
+		tableLayout.setColumnData(colCity.getColumn(), new ColumnWeightData(25));
+
+		colCity.setEditingSupport(new EditingSupport(tableViewer) {
 
 			@Override
 			protected boolean canEdit(Object element) {
@@ -143,16 +154,14 @@ public class AdressListViewPart extends ViewPart {
 			@Override
 			protected Object getValue(Object element) {
 				Address address = ((Address) element);
-				return address.getZip() + " " + address.getCity();
+				return address.getCity();
 			}
 
 			@Override
 			protected void setValue(Object element, Object value) {
 				Address address = (Address) element;
-				if (value != null && !value.equals(address.getZip() + " " + address.getCity())) {
-					address.setCity(String.valueOf(value));
-					tableViewer.refresh();
-				}
+				address.setCity(String.valueOf(value));
+				tableViewer.refresh(element);
 			}
 
 		});

@@ -8,7 +8,6 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class AdressListRefreshHandler extends AbstractHandler {
 
-	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchPart part = HandlerUtil.getActivePart(event);
 		if (part instanceof AdressListViewPart) {
