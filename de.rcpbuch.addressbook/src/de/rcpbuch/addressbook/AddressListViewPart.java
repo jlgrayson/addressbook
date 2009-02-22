@@ -23,13 +23,23 @@ import org.eclipse.ui.part.ViewPart;
 
 import de.rcpbuch.addressbook.data.Address;
 import de.rcpbuch.addressbook.data.AddressbookServices;
+import de.rcpbuch.addressbook.data.IAddressChangeListener;
 
-public class AdressListViewPart extends ViewPart {
+public class AddressListViewPart extends ViewPart {
 
-	public static final String VIEW_ID = AdressListViewPart.class.getName();
+	public static final String VIEW_ID = AddressListViewPart.class.getName();
+
+	private final IAddressChangeListener ADDRESS_CHANGE_LISTENER = new IAddressChangeListener() {
+
+		public void addressesChanged() {
+			refresh();
+		}
+
+	};
+
 	private TableViewer tableViewer;
 
-	public AdressListViewPart() {
+	public AddressListViewPart() {
 
 	}
 
@@ -167,15 +177,26 @@ public class AdressListViewPart extends ViewPart {
 		});
 
 		tableViewer.setContentProvider(new ArrayContentProvider());
-		tableViewer.setInput(AddressbookServices.getAddressService().getAllAddresses());
+
+		getSite().setSelectionProvider(tableViewer);
+
+		AddressbookServices.getAddressService().addAddressChangeListener(ADDRESS_CHANGE_LISTENER);
+
+		refresh();
+	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		AddressbookServices.getAddressService().removeAddressChangeListener(ADDRESS_CHANGE_LISTENER);
 	}
 
 	@Override
 	public void setFocus() {
-
+		tableViewer.getTable().setFocus();
 	}
 
 	public void refresh() {
-		tableViewer.refresh();
+		tableViewer.setInput(AddressbookServices.getAddressService().getAllAddresses());
 	}
 }

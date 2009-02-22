@@ -8,4 +8,10 @@ public interface IAddressService {
 
 	public String[] getAllCities();
 
+	public void deleteAddress(int id);
+
+	public void addAddressChangeListener(IAddressChangeListener listener);
+
+	public void removeAddressChangeListener(IAddressChangeListener listener);
+
 }

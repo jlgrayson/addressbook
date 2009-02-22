@@ -6,12 +6,12 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-public class AdressListRefreshHandler extends AbstractHandler {
+public class AddressListRefreshHandler extends AbstractHandler {
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchPart part = HandlerUtil.getActivePart(event);
-		if (part instanceof AdressListViewPart) {
-			((AdressListViewPart) part).refresh();
+		if (part instanceof AddressListViewPart) {
+			((AddressListViewPart) part).refresh();
 		}
 		return null;
 	}
