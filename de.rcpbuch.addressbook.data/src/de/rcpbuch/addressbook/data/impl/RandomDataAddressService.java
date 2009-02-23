@@ -6,6 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import de.rcpbuch.addressbook.data.Address;
+import de.rcpbuch.addressbook.data.Country;
 import de.rcpbuch.addressbook.data.IAddressChangeListener;
 import de.rcpbuch.addressbook.data.IAddressService;
 
@@ -33,6 +34,17 @@ public class RandomDataAddressService implements IAddressService {
 
 	public String[] getAllCities() {
 		return RandomData.CITIES;
+	}
+
+	public List<Country> getAllCountries() {
+		RandomData rd = new RandomData(1);
+		List<Country> countries = new ArrayList<Country>();
+		for (String countryName : RandomData.COUNTRIES) {
+			countries.add(new Country(countryName, rd.someNumber(1, 40)));
+			rd.newData();
+		}
+
+		return countries;
 	}
 
 	public void deleteAddress(int id) {

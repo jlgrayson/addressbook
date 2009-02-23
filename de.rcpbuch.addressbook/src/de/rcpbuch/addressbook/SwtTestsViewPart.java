@@ -1,5 +1,7 @@
 package de.rcpbuch.addressbook;
 
+import java.util.List;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -8,6 +10,8 @@ import org.eclipse.jface.fieldassist.AutoCompleteField;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.fieldassist.TextContentAdapter;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -15,12 +19,14 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
 
 import de.rcpbuch.addressbook.data.AddressbookServices;
+import de.rcpbuch.addressbook.data.Country;
 
 public class SwtTestsViewPart extends ViewPart {
 
@@ -61,6 +67,7 @@ public class SwtTestsViewPart extends ViewPart {
 		zipCityComposite.setLayout(gridLayout);
 
 		Text zip = new Text(zipCityComposite, SWT.BORDER);
+		zip.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
 		Text city = new Text(zipCityComposite, SWT.BORDER);
 		city.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
@@ -72,6 +79,19 @@ public class SwtTestsViewPart extends ViewPart {
 		decoration.show();
 
 		new AutoCompleteField(city, new TextContentAdapter(), AddressbookServices.getAddressService().getAllCities());
+
+		final Label labelCountry = new Label(parent, SWT.NONE);
+		labelCountry.setText("Land:");
+
+		final Combo country = new Combo(parent, SWT.READ_ONLY);
+		country.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+
+		List<Country> countries = AddressbookServices.getAddressService().getAllCountries();
+
+		ComboViewer comboViewer = new ComboViewer(country);
+		comboViewer.setContentProvider(new ArrayContentProvider());
+		comboViewer.setLabelProvider(new CountryLabelProvider());
+		comboViewer.setInput(countries);
 
 		Button btn = new Button(parent, SWT.NONE);
 		btn.setText("Calculate");

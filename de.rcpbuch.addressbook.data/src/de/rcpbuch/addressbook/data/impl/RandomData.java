@@ -39,6 +39,9 @@ public class RandomData {
 			"Reutlingen", "Moers", "Koblenz", "Bergisch Gladbach", "Salzgitter", "Siegen", "Erlangen", "Trier",
 			"Hildesheim", "Cottbus", "Jena", "Gera" };
 
+	public static final String[] COUNTRIES = new String[] { "Deutschland", "Österreich", "Schweiz", "Polen",
+			"Tschechische Republik", "Frankreich" };
+
 	public RandomData(int seed) {
 		super();
 		this.seed = seed;
