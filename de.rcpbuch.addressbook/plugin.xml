@@ -172,5 +172,17 @@
          </activeWhen>
       </handler>>
    </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="de.rcpbuch.addressbook.application"
+            name="Adressbuch">
+         <property
+               name="appName"
+               value="Adressbuch">
+         </property>
+      </product>
+   </extension>
 
 </plugin>
