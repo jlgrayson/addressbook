@@ -1,20 +1,22 @@
 package de.rcpbuch.addressbook;
 
-import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
-    public ApplicationActionBarAdvisor(IActionBarConfigurer configurer) {
-        super(configurer);
-    }
+	public ApplicationActionBarAdvisor(IActionBarConfigurer configurer) {
+		super(configurer);
+	}
 
-    protected void makeActions(IWorkbenchWindow window) {
-    }
+	protected void makeActions(IWorkbenchWindow window) {
+		// Einige Actions muessen noch registriert werden, damit die Commands
+		// funktionieren. Siehe
+		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=270007
+		register(ActionFactory.HELP_CONTENTS.create(window));
+		register(ActionFactory.DYNAMIC_HELP.create(window));
+	}
 
-    protected void fillMenuBar(IMenuManager menuBar) {
-    }
-    
 }

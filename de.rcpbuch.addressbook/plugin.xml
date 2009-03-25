@@ -122,6 +122,18 @@
                   style="push">
             </command>
          </menu>
+         <menu
+               id="help"
+               label="Hilfe">
+            <command
+                  commandId="org.eclipse.ui.help.aboutAction"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.help.dynamicHelp"
+                  style="push">
+            </command>
+         </menu>
       </menuContribution>
       <menuContribution
             locationURI="toolbar:org.eclipse.ui.main.toolbar">
@@ -181,6 +193,10 @@
          <property
                name="appName"
                value="Adressbuch">
+         </property>
+         <property
+               name="aboutText"
+               value="Adressbuch - RCP Beispielanwendung">
          </property>
       </product>
    </extension>
