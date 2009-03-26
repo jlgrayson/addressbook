@@ -7,7 +7,7 @@
          point="org.eclipse.core.runtime.applications">
       <application>
          <run
-               class="de.rcpbuch.addressbook.Application">
+               class="de.rcpbuch.addressbook.application.Application">
          </run>
       </application>
    </extension>
@@ -28,8 +28,8 @@
             restorable="true">
       </view>
       <view
-            class="de.rcpbuch.addressbook.AddressListViewPart"
-            id="de.rcpbuch.addressbook.AddressListViewPart"
+            class="de.rcpbuch.addressbook.list.AddressListViewPart"
+            id="de.rcpbuch.addressbook.list.AddressListViewPart"
             name="Adressen"
             restorable="true">
       </view>
@@ -153,7 +153,7 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="de.rcpbuch.addressbook.AddressListRefreshHandler"
+            class="de.rcpbuch.addressbook.handler.AddressListRefreshHandler"
             commandId="org.eclipse.ui.file.refresh">
          <activeWhen>
             <with
@@ -165,7 +165,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="de.rcpbuch.addressbook.AddressDeleteHandler"
+            class="de.rcpbuch.addressbook.handler.AddressDeleteHandler"
             commandId="org.eclipse.ui.edit.delete">
          <activeWhen>
             <with
@@ -196,6 +196,14 @@
                value="Adressbuch - RCP Beispielanwendung">
          </property>
       </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="org.eclipse.ui.help.dynamicHelp"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="F1">
+      </key>
    </extension>
 
 </plugin>

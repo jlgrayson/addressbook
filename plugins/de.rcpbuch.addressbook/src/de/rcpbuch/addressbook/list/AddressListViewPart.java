@@ -1,4 +1,4 @@
-package de.rcpbuch.addressbook;
+package de.rcpbuch.addressbook.list;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
