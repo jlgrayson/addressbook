@@ -1,5 +1,6 @@
 package de.rcpbuch.addressbook.services.impl;
 
+import java.util.Collection;
 import java.util.Random;
 
 public class RandomData {
@@ -62,6 +63,11 @@ public class RandomData {
 
 	public String someGivenName() {
 		return someElement(GIVEN_NAMES);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <E> E someElement(Collection<E> elements) {
+		return (E) someElement(elements.toArray());
 	}
 
 	public <E> E someElement(E[] elements) {

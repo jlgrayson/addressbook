@@ -1,20 +1,24 @@
 package de.rcpbuch.addressbook.services;
 
+import java.util.Collection;
 import java.util.List;
 
 import de.rcpbuch.addressbook.entities.Address;
 import de.rcpbuch.addressbook.entities.Country;
 
-
 public interface IAddressService {
 
 	public List<Address> getAllAddresses();
 
-	public String[] getAllCities();
+	public Address getAddress(int id);
 
-	public List<Country> getAllCountries();
+	public Address saveAddress(Address changedOrNewAddress);
 
 	public void deleteAddress(int id);
+
+	public Collection<Country> getAllCountries();
+
+	public String[] getAllCities();
 
 	public void addAddressChangeListener(IAddressChangeListener listener);
 

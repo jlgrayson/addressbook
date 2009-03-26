@@ -13,7 +13,7 @@ public class AddressListRefreshHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchPart part = HandlerUtil.getActivePart(event);
 		if (part instanceof AddressListViewPart) {
-			((AddressListViewPart) part).refresh();
+			((AddressListViewPart) part).updateUi();
 		}
 		return null;
 	}

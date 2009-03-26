@@ -4,17 +4,19 @@ public class Address {
 
 	private final Integer id;
 	private String name, street, zip, city;
+	private Country country;
 
-	public Address(Integer id, String name, String street, String zip, String city) {
+	public Address(Integer id, String name, String street, String zip, String city, Country country) {
 		this.id = id;
 		this.name = name;
 		this.street = street;
 		this.zip = zip;
 		this.city = city;
+		this.country = country;
 	}
 
 	public Address(Address adr) {
-		this(adr.id, adr.name, adr.street, adr.zip, adr.city);
+		this(adr.id, adr.name, adr.street, adr.zip, adr.city, adr.country);
 	}
 
 	public Integer getId() {
@@ -51,6 +53,14 @@ public class Address {
 
 	public void setCity(String city) {
 		this.city = city;
+	}
+
+	public Country getCountry() {
+		return country;
+	}
+
+	public void setCountry(Country country) {
+		this.country = country;
 	}
 
 	@Override

@@ -22,13 +22,8 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="de.rcpbuch.addressbook.SwtTestsViewPart"
-            id="de.rcpbuch.addressbook.SwtTestsViewPart"
-            name="SWT Tests"
-            restorable="true">
-      </view>
-      <view
             class="de.rcpbuch.addressbook.list.AddressListViewPart"
+            icon="icons/book_open.png"
             id="de.rcpbuch.addressbook.list.AddressListViewPart"
             name="Adressen"
             restorable="true">

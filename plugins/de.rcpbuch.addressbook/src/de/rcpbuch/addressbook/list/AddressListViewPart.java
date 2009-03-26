@@ -1,5 +1,7 @@
 package de.rcpbuch.addressbook.list;
 
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.TableColumnLayout;
@@ -13,11 +15,12 @@ import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.dialogs.ListDialog;
 import org.eclipse.ui.part.ViewPart;
 
@@ -32,7 +35,7 @@ public class AddressListViewPart extends ViewPart {
 	private final IAddressChangeListener ADDRESS_CHANGE_LISTENER = new IAddressChangeListener() {
 
 		public void addressesChanged() {
-			refresh();
+			updateUi();
 		}
 
 	};
@@ -50,8 +53,9 @@ public class AddressListViewPart extends ViewPart {
 		parent.setLayout(tableLayout);
 
 		tableViewer = new TableViewer(parent, SWT.MULTI | SWT.V_SCROLL);
-		tableViewer.getTable().setHeaderVisible(true);
-		tableViewer.getTable().setLinesVisible(true);
+		final Table table = tableViewer.getTable();
+		table.setHeaderVisible(true);
+		table.setLinesVisible(true);
 
 		TableViewerColumn colName = new TableViewerColumn(tableViewer, SWT.NONE);
 		colName.getColumn().setText("Name");
@@ -65,31 +69,6 @@ public class AddressListViewPart extends ViewPart {
 
 		});
 		tableLayout.setColumnData(colName.getColumn(), new ColumnWeightData(50));
-
-		colName.setEditingSupport(new EditingSupport(tableViewer) {
-
-			@Override
-			protected boolean canEdit(Object element) {
-				return true;
-			}
-
-			@Override
-			protected CellEditor getCellEditor(Object element) {
-				return new TextCellEditor(tableViewer.getTable());
-			}
-
-			@Override
-			protected Object getValue(Object element) {
-				return ((Address) element).getName();
-			}
-
-			@Override
-			protected void setValue(Object element, Object value) {
-				((Address) element).setName(String.valueOf(value));
-				tableViewer.refresh();
-			}
-
-		});
 
 		TableViewerColumn colStreet = new TableViewerColumn(tableViewer, SWT.NONE);
 		colStreet.getColumn().setText("Straße");
@@ -139,7 +118,7 @@ public class AddressListViewPart extends ViewPart {
 
 			@Override
 			protected CellEditor getCellEditor(Object element) {
-				return new DialogCellEditor(tableViewer.getTable()) {
+				return new DialogCellEditor(table) {
 
 					@Override
 					protected Object openDialogBox(Control cellEditorWindow) {
@@ -178,11 +157,16 @@ public class AddressListViewPart extends ViewPart {
 
 		tableViewer.setContentProvider(new ArrayContentProvider());
 
+		// Kontextmenü für Contributions vorbereiten
+		MenuManager menuManager = new MenuManager();
+		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		table.setMenu(menuManager.createContextMenu(table));
+		getSite().registerContextMenu(menuManager, tableViewer);
 		getSite().setSelectionProvider(tableViewer);
 
 		AddressbookServices.getAddressService().addAddressChangeListener(ADDRESS_CHANGE_LISTENER);
 
-		refresh();
+		updateUi();
 	}
 
 	@Override
@@ -196,7 +180,7 @@ public class AddressListViewPart extends ViewPart {
 		tableViewer.getTable().setFocus();
 	}
 
-	public void refresh() {
+	public void updateUi() {
 		tableViewer.setInput(AddressbookServices.getAddressService().getAllAddresses());
 	}
 }

@@ -1,9 +1,13 @@
 package de.rcpbuch.addressbook.services.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import de.rcpbuch.addressbook.entities.Address;
@@ -16,38 +20,48 @@ public class RandomDataAddressService implements IAddressService {
 	private final AtomicInteger idSequence = new AtomicInteger(0);
 	private final List<Address> addresses;
 	private final LinkedHashSet<IAddressChangeListener> addressChangeListeners = new LinkedHashSet<IAddressChangeListener>();
+	private final Set<Country> countries;
 
 	public RandomDataAddressService() {
+
+		countries = new HashSet<Country>();
+		for (String countryName : RandomData.COUNTRIES) {
+			countries.add(new Country(countryName));
+		}
+
 		addresses = new ArrayList<Address>();
 		RandomData rd = new RandomData(1);
 		for (int i = 1; i <= 50; i++) {
 			addresses.add(new Address(idSequence.incrementAndGet(), rd.somePersonName(), rd.someStreet(), rd
-					.someZipCode(), rd.someCity()));
+					.someZipCode(), rd.someCity(), rd.someElement(countries)));
 			rd.newData();
 		}
+
 	}
 
 	public List<Address> getAllAddresses() {
-		ArrayList<Address> list = new ArrayList<Address>();
+		simulateSlowNetworkConnection();
+		List<Address> list = new ArrayList<Address>();
 		for (Address address : addresses) {
 			list.add(new Address(address));
 		}
 		return list;
 	}
 
+	private void simulateSlowNetworkConnection() {
+		try {
+			Thread.sleep(new RandomData().someNumber(500, 2000));
+		} catch (InterruptedException e) {
+			// ignore
+		}
+	}
+
 	public String[] getAllCities() {
 		return RandomData.CITIES;
 	}
 
-	public List<Country> getAllCountries() {
-		RandomData rd = new RandomData(1);
-		List<Country> countries = new ArrayList<Country>();
-		for (String countryName : RandomData.COUNTRIES) {
-			countries.add(new Country(countryName, rd.someNumber(1, 40)));
-			rd.newData();
-		}
-
-		return countries;
+	public Collection<Country> getAllCountries() {
+		return Collections.unmodifiableSet(countries);
 	}
 
 	public void deleteAddress(int id) {
@@ -62,6 +76,7 @@ public class RandomDataAddressService implements IAddressService {
 	}
 
 	public Address getAddress(int id) {
+		simulateSlowNetworkConnection();
 		for (Iterator<Address> i = addresses.iterator(); i.hasNext();) {
 			Address address = i.next();
 			if (address.getId() == id) {
@@ -72,10 +87,12 @@ public class RandomDataAddressService implements IAddressService {
 	}
 
 	public Address saveAddress(Address changedOrNewAddress) {
+		simulateSlowNetworkConnection();
 		if (changedOrNewAddress.getId() == null) {
 			// create new address
 			Address createdAdr = new Address(idSequence.incrementAndGet(), changedOrNewAddress.getName(),
-					changedOrNewAddress.getStreet(), changedOrNewAddress.getZip(), changedOrNewAddress.getCity());
+					changedOrNewAddress.getStreet(), changedOrNewAddress.getZip(), changedOrNewAddress.getCity(),
+					changedOrNewAddress.getCountry());
 			addresses.add(createdAdr);
 			fireAddressChange();
 			return new Address(createdAdr);
@@ -86,11 +103,12 @@ public class RandomDataAddressService implements IAddressService {
 				if (address.getId() == changedOrNewAddress.getId()) {
 					address.setName(changedOrNewAddress.getName());
 					address.setStreet(changedOrNewAddress.getStreet());
-					address.setZip(changedOrNewAddress.getCity());
+					address.setZip(changedOrNewAddress.getZip());
 					address.setCity(changedOrNewAddress.getCity());
+					address.setCountry(changedOrNewAddress.getCountry());
+					fireAddressChange();
+					return getAddress(address.getId());
 				}
-				fireAddressChange();
-				return getAddress(address.getId());
 			}
 			throw new IllegalArgumentException("Address " + changedOrNewAddress.getId() + " not found!");
 		}
