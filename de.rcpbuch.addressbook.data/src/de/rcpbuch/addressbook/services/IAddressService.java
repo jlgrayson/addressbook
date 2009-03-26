@@ -1,6 +1,9 @@
-package de.rcpbuch.addressbook.data;
+package de.rcpbuch.addressbook.services;
 
 import java.util.List;
+
+import de.rcpbuch.addressbook.entities.Address;
+import de.rcpbuch.addressbook.entities.Country;
 
 
 public interface IAddressService {

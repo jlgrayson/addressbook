@@ -9,8 +9,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import de.rcpbuch.addressbook.data.Address;
-import de.rcpbuch.addressbook.data.AddressbookServices;
+import de.rcpbuch.addressbook.entities.Address;
+import de.rcpbuch.addressbook.services.AddressbookServices;
 
 public class AddressDeleteHandler extends AbstractHandler {
 

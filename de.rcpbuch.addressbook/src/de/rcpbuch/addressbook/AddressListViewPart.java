@@ -21,9 +21,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.dialogs.ListDialog;
 import org.eclipse.ui.part.ViewPart;
 
-import de.rcpbuch.addressbook.data.Address;
-import de.rcpbuch.addressbook.data.AddressbookServices;
-import de.rcpbuch.addressbook.data.IAddressChangeListener;
+import de.rcpbuch.addressbook.entities.Address;
+import de.rcpbuch.addressbook.services.AddressbookServices;
+import de.rcpbuch.addressbook.services.IAddressChangeListener;
 
 public class AddressListViewPart extends ViewPart {
 
@@ -49,7 +49,7 @@ public class AddressListViewPart extends ViewPart {
 		TableColumnLayout tableLayout = new TableColumnLayout();
 		parent.setLayout(tableLayout);
 
-		tableViewer = new TableViewer(parent);
+		tableViewer = new TableViewer(parent, SWT.MULTI | SWT.V_SCROLL);
 		tableViewer.getTable().setHeaderVisible(true);
 		tableViewer.getTable().setLinesVisible(true);
 

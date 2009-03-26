@@ -25,8 +25,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
 
-import de.rcpbuch.addressbook.data.AddressbookServices;
-import de.rcpbuch.addressbook.data.Country;
+import de.rcpbuch.addressbook.entities.Country;
+import de.rcpbuch.addressbook.services.AddressbookServices;
 
 public class SwtTestsViewPart extends ViewPart {
 

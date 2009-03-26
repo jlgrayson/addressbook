@@ -177,7 +177,7 @@
                      ifEmpty="false"
                      operator="or">
                   <instanceof
-                        value="de.rcpbuch.addressbook.data.Address">
+                        value="de.rcpbuch.addressbook.entities.Address">
                   </instanceof>
                </iterate>
             </with>

@@ -1,6 +1,6 @@
-package de.rcpbuch.addressbook.data;
+package de.rcpbuch.addressbook.services;
 
-import de.rcpbuch.addressbook.data.impl.RandomDataAddressService;
+import de.rcpbuch.addressbook.services.impl.RandomDataAddressService;
 
 public class AddressbookServices {
 

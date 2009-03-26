@@ -1,11 +1,11 @@
-package de.rcpbuch.addressbook.data;
+package de.rcpbuch.addressbook.entities;
 
 public class Address {
 
-	private final int id;
+	private final Integer id;
 	private String name, street, zip, city;
 
-	public Address(int id, String name, String street, String zip, String city) {
+	public Address(Integer id, String name, String street, String zip, String city) {
 		this.id = id;
 		this.name = name;
 		this.street = street;
@@ -14,14 +14,10 @@ public class Address {
 	}
 
 	public Address(Address adr) {
-		this.id = adr.id;
-		this.name = adr.name;
-		this.street = adr.street;
-		this.zip = adr.zip;
-		this.city = adr.city;
+		this(adr.id, adr.name, adr.street, adr.zip, adr.city);
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 

@@ -1,4 +1,4 @@
-package de.rcpbuch.addressbook.data.impl;
+package de.rcpbuch.addressbook.services.impl;
 
 import java.util.Random;
 

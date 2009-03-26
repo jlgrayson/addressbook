@@ -1,4 +1,4 @@
-package de.rcpbuch.addressbook.data;
+package de.rcpbuch.addressbook.services;
 
 public interface IAddressChangeListener {
 
