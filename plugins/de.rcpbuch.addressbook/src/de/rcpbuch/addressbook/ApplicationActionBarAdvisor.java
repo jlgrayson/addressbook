@@ -16,6 +16,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		// Commands funktionieren. Siehe
 		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=270007
 		register(ActionFactory.HELP_CONTENTS.create(window));
+		register(ActionFactory.HELP_SEARCH.create(window));
 		register(ActionFactory.DYNAMIC_HELP.create(window));
 	}
 

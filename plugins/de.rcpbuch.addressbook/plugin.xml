@@ -70,14 +70,6 @@
                style="push">
          </command>
          <separator
-               name="de.rcpbuch.addressbook.separator4"
-               visible="true">
-         </separator>
-         <command
-               commandId="de.rcpbuch.addressbook.duplicateCheck"
-               style="push">
-         </command>
-         <separator
                name="de.rcpbuch.addressbook.separator3"
                visible="true">
          </separator>
@@ -126,11 +118,23 @@
                id="help"
                label="Hilfe">
             <command
-                  commandId="org.eclipse.ui.help.aboutAction"
+                  commandId="org.eclipse.ui.help.helpContents"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.help.helpSearch"
                   style="push">
             </command>
             <command
                   commandId="org.eclipse.ui.help.dynamicHelp"
+                  style="push">
+            </command>
+            <separator
+                  name="help.separator"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.help.aboutAction"
                   style="push">
             </command>
          </menu>
@@ -145,13 +149,6 @@
             </command>
          </toolbar>
       </menuContribution>
-   </extension>
-   <extension
-         point="org.eclipse.ui.commands">
-      <command
-            id="de.rcpbuch.addressbook.duplicateCheck"
-            name="Find duplicates">
-      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
