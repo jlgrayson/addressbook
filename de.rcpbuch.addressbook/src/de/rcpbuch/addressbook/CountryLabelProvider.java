@@ -5,7 +5,7 @@ package de.rcpbuch.addressbook;
 
 import org.eclipse.jface.viewers.LabelProvider;
 
-import de.rcpbuch.addressbook.data.Country;
+import de.rcpbuch.addressbook.entities.Country;
 
 final class CountryLabelProvider extends LabelProvider {
 
