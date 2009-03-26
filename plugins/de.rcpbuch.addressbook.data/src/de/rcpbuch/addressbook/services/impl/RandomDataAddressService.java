@@ -40,7 +40,6 @@ public class RandomDataAddressService implements IAddressService {
 	}
 
 	public List<Address> getAllAddresses() {
-		simulateSlowNetworkConnection();
 		List<Address> list = new ArrayList<Address>();
 		for (Address address : addresses) {
 			list.add(new Address(address));
@@ -76,7 +75,6 @@ public class RandomDataAddressService implements IAddressService {
 	}
 
 	public Address getAddress(int id) {
-		simulateSlowNetworkConnection();
 		for (Iterator<Address> i = addresses.iterator(); i.hasNext();) {
 			Address address = i.next();
 			if (address.getId() == id) {
@@ -86,8 +84,13 @@ public class RandomDataAddressService implements IAddressService {
 		return null;
 	}
 
-	public Address saveAddress(Address changedOrNewAddress) {
+	public int verySlowOperation() {
 		simulateSlowNetworkConnection();
+		simulateSlowNetworkConnection();
+		return 42;
+	}
+
+	public Address saveAddress(Address changedOrNewAddress) {
 		if (changedOrNewAddress.getId() == null) {
 			// create new address
 			Address createdAdr = new Address(idSequence.incrementAndGet(), changedOrNewAddress.getName(),

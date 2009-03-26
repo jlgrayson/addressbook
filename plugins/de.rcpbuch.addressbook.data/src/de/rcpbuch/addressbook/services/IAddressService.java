@@ -20,6 +20,8 @@ public interface IAddressService {
 
 	public String[] getAllCities();
 
+	public int verySlowOperation();
+
 	public void addAddressChangeListener(IAddressChangeListener listener);
 
 	public void removeAddressChangeListener(IAddressChangeListener listener);
