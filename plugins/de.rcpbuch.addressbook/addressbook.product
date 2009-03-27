@@ -18,7 +18,7 @@
 
    <windowImages/>
 
-   <launcher>
+   <launcher name="addressbook">
       <solaris/>
       <win useIco="false">
          <bmp/>

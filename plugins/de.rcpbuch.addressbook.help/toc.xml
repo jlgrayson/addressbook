@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Adressbuch">
+ <topic href="html/edit_address.html" label="Adressen bearbeiten">
+ </topic>
+ <topic href="html/new_address.html" label="Neue Adressen anlegen">
+ </topic>
+</toc>

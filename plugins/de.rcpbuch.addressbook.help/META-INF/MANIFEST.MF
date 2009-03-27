@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Help Plug-in
+Bundle-SymbolicName: de.rcpbuch.addressbook.help; singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: de.rcpbuch.addressbook.help.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.help
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
