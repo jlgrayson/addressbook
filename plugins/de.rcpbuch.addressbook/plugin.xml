@@ -37,6 +37,14 @@
                id="de.rcpbuch.addressbook.file"
                label="File">
          <command
+               commandId="org.eclipse.ui.newWizard"
+               style="push">
+         </command>
+         <separator
+               name="de.rcpbuch.addressbook.separator5"
+               visible="true">
+         </separator>
+         <command
                commandId="org.eclipse.ui.file.save"
                style="push">
          </command>
@@ -66,6 +74,22 @@
          </command>
          <separator
                name="de.rcpbuch.addressbook.separator3"
+               visible="true">
+         </separator>
+         <command
+               commandId="org.eclipse.ui.file.import"
+               style="push">
+         </command>
+         <command
+               commandId="org.eclipse.ui.file.export"
+               style="push">
+         </command>
+         <separator
+               name="de.rcpbuch.addressbook.separator4"
+               visible="true">
+         </separator>
+         <separator
+               name="de.rcpbuch.addressbook.separator5"
                visible="true">
          </separator>
          <command
@@ -199,6 +223,14 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="F1">
       </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            class="de.rcpbuch.SomeNewWizard"
+            id="de.rcpbuch.SomeNewWizard"
+            name="Neue Adresse">
+      </wizard>
    </extension>
 
 </plugin>
