@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contexts>
+   <context id="edit">
+      <description>Maske zur Adresseingabe</description>
+      <topic href="html/edit_address.html" label="Adresse bearbeiten"/>
+   </context>
+</contexts>

@@ -30,6 +30,7 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.progress.WorkbenchJob;
 
@@ -68,6 +69,8 @@ public class AddressEditorPart extends EditorPart {
 	public void createPartControl(Composite parent) {
 
 		this.parent = parent;
+
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, IEditorHelpContexts.EDIT);
 
 		GridLayout layout = new GridLayout(2, false);
 		layout.marginRight = 10;
