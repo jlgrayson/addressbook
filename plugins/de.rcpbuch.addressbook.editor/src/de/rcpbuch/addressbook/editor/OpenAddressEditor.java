@@ -23,7 +23,6 @@ public class OpenAddressEditor extends AbstractHandler {
 
 		List<Integer> adressIds = getAddressIds(selection);
 		for (Integer id : adressIds) {
-			System.out.println(id);
 			try {
 				HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().openEditor(new AddressIdEditorInput(id),
 						AddressEditorPart.EDITOR_ID);
