@@ -16,7 +16,7 @@ import de.rcpbuch.addressbook.entities.Address;
 public class VCardComposite extends Composite {
 
 	public VCardComposite(Composite parent, Address address) {
-		super(parent, SWT.NONE);
+		super(parent, SWT.BORDER);
 
 		Color white = getDisplay().getSystemColor(SWT.COLOR_WHITE);
 

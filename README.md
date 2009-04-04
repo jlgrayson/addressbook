@@ -1,4 +1,4 @@
-# Addressbook
+# Address Book
 
 This is a sample address book application developed on the Eclipse RCP 3.4 platform.
 I develop it for my [upcoming German book about Eclipse RCP](http://www.ralfebert.de/rcpbuch/) and my [Eclipse RCP training courses](http://www.ralfebert.de/seminare/rcp/). I also use it to experiment with features of the Eclipse RCP platform.
