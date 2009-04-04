@@ -1,9 +1,6 @@
 package de.rcpbuch.addressbook.editor;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.fieldassist.AutoCompleteField;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
@@ -17,12 +14,9 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -136,39 +130,6 @@ public class AddressEditorPart extends EditorPart {
 
 			public void selectionChanged(SelectionChangedEvent event) {
 				setDirty(true);
-			}
-
-		});
-
-		Button btn = new Button(parent, SWT.NONE);
-		btn.setText("Calculate");
-		GridData gd = new GridData();
-		gd.horizontalSpan = 2;
-		btn.setLayoutData(gd);
-		btn.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent event) {
-				Job job = new Job("Some calculation") {
-
-					@Override
-					protected IStatus run(IProgressMonitor monitor) {
-						monitor.beginTask("Calculating", 50);
-						try {
-							for (int i = 0; i < 50; i++) {
-								Thread.sleep(100);
-								monitor.worked(1);
-							}
-						} catch (InterruptedException e) {
-							throw new RuntimeException(e);
-						}
-						System.out.println("finished");
-						return Status.OK_STATUS;
-					}
-
-				};
-
-				job.schedule();
 			}
 
 		});
