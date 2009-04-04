@@ -51,8 +51,6 @@ public class AddressEditorPart extends EditorPart {
 
 	private boolean dirty;
 
-	private Composite parent;
-
 	@Override
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		setSite(site);
@@ -66,8 +64,6 @@ public class AddressEditorPart extends EditorPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-
-		this.parent = parent;
 
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, IEditorHelpContexts.EDIT);
 
