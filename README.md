@@ -1,8 +1,12 @@
 # Addressbook
 
 This is a sample address book application developed on the Eclipse RCP 3.4 platform.
-I develop it for my Eclipse RCP training courses and to experiment with features of the Eclipse RCP platform.
-Currently everything is very simple and not usable for real-world usage. My plan is to enhance it to the point where one would want to use this application to manage real contacts.
+I develop it for my [upcoming German book about Eclipse RCP](http://www.ralfebert.de/rcpbuch/) and my [Eclipse RCP training courses](http://www.ralfebert.de/seminare/rcp/). I also use it to experiment with features of the Eclipse RCP platform.
+Currently everything is very simple and not suitable for real-world usage. My plan is to enhance it to the point where one would want to use this application to manage real contacts.
+
+This is what it looks like at the moment:
+
+![Addressbook screenshot](doc/screenshots/addressbook_01.png)
 
 ## License
 
