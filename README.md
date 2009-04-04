@@ -6,7 +6,7 @@ Currently everything is very simple and not suitable for real-world usage. My pl
 
 This is what it looks like at the moment:
 
-![Addressbook screenshot](doc/screenshots/addressbook_01.png)
+![Addressbook screenshot](/ralfebert/addressbook/raw/master/doc/screenshots/addressbook_01.png)
 
 ## License
 
