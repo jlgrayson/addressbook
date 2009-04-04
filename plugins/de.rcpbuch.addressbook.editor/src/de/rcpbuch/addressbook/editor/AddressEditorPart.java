@@ -5,6 +5,8 @@ import org.eclipse.jface.fieldassist.AutoCompleteField;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.fieldassist.TextContentAdapter;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -15,16 +17,18 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.ScrolledForm;
+import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
 import de.rcpbuch.addressbook.entities.Address;
@@ -61,16 +65,23 @@ public class AddressEditorPart extends EditorPart {
 
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, IEditorHelpContexts.EDIT);
 
-		GridLayout layout = new GridLayout(2, false);
-		layout.marginRight = 10;
-		parent.setLayout(layout);
+		FormToolkit toolkit = new FormToolkit(parent.getDisplay());
+		final ScrolledForm form = toolkit.createScrolledForm(parent);
+		FillLayout layout = new FillLayout();
+		form.getBody().setLayout(layout);
+
+		Section section = toolkit.createSection(form.getBody(), Section.TWISTIE | Section.TITLE_BAR);
+		section.setText("Anschrift");
+
+		Composite client = toolkit.createComposite(section, SWT.WRAP);
+		GridLayoutFactory.fillDefaults().margins(10, 3).numColumns(3).applyTo(client);
+		section.setClient(client);
 
 		// NAME
-		final Label labelName = new Label(parent, SWT.NONE);
-		labelName.setText("Name:");
+		toolkit.createLabel(client, "Name:");
 
-		txtName = new Text(parent, SWT.BORDER);
-		txtName.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+		txtName = toolkit.createText(client, "");
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).span(2, 1).applyTo(txtName);
 
 		ModifyListener dirtyModifyListener = new ModifyListener() {
 
@@ -83,31 +94,21 @@ public class AddressEditorPart extends EditorPart {
 		txtName.addModifyListener(dirtyModifyListener);
 
 		// STRASSE
-		final Label labelStreet = new Label(parent, SWT.NONE);
-		labelStreet.setText("Straße:");
+		toolkit.createLabel(client, "Straße:");
 
-		txtStreet = new Text(parent, SWT.BORDER);
+		txtStreet = toolkit.createText(client, "");
 		txtStreet.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 		txtStreet.addModifyListener(dirtyModifyListener);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).span(2, 1).applyTo(txtStreet);
 
 		// PLZ / ORT
-		final Label labelZipCity = new Label(parent, SWT.NONE);
-		labelZipCity.setText("PLZ/Ort:");
+		toolkit.createLabel(client, "PLZ/Ort:");
 
-		Composite zipCityComposite = new Composite(parent, SWT.NONE);
-		zipCityComposite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-
-		GridLayout gridLayout = new GridLayout(2, false);
-		gridLayout.marginWidth = 0;
-		gridLayout.marginHeight = 0;
-		zipCityComposite.setLayout(gridLayout);
-
-		txtZip = new Text(zipCityComposite, SWT.BORDER);
-		txtZip.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
+		txtZip = toolkit.createText(client, "");
 		txtZip.addModifyListener(dirtyModifyListener);
 
-		txtCity = new Text(zipCityComposite, SWT.BORDER);
-		txtCity.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+		txtCity = toolkit.createText(client, "");
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).applyTo(txtCity);
 		txtCity.addModifyListener(dirtyModifyListener);
 
 		ControlDecoration decoration = new ControlDecoration(txtCity, SWT.RIGHT | SWT.TOP);
@@ -118,11 +119,11 @@ public class AddressEditorPart extends EditorPart {
 		new AutoCompleteField(txtCity, new TextContentAdapter(), AddressbookServices.getAddressService().getAllCities());
 
 		// LAND
-		final Label labelCountry = new Label(parent, SWT.NONE);
-		labelCountry.setText("Land:");
+		toolkit.createLabel(client, "Land:");
 
-		cvCountry = new ComboViewer(parent, SWT.READ_ONLY);
-		cvCountry.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+		cvCountry = new ComboViewer(client, SWT.READ_ONLY);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).span(2, 1).applyTo(
+				cvCountry.getCombo());
 		cvCountry.setContentProvider(new ArrayContentProvider());
 		cvCountry.setLabelProvider(new CountryLabelProvider());
 		cvCountry.setInput(AddressbookServices.getAddressService().getAllCountries());
@@ -135,6 +136,7 @@ public class AddressEditorPart extends EditorPart {
 		});
 
 		reload();
+		section.setExpanded(true);
 
 	}
 
