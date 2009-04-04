@@ -52,7 +52,7 @@ public class AddressListViewPart extends ViewPart {
 		TableColumnLayout tableLayout = new TableColumnLayout();
 		parent.setLayout(tableLayout);
 
-		tableViewer = new TableViewer(parent, SWT.MULTI | SWT.V_SCROLL);
+		tableViewer = new TableViewer(parent, SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL);
 		tableViewer.getTable().setData("org.eclipse.swtbot.widget.key", "adressen");
 		final Table table = tableViewer.getTable();
 		table.setHeaderVisible(true);
