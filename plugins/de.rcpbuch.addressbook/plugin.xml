@@ -14,9 +14,9 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="de.rcpbuch.addressbook.Perspective"
+            class="de.rcpbuch.addressbook.AddressPerspective"
             icon="icons/book.png"
-            id="de.rcpbuch.addressbook.perspective"
+            id="de.rcpbuch.addressbook.AddressPerspective"
             name="Adressen">
       </perspective>
    </extension>
