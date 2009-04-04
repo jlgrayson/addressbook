@@ -14,16 +14,17 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            name="RCP Perspective"
             class="de.rcpbuch.addressbook.Perspective"
-            id="de.rcpbuch.addressbook.perspective">
+            icon="icons/book.png"
+            id="de.rcpbuch.addressbook.perspective"
+            name="Adressen">
       </perspective>
    </extension>
    <extension
          point="org.eclipse.ui.views">
       <view
             class="de.rcpbuch.addressbook.list.AddressListViewPart"
-            icon="icons/book_open.png"
+            icon="icons/book.png"
             id="de.rcpbuch.addressbook.list.AddressListViewPart"
             name="Adressen"
             restorable="true">
@@ -213,6 +214,10 @@
          <property
                name="aboutText"
                value="Adressbuch - RCP Beispielanwendung">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
          </property>
       </product>
    </extension>

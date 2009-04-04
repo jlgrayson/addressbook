@@ -21,6 +21,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		configurer.setInitialSize(new Point(700, 550));
 		configurer.setShowCoolBar(true);
 		configurer.setShowStatusLine(false);
+		configurer.setShowPerspectiveBar(true);
 		configurer.setShowProgressIndicator(true);
 		configurer.setTitle("Adressbuch");
 	}
