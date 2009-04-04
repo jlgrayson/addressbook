@@ -32,7 +32,6 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
-import org.eclipse.ui.progress.WorkbenchJob;
 
 import de.rcpbuch.addressbook.entities.Address;
 import de.rcpbuch.addressbook.entities.Country;
@@ -183,31 +182,8 @@ public class AddressEditorPart extends EditorPart {
 	}
 
 	private void reload() {
-		// TODO: nice progress, clean up code
-		parent.setVisible(false);
-
-		new Job("Load address") {
-
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				address = AddressbookServices.getAddressService().getAddress(getEditorInput().getId());
-
-				new WorkbenchJob("Update UI") {
-
-					@Override
-					public IStatus runInUIThread(IProgressMonitor monitor) {
-						updateUi();
-						parent.setVisible(true);
-						return Status.OK_STATUS;
-					}
-
-				}.schedule();
-
-				return Status.OK_STATUS;
-			}
-
-		}.schedule();
-
+		address = AddressbookServices.getAddressService().getAddress(getEditorInput().getId());
+		updateUi();
 	}
 
 	@Override
