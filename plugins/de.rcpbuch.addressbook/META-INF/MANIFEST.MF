@@ -6,6 +6,7 @@ Bundle-Version: 1.0.0
 Bundle-Activator: de.rcpbuch.addressbook.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- de.rcpbuch.addressbook.services
+ de.rcpbuch.addressbook.services,
+ org.apache.commons.lang;bundle-version="2.3.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

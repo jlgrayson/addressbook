@@ -36,7 +36,7 @@
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
                id="de.rcpbuch.addressbook.file"
-               label="File">
+               label="Datei">
          <command
                commandId="org.eclipse.ui.newWizard"
                style="push">
@@ -100,7 +100,7 @@
          </menu>
          <menu
                id="de.rcpbuch.addressbook.edit"
-               label="Edit">
+               label="Bearbeiten">
             <command
                   commandId="org.eclipse.ui.edit.undo"
                   style="push">

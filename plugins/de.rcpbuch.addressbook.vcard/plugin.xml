@@ -15,7 +15,7 @@
       <view
             class="de.rcpbuch.addressbook.vcard.VCardView"
             id="de.rcpbuch.addressbook.vcard.VCardView"
-            name="Visitenkarte"
+            name="Visitenkarten"
             restorable="true">
       </view>
    </extension>
