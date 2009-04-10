@@ -1,0 +1,56 @@
+Signature-Version: 1.0
+SHA1-Digest-Manifest: MRmlTfnZ8j+Oh041wdsTUEVXAII=
+Created-By: 1.5.0 (IBM Corporation)
+SHA1-Digest-Manifest-Main-Attributes: bIWa1mKuuKY6pNTnbAhRKGI8eZg=
+
+Name: com/ibm/icu/text/DecimalFormat.java
+SHA1-Digest: iB3mnIWseyKFNMx79+Hw0Y/reN0=
+
+Name: about.html
+SHA1-Digest: meEN8F5MKE5x3zOKBRWCWx/QSe0=
+
+Name: com/ibm/icu/text/CollationKey.java
+SHA1-Digest: oCCCQyLAngk2SpNHRfKVRrKH3FY=
+
+Name: com/ibm/icu/text/NumberFormat.java
+SHA1-Digest: A4AjCrRH8mv8P0A7Rjca7jrOxgU=
+
+Name: com/ibm/icu/text/BreakIterator.java
+SHA1-Digest: STgCL9a8VqUJ3QfOEnG+Ohr5c2A=
+
+Name: com/ibm/icu/text/SimpleDateFormat.java
+SHA1-Digest: Pg+CBX7+HpJafCnlaGSY5KSsHP4=
+
+Name: com/ibm/icu/util/Calendar.java
+SHA1-Digest: 4NXmQtbq60oYuDLjUERwUViJpOM=
+
+Name: com/ibm/icu/text/DateFormatSymbols.java
+SHA1-Digest: A1CJ4bItix5pYYJQFxtTj7qP6FY=
+
+Name: com/ibm/icu/text/Collator.java
+SHA1-Digest: rdvo16hpekdvLopKzN3HlCkhkP0=
+
+Name: com/ibm/icu/text/DecimalFormatSymbols.java
+SHA1-Digest: LZStKZ24qCPAAHUSFpaCoPZCdN0=
+
+Name: plugin.properties
+SHA1-Digest: /gdAAlE9jBw3H+K4rqkUyC+CzVA=
+
+Name: META-INF/eclipse.inf
+SHA1-Digest: SwPvGXzoqhbu6llulpm8WpBxiUo=
+
+Name: com/ibm/icu/util/ULocale.java
+SHA1-Digest: XtbAl4TvTh4aMEbElEaw2UJpzo8=
+
+Name: com/ibm/icu/text/MessageFormat.java
+SHA1-Digest: 1oCUHtGG3TFbY6FmGmcljE6AIIg=
+
+Name: com/ibm/icu/text/DateFormat.java
+SHA1-Digest: dkiQQa0mCJkY0u9AQLGq18iF/hY=
+
+Name: about_files/license.html
+SHA1-Digest: Z3X+mc80S6rOp32dOWwBo5oSBi0=
+
+Name: com/ibm/icu/util/TimeZone.java
+SHA1-Digest: awFbF6o3IGnbLOBD/L+euYyiNME=
+
