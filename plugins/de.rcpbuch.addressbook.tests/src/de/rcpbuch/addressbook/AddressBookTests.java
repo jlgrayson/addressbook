@@ -101,10 +101,4 @@ public class AddressBookTests {
 		bot.editorByTitle("Marion Graf").close();
 	}
 
-	@Test
-	public void testVisitenkarten() throws Exception {
-		bot.perspectiveByLabel("Visitenkarten").activate();
-		assertTrue("Visitenkarten-View aktiv", bot.viewByTitle("Visitenkarten").isActive());
-	}
-
 }
