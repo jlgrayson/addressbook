@@ -85,4 +85,10 @@ public class Address {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "Address [id=" + id + ", name=" + name + ", street=" + street + ", zip=" + zip + ", city=" + city
+				+ ", country=" + country + "]";
+	}
+
 }
