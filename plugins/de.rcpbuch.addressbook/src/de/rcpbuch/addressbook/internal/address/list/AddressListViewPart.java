@@ -1,4 +1,4 @@
-package de.rcpbuch.addressbook.list;
+package de.rcpbuch.addressbook.internal.address.list;
 
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
@@ -29,8 +29,6 @@ import de.rcpbuch.addressbook.services.AddressbookServices;
 import de.rcpbuch.addressbook.services.IAddressChangeListener;
 
 public class AddressListViewPart extends ViewPart {
-
-	public static final String VIEW_ID = AddressListViewPart.class.getName();
 
 	private final IAddressChangeListener ADDRESS_CHANGE_LISTENER = new IAddressChangeListener() {
 

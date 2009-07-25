@@ -1,4 +1,4 @@
-package de.rcpbuch.addressbook.editor;
+package de.rcpbuch.addressbook.editor.internal;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.fieldassist.AutoCompleteField;
@@ -31,13 +31,13 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
+import de.rcpbuch.addressbook.editor.AddressEditorConstants;
+import de.rcpbuch.addressbook.editor.AddressIdEditorInput;
 import de.rcpbuch.addressbook.entities.Address;
 import de.rcpbuch.addressbook.entities.Country;
 import de.rcpbuch.addressbook.services.AddressbookServices;
 
 public class AddressEditorPart extends EditorPart {
-
-	public static final String EDITOR_ID = AddressEditorPart.class.getName();
 
 	private Address address;
 
@@ -63,7 +63,7 @@ public class AddressEditorPart extends EditorPart {
 	@Override
 	public void createPartControl(Composite parent) {
 
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, IEditorHelpContexts.EDIT);
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, AddressEditorConstants.HELP_CONTEXT_EDIT);
 
 		FormToolkit toolkit = new FormToolkit(parent.getDisplay());
 		final ScrolledForm form = toolkit.createScrolledForm(parent);

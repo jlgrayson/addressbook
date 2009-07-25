@@ -1,4 +1,4 @@
-package de.rcpbuch.addressbook.application;
+package de.rcpbuch.addressbook.internal.application;
 
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.application.ActionBarAdvisor;

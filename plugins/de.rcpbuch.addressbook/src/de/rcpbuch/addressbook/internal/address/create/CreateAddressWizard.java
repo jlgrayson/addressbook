@@ -1,4 +1,4 @@
-package de.rcpbuch;
+package de.rcpbuch.addressbook.internal.address.create;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -9,11 +9,11 @@ import org.eclipse.ui.IWorkbench;
 import de.rcpbuch.addressbook.entities.Address;
 import de.rcpbuch.addressbook.services.AddressbookServices;
 
-public class SomeNewWizard extends Wizard implements INewWizard {
+public class CreateAddressWizard extends Wizard implements INewWizard {
 
 	private FreeTextWizardPage textWizardPage;
 
-	public SomeNewWizard() {
+	public CreateAddressWizard() {
 		textWizardPage = new FreeTextWizardPage();
 		addPage(textWizardPage);
 	}

@@ -1,4 +1,4 @@
-package de.rcpbuch.addressbook.handler;
+package de.rcpbuch.addressbook.internal.address.list;
 
 import java.util.Iterator;
 

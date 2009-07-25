@@ -7,25 +7,25 @@
          point="org.eclipse.core.runtime.applications">
       <application>
          <run
-               class="de.rcpbuch.addressbook.application.Application">
+               class="de.rcpbuch.addressbook.internal.application.Application">
          </run>
       </application>
    </extension>
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="de.rcpbuch.addressbook.AddressPerspective"
+            class="de.rcpbuch.addressbook.internal.address.AddressPerspective"
             icon="icons/book.png"
-            id="de.rcpbuch.addressbook.AddressPerspective"
+            id="de.rcpbuch.addressbook.addressPerspective"
             name="Adressen">
       </perspective>
    </extension>
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="de.rcpbuch.addressbook.list.AddressListViewPart"
+            class="de.rcpbuch.addressbook.internal.address.list.AddressListViewPart"
             icon="icons/book.png"
-            id="de.rcpbuch.addressbook.list.AddressListViewPart"
+            id="de.rcpbuch.addressbook.addresslist"
             name="Adressen"
             restorable="true">
       </view>
@@ -173,7 +173,7 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="de.rcpbuch.addressbook.handler.AddressListRefreshHandler"
+            class="de.rcpbuch.addressbook.internal.address.list.AddressListRefreshHandler"
             commandId="org.eclipse.ui.file.refresh">
          <activeWhen>
             <with
@@ -185,7 +185,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="de.rcpbuch.addressbook.handler.AddressDeleteHandler"
+            class="de.rcpbuch.addressbook.internal.address.list.AddressDeleteHandler"
             commandId="org.eclipse.ui.edit.delete">
          <activeWhen>
             <with
@@ -232,7 +232,7 @@
    <extension
          point="org.eclipse.ui.newWizards">
       <wizard
-            class="de.rcpbuch.SomeNewWizard"
+            class="de.rcpbuch.addressbook.internal.address.create.CreateAddressWizard"
             id="de.rcpbuch.SomeNewWizard"
             name="Neue Adresse">
       </wizard>

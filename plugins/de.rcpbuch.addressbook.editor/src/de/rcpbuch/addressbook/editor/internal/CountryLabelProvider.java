@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.rcpbuch.addressbook.editor;
+package de.rcpbuch.addressbook.editor.internal;
 
 import org.eclipse.jface.viewers.LabelProvider;
 

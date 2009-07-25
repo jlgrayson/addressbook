@@ -4,17 +4,17 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="de.rcpbuch.addressbook.editor.AddressEditorPart"
+            class="de.rcpbuch.addressbook.editor.internal.AddressEditorPart"
             default="false"
             icon="icons/user_orange.png"
-            id="de.rcpbuch.addressbook.editor.AddressEditorPart"
+            id="de.rcpbuch.addressbook.editor"
             name="Adresse">
       </editor>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="popup:de.rcpbuch.addressbook.list.AddressListViewPart">
+            locationURI="popup:de.rcpbuch.addressbook.addresslist">
          <command
                commandId="de.rcpbuch.addressbook.editor.open"
                icon="icons/user_orange.png"
@@ -32,7 +32,7 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="de.rcpbuch.addressbook.editor.OpenAddressEditor"
+            class="de.rcpbuch.addressbook.editor.internal.OpenAddressEditorHandler"
             commandId="de.rcpbuch.addressbook.editor.open">
          <activeWhen>
             <with

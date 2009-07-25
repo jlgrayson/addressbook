@@ -1,10 +1,10 @@
-package de.rcpbuch.addressbook.application;
+package de.rcpbuch.addressbook.internal.application;
 
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
-import de.rcpbuch.addressbook.AddressPerspective;
+import de.rcpbuch.addressbook.AddressbookConstants;
 
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
@@ -13,6 +13,6 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 	}
 
 	public String getInitialWindowPerspectiveId() {
-		return AddressPerspective.PERSPECTIVE_ID;
+		return AddressbookConstants.ADDRESS_PERSPECTIVE_ID;
 	}
 }

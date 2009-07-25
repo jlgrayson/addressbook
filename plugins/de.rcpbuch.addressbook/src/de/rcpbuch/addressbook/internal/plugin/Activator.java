@@ -1,4 +1,4 @@
-package de.rcpbuch.addressbook;
+package de.rcpbuch.addressbook.internal.plugin;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;

@@ -1,4 +1,4 @@
-package de.rcpbuch.addressbook.application;
+package de.rcpbuch.addressbook.internal.application;
 
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.actions.ActionFactory;

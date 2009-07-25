@@ -1,4 +1,4 @@
-package de.rcpbuch.addressbook.application;
+package de.rcpbuch.addressbook.internal.application;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;

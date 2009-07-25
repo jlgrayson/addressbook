@@ -1,6 +1,6 @@
 package de.rcpbuch.addressbook.services;
 
-import de.rcpbuch.addressbook.services.impl.RandomDataAddressService;
+import de.rcpbuch.addressbook.services.internal.RandomDataAddressService;
 
 public class AddressbookServices {
 
@@ -9,5 +9,4 @@ public class AddressbookServices {
 	public static IAddressService getAddressService() {
 		return addressService;
 	}
-
 }

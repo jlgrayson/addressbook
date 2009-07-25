@@ -1,4 +1,4 @@
-package de.rcpbuch;
+package de.rcpbuch.addressbook.internal.address.create;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;

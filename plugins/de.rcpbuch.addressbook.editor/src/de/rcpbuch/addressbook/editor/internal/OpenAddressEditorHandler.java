@@ -1,4 +1,4 @@
-package de.rcpbuch.addressbook.editor;
+package de.rcpbuch.addressbook.editor.internal;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -12,9 +12,11 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import de.rcpbuch.addressbook.editor.AddressEditorConstants;
+import de.rcpbuch.addressbook.editor.AddressIdEditorInput;
 import de.rcpbuch.addressbook.entities.Address;
 
-public class OpenAddressEditor extends AbstractHandler {
+public class OpenAddressEditorHandler extends AbstractHandler {
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
@@ -25,7 +27,7 @@ public class OpenAddressEditor extends AbstractHandler {
 		for (Integer id : adressIds) {
 			try {
 				HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().openEditor(new AddressIdEditorInput(id),
-						AddressEditorPart.EDITOR_ID);
+						AddressEditorConstants.ADDRESS_EDITOR_ID);
 			} catch (PartInitException e) {
 				throw new ExecutionException(e.getMessage());
 			}
