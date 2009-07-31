@@ -5,13 +5,13 @@ import java.util.Date;
 public class City {
 
 	private String name;
-	private Date foundingYear;
+	private Date foundingDate;
 	private final CityStats stats;
 
 	public City(String name, Date foundingYear, CityStats stats) {
 		super();
 		this.name = name;
-		this.foundingYear = foundingYear;
+		this.foundingDate = foundingYear;
 		this.stats = stats;
 	}
 
@@ -23,12 +23,12 @@ public class City {
 		this.name = name;
 	}
 
-	public Date getFoundingYear() {
-		return foundingYear;
+	public Date getFoundingDate() {
+		return foundingDate;
 	}
 
-	public void setFoundingYear(Date foundingYear) {
-		this.foundingYear = foundingYear;
+	public void setFoundingDate(Date foundingYear) {
+		this.foundingDate = foundingYear;
 	}
 
 	public CityStats getStats() {
