@@ -11,11 +11,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
+import de.ralfebert.rcputils.builder.table.ColumnBuilder;
+import de.ralfebert.rcputils.builder.table.ICellFormatter;
+import de.ralfebert.rcputils.builder.table.TableViewerBuilder;
 import de.ralfebert.rcputils.properties.BaseValue;
 import de.ralfebert.rcputils.random.RandomData;
-import de.ralfebert.rcputils.tablebuilder.ColumnBuilder;
-import de.ralfebert.rcputils.tablebuilder.ICellFormatter;
-import de.ralfebert.rcputils.tablebuilder.TableViewerBuilder;
 
 public class Snippet01TableViewerBuilder extends ViewPart {
 
