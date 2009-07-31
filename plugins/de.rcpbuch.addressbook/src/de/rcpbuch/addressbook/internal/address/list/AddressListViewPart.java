@@ -25,10 +25,12 @@ import org.eclipse.ui.dialogs.ListDialog;
 import org.eclipse.ui.part.ViewPart;
 
 import de.rcpbuch.addressbook.entities.Address;
-import de.rcpbuch.addressbook.services.AddressbookServices;
 import de.rcpbuch.addressbook.services.IAddressChangeListener;
+import de.rcpbuch.addressbook.services.IAddressService;
 
 public class AddressListViewPart extends ViewPart {
+
+	private IAddressService addressService;
 
 	private final IAddressChangeListener ADDRESS_CHANGE_LISTENER = new IAddressChangeListener() {
 
@@ -126,7 +128,7 @@ public class AddressListViewPart extends ViewPart {
 						listDialog.setMessage("Bitte wählen Sie eine Stadt aus:");
 						listDialog.setContentProvider(new ArrayContentProvider());
 						listDialog.setLabelProvider(new LabelProvider());
-						listDialog.setInput(AddressbookServices.getAddressService().getAllCities());
+						listDialog.setInput(addressService.getAllCities());
 						if (listDialog.open() == Dialog.OK && listDialog.getResult().length > 0) {
 							return listDialog.getResult()[0];
 						} else {
@@ -163,7 +165,7 @@ public class AddressListViewPart extends ViewPart {
 		getSite().registerContextMenu(menuManager, tableViewer);
 		getSite().setSelectionProvider(tableViewer);
 
-		AddressbookServices.getAddressService().addAddressChangeListener(ADDRESS_CHANGE_LISTENER);
+		addressService.addAddressChangeListener(ADDRESS_CHANGE_LISTENER);
 
 		updateUi();
 	}
@@ -171,7 +173,7 @@ public class AddressListViewPart extends ViewPart {
 	@Override
 	public void dispose() {
 		super.dispose();
-		AddressbookServices.getAddressService().removeAddressChangeListener(ADDRESS_CHANGE_LISTENER);
+		addressService.removeAddressChangeListener(ADDRESS_CHANGE_LISTENER);
 	}
 
 	@Override
@@ -180,6 +182,11 @@ public class AddressListViewPart extends ViewPart {
 	}
 
 	public void updateUi() {
-		tableViewer.setInput(AddressbookServices.getAddressService().getAllAddresses());
+		tableViewer.setInput(addressService.getAllAddresses());
 	}
+
+	public void setAddressService(IAddressService addressService) {
+		this.addressService = addressService;
+	}
+
 }

@@ -7,10 +7,11 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
 import de.rcpbuch.addressbook.entities.Address;
-import de.rcpbuch.addressbook.services.AddressbookServices;
+import de.rcpbuch.addressbook.services.IAddressService;
 
 public class CreateAddressWizard extends Wizard implements INewWizard {
 
+	private IAddressService addressService;
 	private FreeTextWizardPage textWizardPage;
 
 	public CreateAddressWizard() {
@@ -31,12 +32,16 @@ public class CreateAddressWizard extends Wizard implements INewWizard {
 		String zip = zipCityParts.length >= 1 ? zipCityParts[0] : "";
 		String city = zipCityParts.length >= 2 ? zipCityParts[1] : "";
 
-		AddressbookServices.getAddressService().saveAddress(new Address(null, name, street, zip, city, null));
+		addressService.saveAddress(new Address(null, name, street, zip, city, null));
 
 		return true;
 	}
 
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
+	}
+
+	public void setAddressService(IAddressService addressService) {
+		this.addressService = addressService;
 	}
 
 }

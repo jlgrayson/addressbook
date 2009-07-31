@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/osgi
+		http://www.springframework.org/schema/osgi/spring-osgi.xsd">
+
+	<bean id="de.rcpbuch.addressbook.addresslist" class="de.rcpbuch.addressbook.internal.address.list.AddressListViewPart" scope="prototype">
+		<property name="addressService" ref="addressService"/>
+	</bean>
+
+	<bean id="addressDeleteHandler" class="de.rcpbuch.addressbook.internal.address.list.AddressDeleteHandler" scope="prototype">
+		<property name="addressService" ref="addressService"/>
+	</bean>
+	
+	<bean id="de.rcpbuch.addressbook.CreateAddressWizard" class="de.rcpbuch.addressbook.internal.address.create.CreateAddressWizard" scope="prototype">
+		<property name="addressService" ref="addressService"/>
+	</bean>
+
+	<osgi:reference id="addressService" interface="de.rcpbuch.addressbook.services.IAddressService"/>
+
+</beans>

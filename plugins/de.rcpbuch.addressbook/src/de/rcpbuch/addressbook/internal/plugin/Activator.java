@@ -1,5 +1,6 @@
 package de.rcpbuch.addressbook.internal.plugin;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -21,6 +22,9 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+
+		// Enforcing that Spring Dynamic Modules extender is started
+		Platform.getBundle("org.springframework.osgi.extender").start();
 	}
 
 	public void stop(BundleContext context) throws Exception {
