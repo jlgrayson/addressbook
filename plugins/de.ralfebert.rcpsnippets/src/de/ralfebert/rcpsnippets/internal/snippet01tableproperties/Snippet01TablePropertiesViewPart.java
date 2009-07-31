@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.layout.TableColumnLayout;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableViewer;
@@ -12,33 +11,32 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.part.ViewPart;
 
 import de.ralfebert.rcputils.properties.PropertyCellLabelProvider;
 import de.ralfebert.rcputils.properties.PropertyEditingSupport;
+import de.ralfebert.rcputils.properties.PropertyTableBuilder;
 import de.ralfebert.rcputils.random.RandomData;
 
 public class Snippet01TablePropertiesViewPart extends ViewPart {
 
 	private TableViewer tableViewer;
-	private Table table;
 
 	@Override
 	public void createPartControl(Composite parent) {
 
+		PropertyTableBuilder tableBuilder = new PropertyTableBuilder(parent);
+
+		tableViewer = tableBuilder.getTableViewer();
+
 		TableColumnLayout tableLayout = new TableColumnLayout();
 		parent.setLayout(tableLayout);
-
-		tableViewer = new TableViewer(parent);
-		table = tableViewer.getTable();
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
 
 		TableViewerColumn colName = new TableViewerColumn(tableViewer, SWT.NONE);
 		colName.getColumn().setText("Stadt");
 		colName.setLabelProvider(new PropertyCellLabelProvider("name"));
-		colName.setEditingSupport(new PropertyEditingSupport(tableViewer, "name", new TextCellEditor(table)));
+		colName.setEditingSupport(new PropertyEditingSupport(tableViewer, "name", new TextCellEditor(tableViewer
+				.getTable())));
 		tableLayout.setColumnData(colName.getColumn(), new ColumnWeightData(100));
 
 		TableViewerColumn colPopulation = new TableViewerColumn(tableViewer, SWT.RIGHT);
@@ -51,12 +49,13 @@ public class Snippet01TablePropertiesViewPart extends ViewPart {
 		colArea.setLabelProvider(new PropertyCellLabelProvider("stats.areaKm2"));
 		tableLayout.setColumnData(colArea.getColumn(), new ColumnPixelData(100));
 
-		TableViewerColumn colFoundingYear = new TableViewerColumn(tableViewer, SWT.RIGHT);
+		final TableViewerColumn colFoundingYear = new TableViewerColumn(tableViewer, SWT.RIGHT);
 		colFoundingYear.getColumn().setText("Gründung am");
 		colFoundingYear.setLabelProvider(new PropertyCellLabelProvider("foundingYear"));
 		tableLayout.setColumnData(colFoundingYear.getColumn(), new ColumnPixelData(100));
 
-		tableViewer.setContentProvider(new ArrayContentProvider());
+		tableBuilder.activateDefaults();
+
 		tableViewer.setInput(createSomeData());
 
 	}
@@ -74,7 +73,7 @@ public class Snippet01TablePropertiesViewPart extends ViewPart {
 
 	@Override
 	public void setFocus() {
-		table.setFocus();
+		tableViewer.getTable().setFocus();
 	}
 
 }
