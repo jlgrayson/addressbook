@@ -7,3 +7,4 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: de.rcpbuch.addressbook.entities,
  de.rcpbuch.addressbook.services
 Bundle-ActivationPolicy: lazy
+Import-Package: de.ralfebert.rcputils.random

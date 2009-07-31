@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="de.ralfebert.rcpsnippets.internal.SnippetsPerspectiveFactory"
+            id="de.ralfebert.rcpsnippets"
+            name="RCP Snippets">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="de.ralfebert.rcpsnippets.internal.snippet01tableproperties.Snippet01TablePropertiesViewPart"
+            id="de.ralfebert.rcpsnippets.Snippet01TableProperties"
+            name="Table properties"
+            restorable="true">
+      </view>
+   </extension>
+
+</plugin>
