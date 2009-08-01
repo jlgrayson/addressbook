@@ -4,25 +4,17 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnPixelData;
-import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.DialogCellEditor;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.TextCellEditor;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.dialogs.ListDialog;
 import org.eclipse.ui.part.ViewPart;
 
-import de.ralfebert.rcputils.properties.PropertyCellLabelProvider;
-import de.ralfebert.rcputils.properties.PropertyEditingSupport;
+import de.ralfebert.rcputils.builder.table.TableViewerBuilder;
 import de.rcpbuch.addressbook.services.IAddressChangeListener;
 import de.rcpbuch.addressbook.services.IAddressService;
 
@@ -47,46 +39,14 @@ public class AddressListViewPart extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 
-		TableColumnLayout tableLayout = new TableColumnLayout();
-		parent.setLayout(tableLayout);
+		TableViewerBuilder t = new TableViewerBuilder(parent);
+		t.getTable().setData("org.eclipse.swtbot.widget.key", "adressen");
 
-		tableViewer = new TableViewer(parent, SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL);
-		tableViewer.getTable().setData("org.eclipse.swtbot.widget.key", "adressen");
-		final Table table = tableViewer.getTable();
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
+		t.createColumn("Name").bindToProperty("name").setPercentWidth(30).build();
+		t.createColumn("Straße").bindToProperty("street").setPercentWidth(20).makeEditable().build();
+		t.createColumn("PLZ").bindToProperty("zip").setPercentWidth(10).makeEditable().build();
 
-		TableViewerColumn colName = new TableViewerColumn(tableViewer, SWT.NONE);
-		colName.getColumn().setText("Name");
-
-		colName.setLabelProvider(new PropertyCellLabelProvider("name"));
-		tableLayout.setColumnData(colName.getColumn(), new ColumnWeightData(40));
-
-		TableViewerColumn colStreet = new TableViewerColumn(tableViewer, SWT.NONE);
-		colStreet.getColumn().setText("Straße");
-		colStreet.setLabelProvider(new PropertyCellLabelProvider("street"));
-		colStreet.setEditingSupport(new PropertyEditingSupport(tableViewer, "street", new TextCellEditor(table)));
-
-		tableLayout.setColumnData(colStreet.getColumn(), new ColumnWeightData(20));
-
-		TableViewerColumn colZip = new TableViewerColumn(tableViewer, SWT.NONE);
-		colZip.getColumn().setText("PLZ");
-		colZip.setLabelProvider(new PropertyCellLabelProvider("zip"));
-		colZip.setEditingSupport(new PropertyEditingSupport(tableViewer, "zip", new TextCellEditor(table)));
-
-		tableLayout.setColumnData(colZip.getColumn(), new ColumnPixelData(80));
-
-		TableViewerColumn colCity = new TableViewerColumn(tableViewer, SWT.NONE);
-		colCity.getColumn().setText("Ort");
-		colCity.setLabelProvider(new PropertyCellLabelProvider("city"));
-		tableLayout.setColumnData(colCity.getColumn(), new ColumnWeightData(20));
-
-		TableViewerColumn colCountry = new TableViewerColumn(tableViewer, SWT.NONE);
-		colCountry.getColumn().setText("Land");
-		colCountry.setLabelProvider(new PropertyCellLabelProvider("country.name"));
-		tableLayout.setColumnData(colCountry.getColumn(), new ColumnWeightData(20));
-
-		final DialogCellEditor cityCellEditor = new DialogCellEditor(table) {
+		final DialogCellEditor cityCellEditor = new DialogCellEditor(t.getTable()) {
 
 			@Override
 			protected Object openDialogBox(Control cellEditorWindow) {
@@ -106,14 +66,17 @@ public class AddressListViewPart extends ViewPart {
 
 		};
 
-		colCity.setEditingSupport(new PropertyEditingSupport(tableViewer, "city", cityCellEditor));
+		t.createColumn("Stadt").bindToProperty("city").makeEditable(cityCellEditor).setPercentWidth(20).build();
 
+		t.createColumn("Land").bindToProperty("country.name").setPercentWidth(20).build();
+
+		tableViewer = t.build();
 		tableViewer.setContentProvider(new ArrayContentProvider());
 
 		// Kontextmenü für Contributions vorbereiten
 		MenuManager menuManager = new MenuManager();
 		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-		table.setMenu(menuManager.createContextMenu(table));
+		t.getTable().setMenu(menuManager.createContextMenu(t.getTable()));
 		getSite().registerContextMenu(menuManager, tableViewer);
 		getSite().setSelectionProvider(tableViewer);
 
