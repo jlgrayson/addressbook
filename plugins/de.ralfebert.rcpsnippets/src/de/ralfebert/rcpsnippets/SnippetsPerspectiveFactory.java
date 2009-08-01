@@ -1,10 +1,9 @@
-package de.ralfebert.rcpsnippets.internal;
+package de.ralfebert.rcpsnippets;
 
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
-import de.ralfebert.rcpsnippets.RcpSnippetsConstants;
 
 public class SnippetsPerspectiveFactory implements IPerspectiveFactory {
 

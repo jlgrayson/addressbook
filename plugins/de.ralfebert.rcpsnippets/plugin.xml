@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="de.ralfebert.rcpsnippets.internal.SnippetsPerspectiveFactory"
+            class="de.ralfebert.rcpsnippets.SnippetsPerspectiveFactory"
             id="de.ralfebert.rcpsnippets"
             name="RCP Snippets">
       </perspective>
