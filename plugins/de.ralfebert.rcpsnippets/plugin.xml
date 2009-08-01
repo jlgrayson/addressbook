@@ -12,7 +12,7 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="de.ralfebert.rcpsnippets.internal.snippet01tableproperties.Snippet01TableViewerBuilder"
+            class="de.ralfebert.rcpsnippets.snippet01tableproperties.Snippet01TableViewerBuilder"
             id="de.ralfebert.rcpsnippets.Snippet01TableProperties"
             name="TableViewerBuilder"
             restorable="true">

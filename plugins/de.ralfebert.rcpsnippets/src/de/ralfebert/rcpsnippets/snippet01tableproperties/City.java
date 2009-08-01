@@ -1,4 +1,4 @@
-package de.ralfebert.rcpsnippets.internal.snippet01tableproperties;
+package de.ralfebert.rcpsnippets.snippet01tableproperties;
 
 import java.util.Date;
 
