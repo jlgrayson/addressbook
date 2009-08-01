@@ -5,6 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
@@ -29,7 +32,7 @@ public class Snippet01TableViewerBuilder extends ViewPart {
 
 		ColumnBuilder city = t.createColumn("Stadt");
 		city.bindToProperty("name");
-		city.setPercentWidth(100);
+		city.setPercentWidth(60);
 		city.makeEditable();
 		city.useAsDefaultSortColumn();
 		city.build();
@@ -77,6 +80,16 @@ public class Snippet01TableViewerBuilder extends ViewPart {
 		foundingDate.makeEditable();
 		foundingDate.build();
 
+		ColumnBuilder neighborCity = t.createColumn("Nachbarstadt");
+		neighborCity.bindToProperty("neighborCity");
+		neighborCity.setPercentWidth(40);
+		ComboBoxViewerCellEditor cityComboEditor = new ComboBoxViewerCellEditor(t.getTable(), SWT.READ_ONLY);
+		cityComboEditor.setContenProvider(new ArrayContentProvider());
+		cityComboEditor.setLabelProvider(new LabelProvider());
+		cityComboEditor.setInput(RandomData.CITIES);
+		neighborCity.makeEditable(cityComboEditor);
+		neighborCity.build();
+
 		tableViewer = t.build(createSomeData());
 
 	}
@@ -84,9 +97,9 @@ public class Snippet01TableViewerBuilder extends ViewPart {
 	private List<City> createSomeData() {
 		List<City> data = new ArrayList<City>();
 		RandomData randomData = new RandomData();
-		for (int i = 0; i < 2000; i++) {
+		for (int i = 0; i < 50; i++) {
 			CityStats stats = new CityStats(randomData.someNumber(10000, 10000000), randomData.someNumber(100d, 800d));
-			data.add(new City(randomData.someCity(), randomData.someDate(1200, 1600), stats));
+			data.add(new City(randomData.someCity(), randomData.someDate(1200, 1600), stats, randomData.someCity()));
 			randomData.newData();
 		}
 		return data;

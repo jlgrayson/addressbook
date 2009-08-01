@@ -7,12 +7,14 @@ public class City {
 	private String name;
 	private Date foundingDate;
 	private final CityStats stats;
+	private String neighborCity;
 
-	public City(String name, Date foundingYear, CityStats stats) {
+	public City(String name, Date foundingYear, CityStats stats, String neighborCity) {
 		super();
 		this.name = name;
 		this.foundingDate = foundingYear;
 		this.stats = stats;
+		this.neighborCity = neighborCity;
 	}
 
 	public String getName() {
@@ -33,6 +35,14 @@ public class City {
 
 	public CityStats getStats() {
 		return stats;
+	}
+
+	public String getNeighborCity() {
+		return neighborCity;
+	}
+
+	public void setNeighborCity(String neighborCity) {
+		this.neighborCity = neighborCity;
 	}
 
 }
