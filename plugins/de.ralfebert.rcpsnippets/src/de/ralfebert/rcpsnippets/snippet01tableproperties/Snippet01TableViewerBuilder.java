@@ -31,16 +31,16 @@ public class Snippet01TableViewerBuilder extends ViewPart {
 
 		TableViewerBuilder t = new TableViewerBuilder(parent);
 
-		ColumnBuilder city = t.createColumn("Stadt");
+		ColumnBuilder city = t.createColumn("City");
 		city.bindToProperty("name");
 		city.setPercentWidth(60);
-		city.makeEditable();
 		city.useAsDefaultSortColumn();
+		city.makeEditable();
 		city.build();
 
-		ColumnBuilder population = t.createColumn("Einwohner");
+		ColumnBuilder population = t.createColumn("Population");
 		population.bindToProperty("stats.population");
-		population.alignRight();
+		population.format(Formatter.forInt(new DecimalFormat("#,##0")));
 		population.format(new ICellFormatter() {
 
 			public void formatCell(ViewerCell cell, Object value) {
@@ -50,41 +50,40 @@ public class Snippet01TableViewerBuilder extends ViewPart {
 			}
 
 		});
-		population.format(Formatter.forInt(new DecimalFormat("#,##0")));
+		population.alignRight();
 		population.makeEditable(Formatter.forInt());
 		population.build();
 
-		ColumnBuilder area = t.createColumn("Fläche");
+		ColumnBuilder area = t.createColumn("Area");
 		area.bindToProperty("stats.areaKm2");
 		area.alignRight();
 		area.format(Formatter.forDouble(new DecimalFormat("0.00 km²")));
 		area.makeEditable(Formatter.forDouble(new DecimalFormat("0.00")));
 		area.build();
 
-		ColumnBuilder density = t.createColumn("Ew./km²");
+		ColumnBuilder density = t.createColumn("People/km²");
 		density.bindToValue(new BaseValue<City>() {
-
 			@Override
-			public Object get(City element) {
-				return element.getStats().getPopulation() / element.getStats().getAreaKm2();
+			public Object get(City city) {
+				return city.getStats().getPopulation() / city.getStats().getAreaKm2();
 			}
-
 		});
-		density.format(Formatter.forDouble(new DecimalFormat("0.0")));
+		density.format(Formatter.forDouble(new DecimalFormat("0")));
 		density.alignRight();
 		density.build();
 
-		ColumnBuilder foundingDate = t.createColumn("Gründung am");
+		ColumnBuilder foundingDate = t.createColumn("Founding date");
 		foundingDate.bindToProperty("foundingDate");
-		foundingDate.setPixelWidth(100);
 		StringValueFormatter dateFormat = Formatter.forDate(SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM));
 		foundingDate.format(dateFormat);
+		foundingDate.alignCenter();
+		foundingDate.setPixelWidth(100);
 		foundingDate.makeEditable(dateFormat);
 		foundingDate.build();
 
-		ColumnBuilder neighborCity = t.createColumn("Nachbarstadt");
+		ColumnBuilder neighborCity = t.createColumn("Neighbor city");
 		neighborCity.bindToProperty("neighborCity");
-		neighborCity.setPercentWidth(40);
+		neighborCity.setPixelWidth(100);
 		ComboBoxViewerCellEditor cityComboEditor = new ComboBoxViewerCellEditor(t.getTable(), SWT.READ_ONLY);
 		cityComboEditor.setContenProvider(new ArrayContentProvider());
 		cityComboEditor.setLabelProvider(new LabelProvider());
@@ -92,7 +91,8 @@ public class Snippet01TableViewerBuilder extends ViewPart {
 		neighborCity.makeEditable(cityComboEditor);
 		neighborCity.build();
 
-		tableViewer = t.build(createSomeData());
+		t.setInput(createSomeData());
+		tableViewer = t.getTableViewer();
 
 	}
 

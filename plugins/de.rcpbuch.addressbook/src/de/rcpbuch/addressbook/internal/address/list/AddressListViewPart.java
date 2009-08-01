@@ -80,7 +80,7 @@ public class AddressListViewPart extends ViewPart {
 		t.createColumn("Land").bindToProperty("country").format(new PropertyValueFormatter("name")).makeEditable(
 				countryEditor).setPercentWidth(20).build();
 
-		tableViewer = t.build();
+		tableViewer = t.getTableViewer();
 		tableViewer.setContentProvider(new ArrayContentProvider());
 
 		// Kontextmenü für Contributions vorbereiten
