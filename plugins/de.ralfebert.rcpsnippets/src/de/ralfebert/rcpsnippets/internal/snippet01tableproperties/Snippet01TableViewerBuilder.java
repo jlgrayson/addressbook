@@ -18,6 +18,7 @@ import de.ralfebert.rcputils.builder.table.ColumnBuilder;
 import de.ralfebert.rcputils.builder.table.ICellFormatter;
 import de.ralfebert.rcputils.builder.table.TableViewerBuilder;
 import de.ralfebert.rcputils.builder.table.format.Formatter;
+import de.ralfebert.rcputils.builder.table.format.StringValueFormatter;
 import de.ralfebert.rcputils.properties.BaseValue;
 import de.ralfebert.rcputils.random.RandomData;
 
@@ -76,8 +77,9 @@ public class Snippet01TableViewerBuilder extends ViewPart {
 		ColumnBuilder foundingDate = t.createColumn("Gründung am");
 		foundingDate.bindToProperty("foundingDate");
 		foundingDate.setPixelWidth(100);
-		foundingDate.format(Formatter.forDate(SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM)));
-		foundingDate.makeEditable();
+		StringValueFormatter dateFormat = Formatter.forDate(SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM));
+		foundingDate.format(dateFormat);
+		foundingDate.makeEditable(dateFormat);
 		foundingDate.build();
 
 		ColumnBuilder neighborCity = t.createColumn("Nachbarstadt");

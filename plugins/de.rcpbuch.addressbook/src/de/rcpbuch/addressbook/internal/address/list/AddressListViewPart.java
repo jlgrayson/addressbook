@@ -5,9 +5,11 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
 import org.eclipse.jface.viewers.DialogCellEditor;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbenchActionConstants;
@@ -15,6 +17,8 @@ import org.eclipse.ui.dialogs.ListDialog;
 import org.eclipse.ui.part.ViewPart;
 
 import de.ralfebert.rcputils.builder.table.TableViewerBuilder;
+import de.ralfebert.rcputils.properties.PropertyLabelProvider;
+import de.ralfebert.rcputils.properties.PropertyValueFormatter;
 import de.rcpbuch.addressbook.services.IAddressChangeListener;
 import de.rcpbuch.addressbook.services.IAddressService;
 
@@ -68,7 +72,13 @@ public class AddressListViewPart extends ViewPart {
 
 		t.createColumn("Stadt").bindToProperty("city").makeEditable(cityCellEditor).setPercentWidth(20).build();
 
-		t.createColumn("Land").bindToProperty("country.name").setPercentWidth(20).build();
+		ComboBoxViewerCellEditor countryEditor = new ComboBoxViewerCellEditor(t.getTable(), SWT.READ_ONLY);
+		countryEditor.setContenProvider(new ArrayContentProvider());
+		countryEditor.setLabelProvider(new PropertyLabelProvider("name"));
+		countryEditor.setInput(addressService.getAllCountries());
+
+		t.createColumn("Land").bindToProperty("country").format(new PropertyValueFormatter("name")).makeEditable(
+				countryEditor).setPercentWidth(20).build();
 
 		tableViewer = t.build();
 		tableViewer.setContentProvider(new ArrayContentProvider());
