@@ -14,7 +14,13 @@
       <view
             class="de.ralfebert.rcpsnippets.snippet01tableproperties.Snippet01TableViewerBuilder"
             id="de.ralfebert.rcpsnippets.Snippet01TableProperties"
-            name="TableViewerBuilder"
+            name="01 TableViewerBuilder"
+            restorable="true">
+      </view>
+      <view
+            class="de.ralfebert.rcpsnippets.snippet02stocks.Snippet02Stocks"
+            id="de.ralfebert.rcpsnippets.snippet02stocks"
+            name="02 Stocks"
             restorable="true">
       </view>
    </extension>
