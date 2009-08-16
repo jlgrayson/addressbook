@@ -18,6 +18,7 @@
          <command
                commandId="de.rcpbuch.addressbook.editor.open"
                icon="icons/user_orange.png"
+               id="de.rcpbuch.addressbook.editor.open.default"
                style="push">
          </command>
       </menuContribution>

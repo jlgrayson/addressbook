@@ -1,7 +1,5 @@
 package de.rcpbuch.addressbook.internal.address.list;
 
-import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -12,10 +10,10 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.dialogs.ListDialog;
 import org.eclipse.ui.part.ViewPart;
 
+import de.ralfebert.rcputils.builder.ctxmenu.ContextMenuBuilder;
 import de.ralfebert.rcputils.builder.table.TableViewerBuilder;
 import de.ralfebert.rcputils.properties.PropertyLabelProvider;
 import de.ralfebert.rcputils.properties.PropertyValueFormatter;
@@ -43,7 +41,7 @@ public class AddressListViewPart extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 
-		TableViewerBuilder t = new TableViewerBuilder(parent);
+		final TableViewerBuilder t = new TableViewerBuilder(parent);
 		t.getTable().setData("org.eclipse.swtbot.widget.key", "adressen");
 
 		t.createColumn("Name").bindToProperty("name").setPercentWidth(30).build();
@@ -83,12 +81,7 @@ public class AddressListViewPart extends ViewPart {
 		tableViewer = t.getTableViewer();
 		tableViewer.setContentProvider(new ArrayContentProvider());
 
-		// Kontextmenü für Contributions vorbereiten
-		MenuManager menuManager = new MenuManager();
-		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-		t.getTable().setMenu(menuManager.createContextMenu(t.getTable()));
-		getSite().registerContextMenu(menuManager, tableViewer);
-		getSite().setSelectionProvider(tableViewer);
+		ContextMenuBuilder.menuForViewer(tableViewer, getSite(), true);
 
 		addressService.addAddressChangeListener(ADDRESS_CHANGE_LISTENER);
 
