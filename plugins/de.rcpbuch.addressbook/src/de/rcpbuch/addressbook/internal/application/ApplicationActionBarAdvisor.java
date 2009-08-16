@@ -19,6 +19,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		register(ActionFactory.HELP_CONTENTS.create(window));
 		register(ActionFactory.HELP_SEARCH.create(window));
 		register(ActionFactory.DYNAMIC_HELP.create(window));
+		register(ActionFactory.RESET_PERSPECTIVE.create(window));
 	}
 
 }

@@ -135,6 +135,14 @@
             </command>
          </menu>
          <menu
+               id="window"
+               label="Fenster">
+            <command
+                  commandId="org.eclipse.ui.window.resetPerspective"
+                  style="push">
+            </command>
+         </menu>
+         <menu
                id="help"
                label="Hilfe">
             <command
