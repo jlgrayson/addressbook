@@ -1,8 +1,15 @@
 package de.rcpbuch.addressbook.editor.internal;
 
+import java.util.Collection;
+
+import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoObservables;
+import org.eclipse.core.databinding.observable.ChangeEvent;
+import org.eclipse.core.databinding.observable.IChangeListener;
+import org.eclipse.core.databinding.observable.value.AbstractObservableValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
@@ -21,18 +28,20 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.ui.part.EditorPart;
 
-import de.ralfebert.rcputils.databinding.ModelDataBindingEditorPart;
 import de.rcpbuch.addressbook.editor.AddressEditorConstants;
 import de.rcpbuch.addressbook.editor.AddressIdEditorInput;
 import de.rcpbuch.addressbook.entities.Address;
 import de.rcpbuch.addressbook.services.IAddressService;
 
-public class AddressEditorPart extends ModelDataBindingEditorPart<AddressIdEditorInput, Address> {
+public class AddressEditorPart extends EditorPart {
 
 	private IAddressService addressService;
 
@@ -42,9 +51,27 @@ public class AddressEditorPart extends ModelDataBindingEditorPart<AddressIdEdito
 	private Text txtCity;
 	private ComboViewer cvCountry;
 
-	@Override
-	public void onCreatePartControl(Composite parent) {
+	private boolean dirty;
+	private IObservableValue partNameObservable;
+	private IObservableValue model = new WritableValue();
 
+	@Override
+	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
+		setSite(site);
+		setInput(input);
+		partNameObservable = new PartNameObservableValue();
+	}
+
+	@Override
+	public void createPartControl(Composite parent) {
+
+		createUi(parent);
+		loadModel();
+		bindUIToModel();
+
+	}
+
+	private void createUi(Composite parent) {
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, AddressEditorConstants.HELP_CONTEXT_EDIT);
 
 		FormToolkit toolkit = new FormToolkit(parent.getDisplay());
@@ -99,19 +126,18 @@ public class AddressEditorPart extends ModelDataBindingEditorPart<AddressIdEdito
 		cvCountry.setInput(addressService.getAllCountries());
 
 		section.setExpanded(true);
-
 	}
 
-	@Override
-	protected Address onLoad(IEditorInput input) {
-		return addressService.getAddress(getEditorInput().getId());
+	private void loadModel() {
+		this.model.setValue(addressService.getAddress(getEditorInput().getId()));
 	}
 
-	@Override
-	protected void onBind(DataBindingContext ctx, IObservableValue model) {
+	private void bindUIToModel() {
+		DataBindingContext ctx = new DataBindingContext();
+
 		IObservableValue name = PojoObservables.observeDetailValue(model, "name", String.class);
 		ctx.bindValue(SWTObservables.observeText(txtName, SWT.Modify), name);
-		ctx.bindValue(getPartNameObservable(), name);
+		ctx.bindValue(partNameObservable, name);
 		ctx.bindValue(SWTObservables.observeText(txtStreet, SWT.Modify), PojoObservables.observeDetailValue(model,
 				"street", String.class));
 		ctx.bindValue(SWTObservables.observeText(txtZip, SWT.Modify), PojoObservables.observeDetailValue(model, "zip",
@@ -120,11 +146,49 @@ public class AddressEditorPart extends ModelDataBindingEditorPart<AddressIdEdito
 				"city", String.class));
 		ctx.bindValue(ViewersObservables.observeSingleSelection(cvCountry), PojoObservables.observeDetailValue(model,
 				"country", String.class));
+
+		addDirtyOnModelChangeListeners(ctx);
+	}
+
+	/**
+	 * Listen on all model values of the given data binding context and set the
+	 * editor dirty flag if a model value changes.
+	 */
+	@SuppressWarnings("unchecked")
+	private void addDirtyOnModelChangeListeners(DataBindingContext ctx) {
+		for (Binding binding : (Collection<Binding>) ctx.getBindings()) {
+			binding.getModel().addChangeListener(new IChangeListener() {
+
+				public void handleChange(ChangeEvent event) {
+					setDirty(true);
+				}
+			});
+		}
 	}
 
 	@Override
-	protected Address onSave(Address modelObject, IProgressMonitor monitor) {
-		return addressService.saveAddress(modelObject);
+	public boolean isDirty() {
+		return dirty;
+	}
+
+	protected void setDirty(boolean dirty) {
+		this.dirty = dirty;
+		firePropertyChange(PROP_DIRTY);
+	}
+
+	@Override
+	public void doSave(IProgressMonitor monitor) {
+		model.setValue(addressService.saveAddress(getModelObject()));
+		setDirty(false);
+	}
+
+	private Address getModelObject() {
+		return (Address) model.getValue();
+	}
+
+	@Override
+	public AddressIdEditorInput getEditorInput() {
+		return (AddressIdEditorInput) super.getEditorInput();
 	}
 
 	@Override
@@ -134,6 +198,37 @@ public class AddressEditorPart extends ModelDataBindingEditorPart<AddressIdEdito
 
 	public void setAddressService(IAddressService addressService) {
 		this.addressService = addressService;
+	}
+
+	private final class PartNameObservableValue extends AbstractObservableValue {
+
+		public PartNameObservableValue() {
+			super(SWTObservables.getRealm(getSite().getShell().getDisplay()));
+		}
+
+		@Override
+		protected Object doGetValue() {
+			return getPartName();
+		}
+
+		@Override
+		protected void doSetValue(Object value) {
+			setPartName(String.valueOf(value));
+		}
+
+		public Object getValueType() {
+			return String.class;
+		}
+	}
+
+	@Override
+	public void doSaveAs() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public boolean isSaveAsAllowed() {
+		return false;
 	}
 
 }
