@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.springframework.util.SpringExtensionFactory"
+            default="false"
+            icon="icons/user_orange.png"
+            id="com.example.addressbook.editor"
+            name="Adresse">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:com.example.addressbook.addresslist">
+         <command
+               commandId="com.example.addressbook.editor.open"
+               icon="icons/user_orange.png"
+               id="com.example.addressbook.editor.open.default"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="com.example.addressbook.editor.open"
+            name="Adresse öffnen">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="com.example.addressbook.editor.internal.OpenAddressEditorHandler"
+            commandId="com.example.addressbook.editor.open">
+         <activeWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false"
+                     operator="or">
+                  <instanceof
+                        value="com.example.addressbook.entities.Address">
+                  </instanceof>
+               </iterate>
+            </with>
+         </activeWhen>
+      </handler>
+   </extension>
+
+</plugin>

@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Adressbuch
+Bundle-SymbolicName: com.example.addressbook;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: com.example.addressbook.internal.plugin.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ com.example.addressbook.services,
+ org.apache.commons.lang;bundle-version="2.3.0",
+ org.springframework.osgi.extender;bundle-version="1.2.0"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: com.example.addressbook
+Import-Package: org.eclipse.springframework.util

@@ -1,3 +1,0 @@
-[submodule "plugins/de.ralfebert.rcputils"]
-	path = plugins/de.ralfebert.rcputils
-	url = git://github.com/ralfebert/de.ralfebert.rcputils.git
