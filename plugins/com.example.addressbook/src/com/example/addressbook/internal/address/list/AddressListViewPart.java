@@ -25,13 +25,10 @@ import org.eclipse.ui.dialogs.ListDialog;
 import org.eclipse.ui.part.ViewPart;
 
 import com.example.addressbook.entities.Address;
+import com.example.addressbook.services.AddressbookServices;
 import com.example.addressbook.services.IAddressChangeListener;
-import com.example.addressbook.services.IAddressService;
-
 
 public class AddressListViewPart extends ViewPart {
-
-	private IAddressService addressService;
 
 	private final IAddressChangeListener ADDRESS_CHANGE_LISTENER = new IAddressChangeListener() {
 
@@ -42,10 +39,6 @@ public class AddressListViewPart extends ViewPart {
 	};
 
 	private TableViewer tableViewer;
-
-	public AddressListViewPart() {
-
-	}
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -129,7 +122,7 @@ public class AddressListViewPart extends ViewPart {
 						listDialog.setMessage("Bitte wählen Sie eine Stadt aus:");
 						listDialog.setContentProvider(new ArrayContentProvider());
 						listDialog.setLabelProvider(new LabelProvider());
-						listDialog.setInput(addressService.getAllCities());
+						listDialog.setInput(AddressbookServices.getAddressService().getAllCities());
 						if (listDialog.open() == Dialog.OK && listDialog.getResult().length > 0) {
 							return listDialog.getResult()[0];
 						} else {
@@ -166,7 +159,7 @@ public class AddressListViewPart extends ViewPart {
 		getSite().registerContextMenu(menuManager, tableViewer);
 		getSite().setSelectionProvider(tableViewer);
 
-		addressService.addAddressChangeListener(ADDRESS_CHANGE_LISTENER);
+		AddressbookServices.getAddressService().addAddressChangeListener(ADDRESS_CHANGE_LISTENER);
 
 		updateUi();
 	}
@@ -174,7 +167,7 @@ public class AddressListViewPart extends ViewPart {
 	@Override
 	public void dispose() {
 		super.dispose();
-		addressService.removeAddressChangeListener(ADDRESS_CHANGE_LISTENER);
+		AddressbookServices.getAddressService().removeAddressChangeListener(ADDRESS_CHANGE_LISTENER);
 	}
 
 	@Override
@@ -183,11 +176,7 @@ public class AddressListViewPart extends ViewPart {
 	}
 
 	public void updateUi() {
-		tableViewer.setInput(addressService.getAllAddresses());
-	}
-
-	public void setAddressService(IAddressService addressService) {
-		this.addressService = addressService;
+		tableViewer.setInput(AddressbookServices.getAddressService().getAllAddresses());
 	}
 
 }

@@ -1,18 +1,6 @@
 package com.example.addressbook.editor.internal;
 
-import java.util.Collection;
-
-import org.eclipse.core.databinding.Binding;
-import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.beans.PojoObservables;
-import org.eclipse.core.databinding.observable.ChangeEvent;
-import org.eclipse.core.databinding.observable.IChangeListener;
-import org.eclipse.core.databinding.observable.value.AbstractObservableValue;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.databinding.swt.SWTObservables;
-import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.fieldassist.AutoCompleteField;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
@@ -21,30 +9,31 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
-import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
 import com.example.addressbook.editor.AddressEditorConstants;
 import com.example.addressbook.editor.AddressIdEditorInput;
 import com.example.addressbook.entities.Address;
-import com.example.addressbook.services.IAddressService;
-
+import com.example.addressbook.entities.Country;
+import com.example.addressbook.services.AddressbookServices;
 
 public class AddressEditorPart extends EditorPart {
-
-	private IAddressService addressService;
 
 	private Text txtName;
 	private Text txtStreet;
@@ -53,14 +42,11 @@ public class AddressEditorPart extends EditorPart {
 	private ComboViewer cvCountry;
 
 	private boolean dirty;
-	private IObservableValue partNameObservable;
-	private IObservableValue model = new WritableValue();
 
 	@Override
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		setSite(site);
 		setInput(input);
-		partNameObservable = new PartNameObservableValue();
 	}
 
 	@Override
@@ -68,45 +54,38 @@ public class AddressEditorPart extends EditorPart {
 
 		createUi(parent);
 		loadModel();
-		bindUIToModel();
+		addDirtyOnChangeListeners();
 
 	}
 
 	private void createUi(Composite parent) {
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, AddressEditorConstants.HELP_CONTEXT_EDIT);
 
-		FormToolkit toolkit = new FormToolkit(parent.getDisplay());
-		final ScrolledForm form = toolkit.createScrolledForm(parent);
-		FillLayout layout = new FillLayout();
-		form.getBody().setLayout(layout);
-
-		Section section = toolkit.createSection(form.getBody(), Section.TWISTIE | Section.TITLE_BAR);
-		section.setText("Anschrift");
-
-		Composite client = toolkit.createComposite(section, SWT.WRAP);
-		GridLayoutFactory.fillDefaults().margins(10, 3).numColumns(3).applyTo(client);
-		section.setClient(client);
+		GridLayoutFactory.fillDefaults().margins(10, 10).numColumns(3).applyTo(parent);
 
 		// NAME
-		toolkit.createLabel(client, "Name:");
+		Label lblName = new Label(parent, SWT.NONE);
+		lblName.setText("Name:");
 
-		txtName = toolkit.createText(client, "");
+		txtName = new Text(parent, SWT.BORDER);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).span(2, 1).applyTo(txtName);
 
 		// STRASSE
-		toolkit.createLabel(client, "Straße:");
+		Label lblStreet = new Label(parent, SWT.NONE);
+		lblStreet.setText("Straße:");
 
-		txtStreet = toolkit.createText(client, "");
+		txtStreet = new Text(parent, SWT.BORDER);
 		txtStreet.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).span(2, 1).applyTo(txtStreet);
 
 		// PLZ / ORT
-		toolkit.createLabel(client, "PLZ/Ort:");
+		Label lblZipCity = new Label(parent, SWT.NONE);
+		lblZipCity.setText("PLZ/Ort:");
 
-		txtZip = toolkit.createText(client, "");
+		txtZip = new Text(parent, SWT.BORDER);
 		GridDataFactory.fillDefaults().hint(50, SWT.DEFAULT).applyTo(txtZip);
 
-		txtCity = toolkit.createText(client, "");
+		txtCity = new Text(parent, SWT.BORDER);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).applyTo(txtCity);
 
 		ControlDecoration decoration = new ControlDecoration(txtCity, SWT.RIGHT | SWT.TOP);
@@ -114,57 +93,52 @@ public class AddressEditorPart extends EditorPart {
 				FieldDecorationRegistry.DEC_CONTENT_PROPOSAL).getImage();
 		decoration.setImage(errorImage);
 
-		new AutoCompleteField(txtCity, new TextContentAdapter(), addressService.getAllCities());
+		new AutoCompleteField(txtCity, new TextContentAdapter(), AddressbookServices.getAddressService().getAllCities());
 
 		// LAND
-		toolkit.createLabel(client, "Land:");
+		Label lblCountry = new Label(parent, SWT.NONE);
+		lblCountry.setText("Land:");
 
-		cvCountry = new ComboViewer(client, SWT.READ_ONLY);
+		cvCountry = new ComboViewer(parent, SWT.READ_ONLY);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).span(2, 1).applyTo(
 				cvCountry.getCombo());
 		cvCountry.setContentProvider(new ArrayContentProvider());
 		cvCountry.setLabelProvider(new CountryLabelProvider());
-		cvCountry.setInput(addressService.getAllCountries());
-
-		section.setExpanded(true);
+		cvCountry.setInput(AddressbookServices.getAddressService().getAllCountries());
 	}
 
 	private void loadModel() {
-		this.model.setValue(addressService.getAddress(getEditorInput().getId()));
+		Address address = AddressbookServices.getAddressService().getAddress(getEditorInput().getId());
+		txtName.setText(address.getName());
+		txtStreet.setText(address.getStreet());
+		txtZip.setText(address.getZip());
+		txtCity.setText(address.getCity());
+		cvCountry.setSelection(new StructuredSelection(address.getCountry()));
+		setPartName(address.getName());
 	}
 
-	private void bindUIToModel() {
-		DataBindingContext ctx = new DataBindingContext();
+	private void addDirtyOnChangeListeners() {
+		ModifyListener modifyListener = new ModifyListener() {
 
-		IObservableValue name = PojoObservables.observeDetailValue(model, "name", String.class);
-		ctx.bindValue(SWTObservables.observeText(txtName, SWT.Modify), name);
-		ctx.bindValue(partNameObservable, name);
-		ctx.bindValue(SWTObservables.observeText(txtStreet, SWT.Modify), PojoObservables.observeDetailValue(model,
-				"street", String.class));
-		ctx.bindValue(SWTObservables.observeText(txtZip, SWT.Modify), PojoObservables.observeDetailValue(model, "zip",
-				String.class));
-		ctx.bindValue(SWTObservables.observeText(txtCity, SWT.Modify), PojoObservables.observeDetailValue(model,
-				"city", String.class));
-		ctx.bindValue(ViewersObservables.observeSingleSelection(cvCountry), PojoObservables.observeDetailValue(model,
-				"country", String.class));
+			public void modifyText(ModifyEvent e) {
+				setDirty(true);
+			}
 
-		addDirtyOnModelChangeListeners(ctx);
-	}
+		};
 
-	/**
-	 * Listen on all model values of the given data binding context and set the
-	 * editor dirty flag if a model value changes.
-	 */
-	@SuppressWarnings("unchecked")
-	private void addDirtyOnModelChangeListeners(DataBindingContext ctx) {
-		for (Binding binding : (Collection<Binding>) ctx.getBindings()) {
-			binding.getModel().addChangeListener(new IChangeListener() {
+		txtName.addModifyListener(modifyListener);
+		txtStreet.addModifyListener(modifyListener);
+		txtZip.addModifyListener(modifyListener);
+		txtCity.addModifyListener(modifyListener);
 
-				public void handleChange(ChangeEvent event) {
-					setDirty(true);
-				}
-			});
-		}
+		ISelectionChangedListener changedListener = new ISelectionChangedListener() {
+
+			public void selectionChanged(SelectionChangedEvent event) {
+				setDirty(true);
+			}
+		};
+
+		cvCountry.addSelectionChangedListener(changedListener);
 	}
 
 	@Override
@@ -179,12 +153,19 @@ public class AddressEditorPart extends EditorPart {
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		model.setValue(addressService.saveAddress(getModelObject()));
-		setDirty(false);
-	}
 
-	private Address getModelObject() {
-		return (Address) model.getValue();
+		Address address = AddressbookServices.getAddressService().getAddress(getEditorInput().getId());
+		address.setName(txtName.getText());
+		address.setStreet(txtStreet.getText());
+		address.setZip(txtZip.getText());
+		address.setCity(txtCity.getText());
+		IStructuredSelection selection = (IStructuredSelection) cvCountry.getSelection();
+		address.setCountry((Country) selection.getFirstElement());
+
+		AddressbookServices.getAddressService().saveAddress(address);
+
+		loadModel();
+		setDirty(false);
 	}
 
 	@Override
@@ -195,31 +176,6 @@ public class AddressEditorPart extends EditorPart {
 	@Override
 	public void setFocus() {
 		txtName.setFocus();
-	}
-
-	public void setAddressService(IAddressService addressService) {
-		this.addressService = addressService;
-	}
-
-	private final class PartNameObservableValue extends AbstractObservableValue {
-
-		public PartNameObservableValue() {
-			super(SWTObservables.getRealm(getSite().getShell().getDisplay()));
-		}
-
-		@Override
-		protected Object doGetValue() {
-			return getPartName();
-		}
-
-		@Override
-		protected void doSetValue(Object value) {
-			setPartName(String.valueOf(value));
-		}
-
-		public Object getValueType() {
-			return String.class;
-		}
 	}
 
 	@Override

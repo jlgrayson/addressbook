@@ -10,12 +10,9 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.example.addressbook.entities.Address;
-import com.example.addressbook.services.IAddressService;
-
+import com.example.addressbook.services.AddressbookServices;
 
 public class AddressDeleteHandler extends AbstractHandler {
-
-	private IAddressService addressService;
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		ISelection selection = HandlerUtil.getCurrentSelection(event);
@@ -24,15 +21,11 @@ public class AddressDeleteHandler extends AbstractHandler {
 			while (it.hasNext()) {
 				Object obj = it.next();
 				if (obj instanceof Address) {
-					addressService.deleteAddress(((Address) obj).getId());
+					AddressbookServices.getAddressService().deleteAddress(((Address) obj).getId());
 				}
 			}
 		}
 		return null;
-	}
-
-	public void setAddressService(IAddressService addressService) {
-		this.addressService = addressService;
 	}
 
 }

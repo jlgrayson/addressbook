@@ -23,7 +23,7 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="org.eclipse.springframework.util.SpringExtensionFactory"
+            class="com.example.addressbook.internal.address.list.AddressListViewPart"
             icon="icons/book.png"
             id="com.example.addressbook.addresslist"
             name="Adressen"
@@ -193,7 +193,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.springframework.util.SpringExtensionFactory:addressDeleteHandler"
+            class="com.example.addressbook.internal.address.list.AddressDeleteHandler"
             commandId="org.eclipse.ui.edit.delete">
          <activeWhen>
             <with
@@ -236,14 +236,6 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="F1">
       </key>
-   </extension>
-   <extension
-         point="org.eclipse.ui.newWizards">
-      <wizard
-            class="org.eclipse.springframework.util.SpringExtensionFactory"
-            id="com.example.addressbook.CreateAddressWizard"
-            name="Neue Adresse">
-      </wizard>
    </extension>
 
 </plugin>
