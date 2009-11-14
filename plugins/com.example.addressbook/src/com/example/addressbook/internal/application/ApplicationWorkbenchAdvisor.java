@@ -4,7 +4,7 @@ import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
-import com.example.addressbook.AddressbookConstants;
+import com.example.addressbook.AddressBookConstants;
 
 
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
@@ -14,6 +14,6 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 	}
 
 	public String getInitialWindowPerspectiveId() {
-		return AddressbookConstants.ADDRESS_PERSPECTIVE_ID;
+		return AddressBookConstants.ADDRESS_PERSPECTIVE_ID;
 	}
 }

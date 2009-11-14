@@ -12,9 +12,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	}
 
 	protected void makeActions(IWorkbenchWindow window) {
-		// Einige Actions muessen registriert werden, damit die entspechenden
-		// Commands funktionieren. Siehe
-		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=270007
+		// Some commands need to be registered for the respective commands to
+		// work. See https://bugs.eclipse.org/bugs/show_bug.cgi?id=270007
 		register(ActionFactory.SAVE.create(window));
 		register(ActionFactory.HELP_CONTENTS.create(window));
 		register(ActionFactory.HELP_SEARCH.create(window));

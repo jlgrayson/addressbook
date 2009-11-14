@@ -1,4 +1,4 @@
-package com.example.addressbook.editor.internal;
+package com.example.addressbook.editing.internal;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.fieldassist.AutoCompleteField;
@@ -24,11 +24,10 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 
-import com.example.addressbook.editor.AddressEditorConstants;
-import com.example.addressbook.editor.AddressIdEditorInput;
+import com.example.addressbook.AddressBookMessages;
+import com.example.addressbook.editing.AddressIdEditorInput;
 import com.example.addressbook.entities.Address;
 import com.example.addressbook.entities.Country;
 import com.example.addressbook.services.AddressbookServices;
@@ -51,42 +50,33 @@ public class AddressEditorPart extends EditorPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-
 		createUi(parent);
 		loadModel();
 		addDirtyOnChangeListeners();
-
 	}
 
 	private void createUi(Composite parent) {
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, AddressEditorConstants.HELP_CONTEXT_EDIT);
 
-		GridLayoutFactory.fillDefaults().margins(10, 10).numColumns(3).applyTo(parent);
-
-		// NAME
+		// Name
 		Label lblName = new Label(parent, SWT.NONE);
-		lblName.setText("Name:");
+		lblName.setText(AddressBookMessages.Name + AddressBookMessages.Field_Mark);
 
 		txtName = new Text(parent, SWT.BORDER);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).span(2, 1).applyTo(txtName);
 
-		// STRASSE
+		// Street
 		Label lblStreet = new Label(parent, SWT.NONE);
-		lblStreet.setText("Straße:");
+		lblStreet.setText(AddressBookMessages.Street + AddressBookMessages.Field_Mark);
 
 		txtStreet = new Text(parent, SWT.BORDER);
 		txtStreet.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).span(2, 1).applyTo(txtStreet);
 
-		// PLZ / ORT
+		// Zip / City
 		Label lblZipCity = new Label(parent, SWT.NONE);
-		lblZipCity.setText("PLZ/Ort:");
+		lblZipCity.setText(AddressBookMessages.Zip + AddressBookMessages.Field_Separator + AddressBookMessages.City
+				+ AddressBookMessages.Field_Mark);
 
 		txtZip = new Text(parent, SWT.BORDER);
-		GridDataFactory.fillDefaults().hint(50, SWT.DEFAULT).applyTo(txtZip);
-
 		txtCity = new Text(parent, SWT.BORDER);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).applyTo(txtCity);
 
 		ControlDecoration decoration = new ControlDecoration(txtCity, SWT.RIGHT | SWT.TOP);
 		Image errorImage = FieldDecorationRegistry.getDefault().getFieldDecoration(
@@ -95,9 +85,9 @@ public class AddressEditorPart extends EditorPart {
 
 		new AutoCompleteField(txtCity, new TextContentAdapter(), AddressbookServices.getAddressService().getAllCities());
 
-		// LAND
+		// Country
 		Label lblCountry = new Label(parent, SWT.NONE);
-		lblCountry.setText("Land:");
+		lblCountry.setText(AddressBookMessages.Country + AddressBookMessages.Field_Mark);
 
 		cvCountry = new ComboViewer(parent, SWT.READ_ONLY);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).span(2, 1).applyTo(
@@ -105,6 +95,14 @@ public class AddressEditorPart extends EditorPart {
 		cvCountry.setContentProvider(new ArrayContentProvider());
 		cvCountry.setLabelProvider(new CountryLabelProvider());
 		cvCountry.setInput(AddressbookServices.getAddressService().getAllCountries());
+
+		// Layout
+		GridLayoutFactory.fillDefaults().margins(10, 10).spacing(5, 3).numColumns(3).applyTo(parent);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).span(2, 1).applyTo(txtName);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).span(2, 1).applyTo(txtStreet);
+		GridDataFactory.fillDefaults().hint(50, SWT.DEFAULT).applyTo(txtZip);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).applyTo(txtCity);
+
 	}
 
 	private void loadModel() {

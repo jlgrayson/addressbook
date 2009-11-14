@@ -17,7 +17,7 @@
             class="com.example.addressbook.internal.address.AddressPerspective"
             icon="icons/book.png"
             id="com.example.addressbook.addressPerspective"
-            name="Adressen">
+            name="%Addresses">
       </perspective>
    </extension>
    <extension
@@ -26,7 +26,7 @@
             class="com.example.addressbook.internal.address.list.AddressListViewPart"
             icon="icons/book.png"
             id="com.example.addressbook.addresslist"
-            name="Adressen"
+            name="%Addresses"
             restorable="true">
       </view>
    </extension>
@@ -36,7 +36,7 @@
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
                id="com.example.addressbook.file"
-               label="Datei">
+               label="%File">
          <command
                commandId="org.eclipse.ui.newWizard"
                style="push">
@@ -100,7 +100,7 @@
          </menu>
          <menu
                id="com.example.addressbook.edit"
-               label="Bearbeiten">
+               label="%Edit">
             <command
                   commandId="org.eclipse.ui.edit.undo"
                   style="push">
@@ -136,7 +136,7 @@
          </menu>
          <menu
                id="window"
-               label="Fenster">
+               label="%Window">
             <command
                   commandId="org.eclipse.ui.window.resetPerspective"
                   style="push">
@@ -144,7 +144,7 @@
          </menu>
          <menu
                id="help"
-               label="Hilfe">
+               label="%Help">
             <command
                   commandId="org.eclipse.ui.help.helpContents"
                   style="push">
@@ -214,14 +214,14 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="com.example.addressbook.application"
-            name="Adressbuch">
+            name="Address Book">
          <property
                name="appName"
-               value="Adressbuch">
+               value="Address Book">
          </property>
          <property
                name="aboutText"
-               value="Adressbuch - RCP Beispielanwendung">
+               value="%Address_Book">
          </property>
          <property
                name="preferenceCustomization"

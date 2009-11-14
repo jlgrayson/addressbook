@@ -1,5 +1,8 @@
 package com.example.addressbook.entities;
 
+/**
+ * Entity object to represent an address.
+ */
 public class Address {
 
 	private final Integer id;
@@ -87,8 +90,8 @@ public class Address {
 
 	@Override
 	public String toString() {
-		return "Address [id=" + id + ", name=" + name + ", street=" + street + ", zip=" + zip + ", city=" + city
-				+ ", country=" + country + "]";
+		return String.format("Address [id=%s, name=%s, street=%s, zip=%s, country=%s, city=%s]", id, name, street, zip, //$NON-NLS-1$
+				country, city);
 	}
 
 }

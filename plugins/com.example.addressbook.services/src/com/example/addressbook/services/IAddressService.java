@@ -6,7 +6,6 @@ import java.util.List;
 import com.example.addressbook.entities.Address;
 import com.example.addressbook.entities.Country;
 
-
 public interface IAddressService {
 
 	public List<Address> getAllAddresses();

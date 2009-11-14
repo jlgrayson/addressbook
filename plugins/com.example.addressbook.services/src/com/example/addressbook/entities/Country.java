@@ -1,5 +1,8 @@
 package com.example.addressbook.entities;
 
+/**
+ * Entity object to represent an country.
+ */
 public class Country {
 
 	private final String name;
@@ -11,11 +14,6 @@ public class Country {
 
 	public String getName() {
 		return name;
-	}
-
-	@Override
-	public String toString() {
-		return "Country[" + name + "]";
 	}
 
 	@Override
@@ -36,6 +34,11 @@ public class Country {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("Country [name=%s]", name); //$NON-NLS-1$
 	}
 
 }

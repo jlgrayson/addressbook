@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Adressbuch
+Bundle-Name: %Address_Book
 Bundle-SymbolicName: com.example.addressbook;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: com.example.addressbook.internal.plugin.Activator
@@ -8,5 +8,5 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  com.example.addressbook.services
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: com.example.addressbook

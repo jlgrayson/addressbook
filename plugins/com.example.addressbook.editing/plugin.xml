@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="com.example.addressbook.editor.internal.AddressEditorPart"
+            class="com.example.addressbook.editing.internal.AddressEditorPart"
             default="false"
             icon="icons/user_orange.png"
             id="com.example.addressbook.editor"
@@ -33,7 +33,7 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.example.addressbook.editor.internal.OpenAddressEditorHandler"
+            class="com.example.addressbook.editing.internal.OpenAddressEditorHandler"
             commandId="com.example.addressbook.editor.open">
          <activeWhen>
             <with

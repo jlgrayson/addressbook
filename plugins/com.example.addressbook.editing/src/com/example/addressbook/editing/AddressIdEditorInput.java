@@ -1,8 +1,10 @@
-package com.example.addressbook.editor;
+package com.example.addressbook.editing;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
+
+import com.example.addressbook.AddressBookMessages;
 
 public class AddressIdEditorInput implements IEditorInput {
 
@@ -25,7 +27,7 @@ public class AddressIdEditorInput implements IEditorInput {
 	}
 
 	public String getName() {
-		return "Adresse " + id;
+		return AddressBookMessages.Address + " " + id; //$NON-NLS-1$
 	}
 
 	public IPersistableElement getPersistable() {

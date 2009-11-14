@@ -3,11 +3,9 @@ package com.example.addressbook.services;
 import com.example.addressbook.services.internal.RandomDataAddressService;
 
 /**
- * Singleton-Klasse zur Bereitstellung von IAddressService. Ein Singleton wird
- * hier nur der Einfachheit wegen zu Uebungszwecken angewendet, in realen
- * Anwendungen sollte Dependency Injection verwendet werden.
- * 
- * @author Ralf Ebert
+ * Singleton to obtain an IAddressService instance. A singleton is used here
+ * only for the sake of simplicity, using OSGi services or Dependency injection
+ * would be more suitable in real applications.
  */
 public class AddressbookServices {
 

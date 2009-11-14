@@ -2,172 +2,153 @@ package com.example.addressbook.internal.address.list;
 
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CellLabelProvider;
-import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.jface.viewers.DialogCellEditor;
-import org.eclipse.jface.viewers.EditingSupport;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.jface.viewers.ViewerComparator;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.dialogs.ListDialog;
 import org.eclipse.ui.part.ViewPart;
 
+import com.example.addressbook.AddressBookMessages;
+import com.example.addressbook.AddressBookResources;
 import com.example.addressbook.entities.Address;
 import com.example.addressbook.services.AddressbookServices;
 import com.example.addressbook.services.IAddressChangeListener;
 
 public class AddressListViewPart extends ViewPart {
 
-	private final IAddressChangeListener ADDRESS_CHANGE_LISTENER = new IAddressChangeListener() {
+	private TableViewer tableViewer;
+
+	private final IAddressChangeListener addressChangeListener = new IAddressChangeListener() {
 
 		public void addressesChanged() {
-			updateUi();
+			refresh();
 		}
 
 	};
 
-	private TableViewer tableViewer;
-
 	@Override
 	public void createPartControl(Composite parent) {
 
-		TableColumnLayout tableLayout = new TableColumnLayout();
-		parent.setLayout(tableLayout);
+		// Resources are managed with a ResourceManager and disposed when parent
+		// is disposed
+		LocalResourceManager resources = new LocalResourceManager(JFaceResources.getResources(), parent);
 
-		tableViewer = new TableViewer(parent, SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL);
-		tableViewer.getTable().setData("org.eclipse.swtbot.widget.key", "adressen");
+		// Search control
+		Composite searchComposite = new Composite(parent, SWT.NONE);
+		Label searchLabel = new Label(searchComposite, SWT.NONE);
+		searchLabel.setImage(resources.createImage(AddressBookResources.ICON_MAGNIFIER));
+		final Text searchText = new Text(searchComposite, SWT.BORDER | SWT.SEARCH);
+
+		// Separate composite to embed the table
+		Composite tableComposite = new Composite(parent, SWT.NONE);
+
+		// Setup layout for parent
+		GridLayoutFactory.fillDefaults().numColumns(1).applyTo(parent);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).applyTo(searchComposite);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(tableComposite);
+
+		// Setup layout for searchComposite
+		GridLayoutFactory.fillDefaults().numColumns(2).margins(5, 5).applyTo(searchComposite);
+		GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).applyTo(searchLabel);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(searchText);
+
+		// Create JFace viewer
+		tableViewer = new TableViewer(tableComposite, SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL);
+		tableViewer.setContentProvider(new ArrayContentProvider());
+
+		// Configure underlying SWT table
 		final Table table = tableViewer.getTable();
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 
+		// Create column "Name"
 		TableViewerColumn colName = new TableViewerColumn(tableViewer, SWT.NONE);
-		colName.getColumn().setText("Name");
+		colName.getColumn().setText(AddressBookMessages.Name);
 		colName.setLabelProvider(new CellLabelProvider() {
 
 			@Override
 			public void update(ViewerCell cell) {
-				Address address = (Address) cell.getElement();
-				cell.setText(address.getName());
+				cell.setText(((Address) cell.getElement()).getName());
 			}
 
 		});
-		tableLayout.setColumnData(colName.getColumn(), new ColumnWeightData(50));
 
-		TableViewerColumn colStreet = new TableViewerColumn(tableViewer, SWT.NONE);
-		colStreet.getColumn().setText("Straße");
-		colStreet.setLabelProvider(new CellLabelProvider() {
+		// Setup layout to use percental column widths
+		// Composite with TableColumnLayout may only include the Table widget!
+		TableColumnLayout tableLayout = new TableColumnLayout();
+		tableComposite.setLayout(tableLayout);
+		tableLayout.setColumnData(colName.getColumn(), new ColumnWeightData(100));
 
+		// Sort
+		tableViewer.setComparator(new ViewerComparator() {
 			@Override
-			public void update(ViewerCell cell) {
-				Address address = (Address) cell.getElement();
-				cell.setText(address.getStreet());
+			public int compare(Viewer viewer, Object e1, Object e2) {
+				Address addr1 = (Address) e1;
+				Address addr2 = (Address) e2;
+				return addr1.getName().compareToIgnoreCase(addr2.getName());
 			}
-
 		});
-		tableLayout.setColumnData(colStreet.getColumn(), new ColumnWeightData(25));
 
-		TableViewerColumn colZip = new TableViewerColumn(tableViewer, SWT.NONE);
-		colZip.getColumn().setText("PLZ");
-		colZip.setLabelProvider(new CellLabelProvider() {
+		// Filter
+		tableViewer.addFilter(new ViewerFilter() {
 
 			@Override
-			public void update(ViewerCell cell) {
-				Address address = (Address) cell.getElement();
-				cell.setText(address.getZip());
-			}
-
-		});
-		tableLayout.setColumnData(colZip.getColumn(), new ColumnPixelData(80));
-
-		TableViewerColumn colCity = new TableViewerColumn(tableViewer, SWT.NONE);
-		colCity.getColumn().setText("Ort");
-		colCity.setLabelProvider(new CellLabelProvider() {
-
-			@Override
-			public void update(ViewerCell cell) {
-				Address address = (Address) cell.getElement();
-				cell.setText(address.getCity());
-			}
-
-		});
-		tableLayout.setColumnData(colCity.getColumn(), new ColumnWeightData(25));
-
-		colCity.setEditingSupport(new EditingSupport(tableViewer) {
-
-			@Override
-			protected boolean canEdit(Object element) {
-				return true;
-			}
-
-			@Override
-			protected CellEditor getCellEditor(Object element) {
-				return new DialogCellEditor(table) {
-
-					@Override
-					protected Object openDialogBox(Control cellEditorWindow) {
-						ListDialog listDialog = new ListDialog(cellEditorWindow.getShell());
-						listDialog.setTitle("Stadt auswählen");
-						listDialog.setMessage("Bitte wählen Sie eine Stadt aus:");
-						listDialog.setContentProvider(new ArrayContentProvider());
-						listDialog.setLabelProvider(new LabelProvider());
-						listDialog.setInput(AddressbookServices.getAddressService().getAllCities());
-						if (listDialog.open() == Dialog.OK && listDialog.getResult().length > 0) {
-							return listDialog.getResult()[0];
-						} else {
-							MessageDialog.openError(cellEditorWindow.getShell(), "Fehler",
-									"Bitte wählen Sie eine Stadt aus!");
-							return null;
-						}
-					}
-
-				};
-			}
-
-			@Override
-			protected Object getValue(Object element) {
-				Address address = ((Address) element);
-				return address.getCity();
-			}
-
-			@Override
-			protected void setValue(Object element, Object value) {
+			public boolean select(Viewer viewer, Object parentElement, Object element) {
 				Address address = (Address) element;
-				address.setCity(String.valueOf(value));
-				tableViewer.refresh(element);
+				return address.getName().toLowerCase().contains(searchText.getText().toLowerCase());
+			}
+
+		});
+		searchText.addModifyListener(new ModifyListener() {
+
+			@Override
+			public void modifyText(ModifyEvent e) {
+				tableViewer.refresh();
 			}
 
 		});
 
-		tableViewer.setContentProvider(new ArrayContentProvider());
-
-		// Kontextmenü für Contributions vorbereiten
-		MenuManager menuManager = new MenuManager();
+		// Create a context menu using the JFace MenuManager and add a separator
+		// as placeholder for contributions
+		final MenuManager menuManager = new MenuManager();
 		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		// Create a SWT menu and set it to the table widget
 		table.setMenu(menuManager.createContextMenu(table));
+		// Register the context menu with the workbench so contributions can be
+		// made declaratively using org.eclipse.ui.menus
 		getSite().registerContextMenu(menuManager, tableViewer);
 		getSite().setSelectionProvider(tableViewer);
 
-		AddressbookServices.getAddressService().addAddressChangeListener(ADDRESS_CHANGE_LISTENER);
+		// Register for update events to refresh the view contents automatically
+		AddressbookServices.getAddressService().addAddressChangeListener(addressChangeListener);
 
-		updateUi();
+		refresh();
 	}
 
 	@Override
 	public void dispose() {
 		super.dispose();
-		AddressbookServices.getAddressService().removeAddressChangeListener(ADDRESS_CHANGE_LISTENER);
+		// Remove the change listener because the address service would call the
+		// view object even if's already gone otherwise
+		AddressbookServices.getAddressService().removeAddressChangeListener(addressChangeListener);
 	}
 
 	@Override
@@ -175,7 +156,7 @@ public class AddressListViewPart extends ViewPart {
 		tableViewer.getTable().setFocus();
 	}
 
-	public void updateUi() {
+	public void refresh() {
 		tableViewer.setInput(AddressbookServices.getAddressService().getAllAddresses());
 	}
 
