@@ -4,7 +4,7 @@ import org.eclipse.osgi.util.NLS;
 
 public class AddressBookMessages extends NLS {
 
-	private static final String BUNDLE_NAME = "com.example.addressbook.internal.messages.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "com.example.addressbook.messages"; //$NON-NLS-1$
 
 	public static String Address_Book;
 	public static String Address;
