@@ -2,7 +2,7 @@
 
 `com.example.addressbook` is an example application for the Eclipse RCP 3.5 platform:
 
-![Addressbook screenshot](/ralfebert/addressbook/raw/master/doc/screenshots/addressbook_01.png)
+![Addressbook screenshot](/ralfebert/addressbook/raw/simple/doc/screenshots/addressbook_01.png)
 
 I'm working on it for my [upcoming German book about Eclipse RCP](http://www.ralfebert.de/rcpbuch/) and my [Eclipse RCP training courses](http://www.ralfebert.de/seminare/rcp/).
 
