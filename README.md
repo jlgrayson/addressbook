@@ -6,19 +6,19 @@
 
 I'm working on it for my [upcoming German book about Eclipse RCP](http://www.ralfebert.de/rcpbuch/) and my [Eclipse RCP training courses](http://www.ralfebert.de/seminare/rcp/).
 
-The branch `simple` only uses Eclipse RCP, so its only dependency is the feature `org.eclipse.rcp` (Eclipse RCP). It is structured in a very simple fashion and only utilizes basic features of the Eclipse RCP platform.
-
 The application is developed and tested on OpenJDK 6 and Eclipse RCP 3.5.
 
-## Examples
+## Branch `eclipse`
 
-The `rcp` branch of the project shows:
+The `eclipse` branch utilizes more advanced RCP features and makes use of other features provided by Eclipse projects. It shows:
 
 * How JFace Data Binding can be utilized to bind a simple editor form (see `AddressEditorPart#createBindings`).
 * How validators can be added to the binding and how controls are decorated when validation errors occur using the provisional `ControlDecorationSupport` (see `AddressEditorPart#createBindings` and `ZipValidator`).
 * How the dirty flag for an editor can be set automatically from a `DataBindingContext` (see `AddressEditorPart#addDirtyOnModelChangeListeners`).
 
-The `simple` branch of the project shows:
+## Branch `simple`
+
+The `simple` branch only utilizes Eclipse RCP as defined by the feature `org.eclipse.rcp` (Eclipse RCP). It is structured in a very simple fashion and only utilizes basic features of the Eclipse RCP platform. It shows:
 
 * How views are declared using the extension point `org.eclipse.ui.views` (see `plugin.xml` and `AddressListViewPart` in `com.example.addressbook`).
 * How perspectives are declared using the extension point `org.eclipse.ui.perspectives` and how views are added to perspectives programmatically (see `plugin.xml` and `AddressPerspective` in `com.example.addressbook`).
