@@ -1,6 +1,18 @@
 package com.example.addressbook.editing.internal;
 
+import java.util.Collection;
+
+import org.eclipse.core.databinding.Binding;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.beans.PojoObservables;
+import org.eclipse.core.databinding.observable.ChangeEvent;
+import org.eclipse.core.databinding.observable.IChangeListener;
+import org.eclipse.core.databinding.observable.value.AbstractObservableValue;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.fieldassist.AutoCompleteField;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
@@ -9,13 +21,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -29,7 +35,6 @@ import org.eclipse.ui.part.EditorPart;
 import com.example.addressbook.AddressBookMessages;
 import com.example.addressbook.editing.AddressIdEditorInput;
 import com.example.addressbook.entities.Address;
-import com.example.addressbook.entities.Country;
 import com.example.addressbook.services.AddressbookServices;
 
 /**
@@ -45,18 +50,21 @@ public class AddressEditorPart extends EditorPart {
 	private ComboViewer cvCountry;
 
 	private boolean dirty;
+	private IObservableValue partNameObservable;
+	private final IObservableValue model = new WritableValue();
 
 	@Override
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		setSite(site);
 		setInput(input);
+		partNameObservable = new PartNameObservableValue();
 	}
 
 	@Override
 	public void createPartControl(Composite parent) {
 		createUi(parent);
 		loadModel();
-		addDirtyOnChangeListeners();
+		bind();
 	}
 
 	private void createUi(Composite parent) {
@@ -110,37 +118,50 @@ public class AddressEditorPart extends EditorPart {
 	}
 
 	private void loadModel() {
-		Address address = AddressbookServices.getAddressService().getAddress(getEditorInput().getId());
-		txtName.setText(address.getName());
-		txtStreet.setText(address.getStreet());
-		txtZip.setText(address.getZip());
-		txtCity.setText(address.getCity());
-		cvCountry.setSelection(new StructuredSelection(address.getCountry()));
-		setPartName(address.getName());
+		model.setValue(AddressbookServices.getAddressService().getAddress(getEditorInput().getId()));
 	}
 
-	private void addDirtyOnChangeListeners() {
-		ModifyListener modifyListener = new ModifyListener() {
+	/**
+	 * Bind the SWT UI to the model object using JFace Data Binding.
+	 */
+	private void bind() {
+		DataBindingContext ctx = new DataBindingContext();
 
-			public void modifyText(ModifyEvent e) {
-				setDirty(true);
-			}
+		IObservableValue name = PojoObservables.observeDetailValue(model, "name", String.class);
 
-		};
+		ctx.bindValue(SWTObservables.observeText(txtName, SWT.Modify), name);
+		ctx.bindValue(partNameObservable, name);
 
-		txtName.addModifyListener(modifyListener);
-		txtStreet.addModifyListener(modifyListener);
-		txtZip.addModifyListener(modifyListener);
-		txtCity.addModifyListener(modifyListener);
+		ctx.bindValue(SWTObservables.observeText(txtStreet, SWT.Modify), PojoObservables.observeDetailValue(model,
+				"street", String.class));
 
-		ISelectionChangedListener changedListener = new ISelectionChangedListener() {
+		ctx.bindValue(SWTObservables.observeText(txtZip, SWT.Modify), PojoObservables.observeDetailValue(model, "zip",
+				String.class));
 
-			public void selectionChanged(SelectionChangedEvent event) {
-				setDirty(true);
-			}
-		};
+		ctx.bindValue(SWTObservables.observeText(txtCity, SWT.Modify), PojoObservables.observeDetailValue(model,
+				"city", String.class));
 
-		cvCountry.addSelectionChangedListener(changedListener);
+		ctx.bindValue(ViewersObservables.observeSingleSelection(cvCountry), PojoObservables.observeDetailValue(model,
+				"country", String.class));
+
+		addDirtyOnModelChangeListeners(ctx);
+	}
+
+	/**
+	 * Listen on all model values of the given data binding context and set the
+	 * editor dirty flag if a model value changes.
+	 */
+	@SuppressWarnings("unchecked")
+	private void addDirtyOnModelChangeListeners(DataBindingContext ctx) {
+		for (Binding binding : (Collection<Binding>) ctx.getBindings()) {
+			binding.getModel().addChangeListener(new IChangeListener() {
+
+				public void handleChange(ChangeEvent event) {
+					setDirty(true);
+				}
+
+			});
+		}
 	}
 
 	@Override
@@ -155,19 +176,12 @@ public class AddressEditorPart extends EditorPart {
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-
-		Address address = AddressbookServices.getAddressService().getAddress(getEditorInput().getId());
-		address.setName(txtName.getText());
-		address.setStreet(txtStreet.getText());
-		address.setZip(txtZip.getText());
-		address.setCity(txtCity.getText());
-		IStructuredSelection selection = (IStructuredSelection) cvCountry.getSelection();
-		address.setCountry((Country) selection.getFirstElement());
-
-		AddressbookServices.getAddressService().saveAddress(address);
-
-		loadModel();
+		model.setValue(AddressbookServices.getAddressService().saveAddress(getModelObject()));
 		setDirty(false);
+	}
+
+	private Address getModelObject() {
+		return (Address) model.getValue();
 	}
 
 	@Override
@@ -188,6 +202,31 @@ public class AddressEditorPart extends EditorPart {
 	@Override
 	public boolean isSaveAsAllowed() {
 		return false;
+	}
+
+	/**
+	 * Observable value for JFace data binding to bind to the part name of this
+	 * editor.
+	 */
+	private final class PartNameObservableValue extends AbstractObservableValue {
+
+		public PartNameObservableValue() {
+			super(SWTObservables.getRealm(getSite().getShell().getDisplay()));
+		}
+
+		@Override
+		protected Object doGetValue() {
+			return getPartName();
+		}
+
+		@Override
+		protected void doSetValue(Object value) {
+			setPartName(String.valueOf(value));
+		}
+
+		public Object getValueType() {
+			return String.class;
+		}
 	}
 
 }

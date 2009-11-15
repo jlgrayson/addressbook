@@ -12,6 +12,11 @@ The application is developed and tested on OpenJDK 6 and Eclipse RCP 3.5.
 
 ## Examples
 
+The `rcp` branch of the project shows:
+
+* How JFace Data Binding can be utilized to bind a simple editor form (see `AddressEditorPart#bind`). This includes validation and controls are decorated when validation errors occur.
+* How the dirty flag for an editor can be set automatically from a `DataBindingContext` (see `AddressEditorPart#addDirtyOnModelChangeListeners`).
+
 The `simple` branch of the project shows:
 
 * How views are declared using the extension point `org.eclipse.ui.views` (see `plugin.xml` and `AddressListViewPart` in `com.example.addressbook`).
