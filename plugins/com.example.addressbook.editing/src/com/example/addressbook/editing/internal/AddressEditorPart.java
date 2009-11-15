@@ -32,6 +32,10 @@ import com.example.addressbook.entities.Address;
 import com.example.addressbook.entities.Country;
 import com.example.addressbook.services.AddressbookServices;
 
+/**
+ * Editor part implementation for editing Address objects using the
+ * AddressBookService.
+ */
 public class AddressEditorPart extends EditorPart {
 
 	private Text txtName;

@@ -55,7 +55,7 @@ public class AddressListViewPart extends ViewPart {
 		Composite searchComposite = new Composite(parent, SWT.NONE);
 		Label searchLabel = new Label(searchComposite, SWT.NONE);
 		searchLabel.setImage(resources.createImage(AddressBookResources.ICON_MAGNIFIER));
-		final Text searchText = new Text(searchComposite, SWT.BORDER | SWT.SEARCH);
+		final Text searchText = new Text(searchComposite, SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH | SWT.ICON_CANCEL);
 
 		// Separate composite to embed the table
 		Composite tableComposite = new Composite(parent, SWT.NONE);
@@ -146,8 +146,8 @@ public class AddressListViewPart extends ViewPart {
 	@Override
 	public void dispose() {
 		super.dispose();
-		// Remove the change listener because the address service would call the
-		// view object even if's already gone otherwise
+		// Remove the change listener because otherwise the address service
+		// would call the view object even when it is already gone
 		AddressbookServices.getAddressService().removeAddressChangeListener(addressChangeListener);
 	}
 
