@@ -13,10 +13,15 @@ public class AddressBookMessages extends NLS {
 	public static String Zip;
 	public static String City;
 	public static String Country;
-	// String displayed between form labels for combined fields
+
+	// General purpose: String displayed between form labels for combined fields
 	public static String Field_Separator;
-	// String displayed after all form labels
+	// General purpose: String displayed after all form labels
 	public static String Field_Mark;
+	// General purpose: Title for validation error dialogs
+	public static String ValidationError;
+	// General purpose: Validation error message
+	public static String SaveNotAllowedBecauseOfValidationError;
 
 	static {
 		// initialize resource bundle

@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.ValidationStatusProvider;
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
@@ -11,12 +13,15 @@ import org.eclipse.core.databinding.observable.value.AbstractObservableValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.fieldassist.AutoCompleteField;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.fieldassist.TextContentAdapter;
+import org.eclipse.jface.internal.databinding.provisional.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -41,6 +46,7 @@ import com.example.addressbook.services.AddressbookServices;
  * Editor part implementation for editing Address objects using the
  * AddressBookService.
  */
+@SuppressWarnings("restriction")
 public class AddressEditorPart extends EditorPart {
 
 	private Text txtName;
@@ -49,6 +55,7 @@ public class AddressEditorPart extends EditorPart {
 	private Text txtCity;
 	private ComboViewer cvCountry;
 
+	private final DataBindingContext bindingContext = new DataBindingContext();
 	private boolean dirty;
 	private IObservableValue partNameObservable;
 	private final IObservableValue model = new WritableValue();
@@ -64,7 +71,7 @@ public class AddressEditorPart extends EditorPart {
 	public void createPartControl(Composite parent) {
 		createUi(parent);
 		loadModel();
-		bind();
+		createBindings();
 	}
 
 	private void createUi(Composite parent) {
@@ -109,7 +116,7 @@ public class AddressEditorPart extends EditorPart {
 		cvCountry.setInput(AddressbookServices.getAddressService().getAllCountries());
 
 		// Layout
-		GridLayoutFactory.fillDefaults().margins(10, 10).spacing(5, 3).numColumns(3).applyTo(parent);
+		GridLayoutFactory.fillDefaults().margins(10, 10).spacing(10, 6).numColumns(3).applyTo(parent);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).span(2, 1).applyTo(txtName);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).span(2, 1).applyTo(txtStreet);
 		GridDataFactory.fillDefaults().hint(50, SWT.DEFAULT).applyTo(txtZip);
@@ -124,27 +131,31 @@ public class AddressEditorPart extends EditorPart {
 	/**
 	 * Bind the SWT UI to the model object using JFace Data Binding.
 	 */
-	private void bind() {
-		DataBindingContext ctx = new DataBindingContext();
+	private void createBindings() {
+		IObservableValue name = PojoObservables.observeDetailValue(model, "name", String.class); //$NON-NLS-1$
 
-		IObservableValue name = PojoObservables.observeDetailValue(model, "name", String.class);
+		bindingContext.bindValue(SWTObservables.observeText(txtName, SWT.Modify), name);
+		bindingContext.bindValue(partNameObservable, name);
 
-		ctx.bindValue(SWTObservables.observeText(txtName, SWT.Modify), name);
-		ctx.bindValue(partNameObservable, name);
+		bindingContext.bindValue(SWTObservables.observeText(txtStreet, SWT.Modify), PojoObservables.observeDetailValue(
+				model, "street", String.class)); //$NON-NLS-1$
 
-		ctx.bindValue(SWTObservables.observeText(txtStreet, SWT.Modify), PojoObservables.observeDetailValue(model,
-				"street", String.class));
+		UpdateValueStrategy zipUiToModel = new UpdateValueStrategy();
+		zipUiToModel.setAfterConvertValidator(new ZipValidator());
+		Binding zipBinding = bindingContext.bindValue(SWTObservables.observeText(txtZip, SWT.Modify), PojoObservables
+				.observeDetailValue(model, "zip", //$NON-NLS-1$
+						String.class), zipUiToModel, null);
 
-		ctx.bindValue(SWTObservables.observeText(txtZip, SWT.Modify), PojoObservables.observeDetailValue(model, "zip",
-				String.class));
+		bindingContext.bindValue(SWTObservables.observeText(txtCity, SWT.Modify), PojoObservables.observeDetailValue(
+				model, "city", String.class)); //$NON-NLS-1$
 
-		ctx.bindValue(SWTObservables.observeText(txtCity, SWT.Modify), PojoObservables.observeDetailValue(model,
-				"city", String.class));
+		bindingContext.bindValue(ViewersObservables.observeSingleSelection(cvCountry), PojoObservables
+				.observeDetailValue(model, "country", String.class)); //$NON-NLS-1$
 
-		ctx.bindValue(ViewersObservables.observeSingleSelection(cvCountry), PojoObservables.observeDetailValue(model,
-				"country", String.class));
+		// Add control decorations
+		ControlDecorationSupport.create(zipBinding, SWT.TOP | SWT.RIGHT);
 
-		addDirtyOnModelChangeListeners(ctx);
+		addDirtyOnModelChangeListeners(bindingContext);
 	}
 
 	/**
@@ -154,7 +165,7 @@ public class AddressEditorPart extends EditorPart {
 	@SuppressWarnings("unchecked")
 	private void addDirtyOnModelChangeListeners(DataBindingContext ctx) {
 		for (Binding binding : (Collection<Binding>) ctx.getBindings()) {
-			binding.getModel().addChangeListener(new IChangeListener() {
+			binding.getTarget().addChangeListener(new IChangeListener() {
 
 				public void handleChange(ChangeEvent event) {
 					setDirty(true);
@@ -176,6 +187,18 @@ public class AddressEditorPart extends EditorPart {
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
+		@SuppressWarnings("unchecked")
+		Collection<ValidationStatusProvider> validationStatusProviders = bindingContext.getValidationStatusProviders();
+		for (ValidationStatusProvider statusProvider : validationStatusProviders) {
+			IStatus status = (IStatus) (statusProvider.getValidationStatus().getValue());
+			if (!status.isOK()) {
+				ErrorDialog.openError(getSite().getShell(), AddressBookMessages.ValidationError,
+						AddressBookMessages.SaveNotAllowedBecauseOfValidationError, status);
+				monitor.setCanceled(true);
+				return;
+			}
+		}
+
 		model.setValue(AddressbookServices.getAddressService().saveAddress(getModelObject()));
 		setDirty(false);
 	}

@@ -14,7 +14,8 @@ The application is developed and tested on OpenJDK 6 and Eclipse RCP 3.5.
 
 The `rcp` branch of the project shows:
 
-* How JFace Data Binding can be utilized to bind a simple editor form (see `AddressEditorPart#bind`). This includes validation and controls are decorated when validation errors occur.
+* How JFace Data Binding can be utilized to bind a simple editor form (see `AddressEditorPart#createBindings`).
+* How validators can be added to the binding and how controls are decorated when validation errors occur using the provisional `ControlDecorationSupport` (see `AddressEditorPart#createBindings` and `ZipValidator`).
 * How the dirty flag for an editor can be set automatically from a `DataBindingContext` (see `AddressEditorPart#addDirtyOnModelChangeListeners`).
 
 The `simple` branch of the project shows:
