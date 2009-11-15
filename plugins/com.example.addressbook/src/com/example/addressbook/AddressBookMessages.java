@@ -13,6 +13,7 @@ public class AddressBookMessages extends NLS {
 	public static String Zip;
 	public static String City;
 	public static String Country;
+	public static String Postal_Address;
 
 	// General purpose: String displayed between form labels for combined fields
 	public static String Field_Separator;

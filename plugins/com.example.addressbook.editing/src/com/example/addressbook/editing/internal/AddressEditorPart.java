@@ -28,19 +28,23 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.ScrolledForm;
+import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
 import com.example.addressbook.AddressBookMessages;
 import com.example.addressbook.editing.AddressIdEditorInput;
 import com.example.addressbook.entities.Address;
 import com.example.addressbook.services.AddressbookServices;
+import com.example.addressbook.services.IAddressService;
 
 /**
  * Editor part implementation for editing Address objects using the
@@ -55,10 +59,12 @@ public class AddressEditorPart extends EditorPart {
 	private Text txtCity;
 	private ComboViewer cvCountry;
 
+	private final IAddressService addressService = AddressbookServices.getAddressService();
 	private final DataBindingContext bindingContext = new DataBindingContext();
 	private boolean dirty;
 	private IObservableValue partNameObservable;
 	private final IObservableValue model = new WritableValue();
+	private final String EMPTY = ""; //$NON-NLS-1$
 
 	@Override
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
@@ -74,46 +80,52 @@ public class AddressEditorPart extends EditorPart {
 		createBindings();
 	}
 
-	private void createUi(Composite parent) {
+	private void createUi(Composite partComposite) {
 
-		// Name
-		Label lblName = new Label(parent, SWT.NONE);
-		lblName.setText(AddressBookMessages.Name + AddressBookMessages.Field_Mark);
+		FormToolkit toolkit = new FormToolkit(partComposite.getDisplay());
+		final ScrolledForm form = toolkit.createScrolledForm(partComposite);
+		form.getBody().setLayout(new FillLayout());
 
-		txtName = new Text(parent, SWT.BORDER);
+		Section section = toolkit.createSection(form.getBody(), Section.TWISTIE | Section.TITLE_BAR);
+		section.setText(AddressBookMessages.Postal_Address);
+
+		Composite parent = toolkit.createComposite(section, SWT.WRAP);
+		GridLayoutFactory.fillDefaults().margins(10, 3).numColumns(3).applyTo(parent);
+		section.setClient(parent);
+
+		toolkit.createLabel(parent, AddressBookMessages.Name + AddressBookMessages.Field_Mark);
+
+		txtName = toolkit.createText(parent, EMPTY);
 
 		// Street
-		Label lblStreet = new Label(parent, SWT.NONE);
-		lblStreet.setText(AddressBookMessages.Street + AddressBookMessages.Field_Mark);
+		toolkit.createLabel(parent, AddressBookMessages.Street + AddressBookMessages.Field_Mark);
 
-		txtStreet = new Text(parent, SWT.BORDER);
+		txtStreet = toolkit.createText(parent, EMPTY);
 		txtStreet.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 		// Zip / City
-		Label lblZipCity = new Label(parent, SWT.NONE);
-		lblZipCity.setText(AddressBookMessages.Zip + AddressBookMessages.Field_Separator + AddressBookMessages.City
-				+ AddressBookMessages.Field_Mark);
+		toolkit.createLabel(parent, AddressBookMessages.Zip + AddressBookMessages.Field_Separator
+				+ AddressBookMessages.City + AddressBookMessages.Field_Mark);
 
-		txtZip = new Text(parent, SWT.BORDER);
-		txtCity = new Text(parent, SWT.BORDER);
+		txtZip = toolkit.createText(parent, EMPTY);
+		txtCity = toolkit.createText(parent, EMPTY);
 
 		ControlDecoration decoration = new ControlDecoration(txtCity, SWT.RIGHT | SWT.TOP);
 		Image errorImage = FieldDecorationRegistry.getDefault().getFieldDecoration(
 				FieldDecorationRegistry.DEC_CONTENT_PROPOSAL).getImage();
 		decoration.setImage(errorImage);
 
-		new AutoCompleteField(txtCity, new TextContentAdapter(), AddressbookServices.getAddressService().getAllCities());
+		new AutoCompleteField(txtCity, new TextContentAdapter(), addressService.getAllCities());
 
 		// Country
-		Label lblCountry = new Label(parent, SWT.NONE);
-		lblCountry.setText(AddressBookMessages.Country + AddressBookMessages.Field_Mark);
+		toolkit.createLabel(parent, AddressBookMessages.Country + AddressBookMessages.Field_Mark);
 
 		cvCountry = new ComboViewer(parent, SWT.READ_ONLY);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).span(2, 1).applyTo(
 				cvCountry.getCombo());
 		cvCountry.setContentProvider(new ArrayContentProvider());
 		cvCountry.setLabelProvider(new CountryLabelProvider());
-		cvCountry.setInput(AddressbookServices.getAddressService().getAllCountries());
+		cvCountry.setInput(addressService.getAllCountries());
 
 		// Layout
 		GridLayoutFactory.fillDefaults().margins(10, 10).spacing(10, 6).numColumns(3).applyTo(parent);
@@ -122,10 +134,12 @@ public class AddressEditorPart extends EditorPart {
 		GridDataFactory.fillDefaults().hint(50, SWT.DEFAULT).applyTo(txtZip);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).applyTo(txtCity);
 
+		section.setExpanded(true);
+
 	}
 
 	private void loadModel() {
-		model.setValue(AddressbookServices.getAddressService().getAddress(getEditorInput().getId()));
+		model.setValue(addressService.getAddress(getEditorInput().getId()));
 	}
 
 	/**
@@ -199,7 +213,7 @@ public class AddressEditorPart extends EditorPart {
 			}
 		}
 
-		model.setValue(AddressbookServices.getAddressService().saveAddress(getModelObject()));
+		model.setValue(addressService.saveAddress(getModelObject()));
 		setDirty(false);
 	}
 
