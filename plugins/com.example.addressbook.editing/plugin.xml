@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="com.example.addressbook.editing.internal.AddressEditorPart"
+            class="org.eclipse.springframework.util.SpringExtensionFactory"
             default="false"
             icon="icons/user_orange.png"
             id="com.example.addressbook.editor"

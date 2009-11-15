@@ -23,7 +23,7 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="com.example.addressbook.internal.address.list.AddressListViewPart"
+            class="org.eclipse.springframework.util.SpringExtensionFactory"
             icon="icons/book.png"
             id="com.example.addressbook.addresslist"
             name="%Addresses"
@@ -177,7 +177,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="com.example.addressbook.internal.address.list.AddressDeleteHandler"
+            class="org.eclipse.springframework.util.SpringExtensionFactory:addressDeleteHandler"
             commandId="org.eclipse.ui.edit.delete">
          <activeWhen>
             <with

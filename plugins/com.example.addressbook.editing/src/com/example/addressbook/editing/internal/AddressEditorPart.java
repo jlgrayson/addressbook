@@ -40,7 +40,7 @@ import org.eclipse.ui.part.EditorPart;
 import com.example.addressbook.AddressBookMessages;
 import com.example.addressbook.editing.AddressIdEditorInput;
 import com.example.addressbook.entities.Address;
-import com.example.addressbook.services.AddressbookServices;
+import com.example.addressbook.services.IAddressService;
 
 /**
  * Editor part implementation for editing Address objects using the
@@ -59,6 +59,7 @@ public class AddressEditorPart extends EditorPart {
 	private boolean dirty;
 	private IObservableValue partNameObservable;
 	private final IObservableValue model = new WritableValue();
+	private IAddressService addressService;
 
 	@Override
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
@@ -102,7 +103,7 @@ public class AddressEditorPart extends EditorPart {
 				FieldDecorationRegistry.DEC_CONTENT_PROPOSAL).getImage();
 		decoration.setImage(errorImage);
 
-		new AutoCompleteField(txtCity, new TextContentAdapter(), AddressbookServices.getAddressService().getAllCities());
+		new AutoCompleteField(txtCity, new TextContentAdapter(), addressService.getAllCities());
 
 		// Country
 		Label lblCountry = new Label(parent, SWT.NONE);
@@ -113,7 +114,7 @@ public class AddressEditorPart extends EditorPart {
 				cvCountry.getCombo());
 		cvCountry.setContentProvider(new ArrayContentProvider());
 		cvCountry.setLabelProvider(new CountryLabelProvider());
-		cvCountry.setInput(AddressbookServices.getAddressService().getAllCountries());
+		cvCountry.setInput(addressService.getAllCountries());
 
 		// Layout
 		GridLayoutFactory.fillDefaults().margins(10, 10).spacing(10, 6).numColumns(3).applyTo(parent);
@@ -124,8 +125,12 @@ public class AddressEditorPart extends EditorPart {
 
 	}
 
+	public void setAddressService(IAddressService addressService) {
+		this.addressService = addressService;
+	}
+
 	private void loadModel() {
-		model.setValue(AddressbookServices.getAddressService().getAddress(getEditorInput().getId()));
+		model.setValue(addressService.getAddress(getEditorInput().getId()));
 	}
 
 	/**
@@ -199,7 +204,7 @@ public class AddressEditorPart extends EditorPart {
 			}
 		}
 
-		model.setValue(AddressbookServices.getAddressService().saveAddress(getModelObject()));
+		model.setValue(addressService.saveAddress(getModelObject()));
 		setDirty(false);
 	}
 

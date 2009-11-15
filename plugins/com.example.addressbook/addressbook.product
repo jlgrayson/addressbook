@@ -18,14 +18,12 @@
 
    <windowImages/>
 
-
    <launcher name="addressbook">
       <solaris/>
       <win useIco="false">
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
    </vm>
@@ -130,5 +128,8 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <feature id="com.example.addressbook.feature" version="1.0.0"/>
    </features>
 
+   <configurations>
+      <plugin id="com.example.addressbook.services" autoStart="true" startLevel="0" />
+   </configurations>
 
 </product>

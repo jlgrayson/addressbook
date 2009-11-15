@@ -29,12 +29,14 @@ import org.eclipse.ui.part.ViewPart;
 import com.example.addressbook.AddressBookMessages;
 import com.example.addressbook.AddressBookResources;
 import com.example.addressbook.entities.Address;
-import com.example.addressbook.services.AddressbookServices;
 import com.example.addressbook.services.IAddressChangeListener;
+import com.example.addressbook.services.IAddressService;
 
 public class AddressListViewPart extends ViewPart {
 
 	private TableViewer tableViewer;
+
+	private IAddressService addressService;
 
 	private final IAddressChangeListener addressChangeListener = new IAddressChangeListener() {
 
@@ -138,7 +140,7 @@ public class AddressListViewPart extends ViewPart {
 		getSite().setSelectionProvider(tableViewer);
 
 		// Register for update events to refresh the view contents automatically
-		AddressbookServices.getAddressService().addAddressChangeListener(addressChangeListener);
+		addressService.addAddressChangeListener(addressChangeListener);
 
 		refresh();
 	}
@@ -148,7 +150,11 @@ public class AddressListViewPart extends ViewPart {
 		super.dispose();
 		// Remove the change listener because otherwise the address service
 		// would call the view object even when it is already gone
-		AddressbookServices.getAddressService().removeAddressChangeListener(addressChangeListener);
+		addressService.removeAddressChangeListener(addressChangeListener);
+	}
+
+	public void setAddressService(IAddressService addressService) {
+		this.addressService = addressService;
 	}
 
 	@Override
@@ -157,7 +163,7 @@ public class AddressListViewPart extends ViewPart {
 	}
 
 	public void refresh() {
-		tableViewer.setInput(AddressbookServices.getAddressService().getAllAddresses());
+		tableViewer.setInput(addressService.getAllAddresses());
 	}
 
 }
