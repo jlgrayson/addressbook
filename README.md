@@ -6,13 +6,11 @@
 
 I'm working on it for my [upcoming German book about Eclipse RCP](http://www.ralfebert.de/rcpbuch/) and my [Eclipse RCP training courses](http://www.ralfebert.de/seminare/rcp/).
 
-The branch `simple` only uses Eclipse RCP, so its only dependency is the feature `org.eclipse.rcp` (Eclipse RCP). It is structured in a very simple fashion and only utilizes basic features of the Eclipse RCP platform.
-
 The application is developed and tested on OpenJDK 6 and Eclipse RCP 3.5.
 
-## Examples
+## Branch `simple`
 
-The `simple` branch of the project shows:
+The `simple` branch only utilizes Eclipse RCP as defined by the feature `org.eclipse.rcp` (Eclipse RCP). It is structured in a very simple fashion and only utilizes basic features of the Eclipse RCP platform. It shows:
 
 * How views are declared using the extension point `org.eclipse.ui.views` (see `plugin.xml` and `AddressListViewPart` in `com.example.addressbook`).
 * How perspectives are declared using the extension point `org.eclipse.ui.perspectives` and how views are added to perspectives programmatically (see `plugin.xml` and `AddressPerspective` in `com.example.addressbook`).
