@@ -36,6 +36,7 @@ The `simple` branch of the project shows:
 * How a `ComboViewer` is used to choose from a list of objects (see `AddressEditorPart` in `com.example.addressbook`).
 * How applications and feature-based products are declared using the extension points `org.eclipse.core.runtime.applications` and
  `org.eclipse.core.runtime.products` for RCP applications (see `plugin.xml`, `addressbook.product` in `com.example.addressbook` and `com.example.addressbook.feature`)
+* How `ControlDecoration` can be used to decorate SWT controls and how auto-completion can be added to text fields (see `AddressEditorPart`).
 
 ## Running the application
 
