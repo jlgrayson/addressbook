@@ -21,7 +21,7 @@ public class SelectionUtils {
 		if (selection.isEmpty())
 			return Collections.emptyList();
 
-		List<A> addresses = new ArrayList<A>();
+		List<A> selectedObjects = new ArrayList<A>();
 		if (selection instanceof IStructuredSelection) {
 			Iterator<?> iterator = ((IStructuredSelection) selection).iterator();
 			while (iterator.hasNext()) {
@@ -29,13 +29,13 @@ public class SelectionUtils {
 				if (selectedObjectClass.isAssignableFrom(obj.getClass())) {
 					@SuppressWarnings("unchecked")
 					A selectedObject = (A) obj;
-					addresses.add(selectedObject);
+					selectedObjects.add(selectedObject);
 				}
 
 			}
 		}
 
-		return addresses;
+		return selectedObjects;
 	}
 
 }
