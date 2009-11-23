@@ -7,6 +7,6 @@ Export-Package: com.example.addressbook.entities,
  com.example.addressbook.services
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.eclipse.osgi;bundle-version="3.5.1"
+Require-Bundle: org.eclipse.osgi;bundle-version="3.5.0"
 Bundle-Vendor: Ralf Ebert
 Bundle-Activator: com.example.addressbook.services.internal.Activator
