@@ -15,7 +15,6 @@ import com.example.addressbook.entities.Country;
 import com.example.addressbook.services.IAddressChangeListener;
 import com.example.addressbook.services.IAddressService;
 
-
 public class RandomDataAddressService implements IAddressService {
 
 	private final AtomicInteger idSequence = new AtomicInteger(0);
@@ -41,6 +40,7 @@ public class RandomDataAddressService implements IAddressService {
 	}
 
 	public List<Address> getAllAddresses() {
+		simulateSlowNetworkConnection();
 		List<Address> list = new ArrayList<Address>();
 		for (Address address : addresses) {
 			list.add(new Address(address));
@@ -50,7 +50,7 @@ public class RandomDataAddressService implements IAddressService {
 
 	private void simulateSlowNetworkConnection() {
 		try {
-			Thread.sleep(new RandomData().someNumber(500, 2000));
+			Thread.sleep(new RandomData().someNumber(1000, 2000));
 		} catch (InterruptedException e) {
 			// ignore
 		}
@@ -83,12 +83,6 @@ public class RandomDataAddressService implements IAddressService {
 			}
 		}
 		return null;
-	}
-
-	public int verySlowOperation() {
-		simulateSlowNetworkConnection();
-		simulateSlowNetworkConnection();
-		return 42;
 	}
 
 	public Address saveAddress(Address changedOrNewAddress) {
