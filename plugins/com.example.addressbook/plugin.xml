@@ -146,22 +146,6 @@
                id="help"
                label="%Help">
             <command
-                  commandId="org.eclipse.ui.help.helpContents"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.eclipse.ui.help.helpSearch"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.eclipse.ui.help.dynamicHelp"
-                  style="push">
-            </command>
-            <separator
-                  name="help.separator"
-                  visible="true">
-            </separator>
-            <command
                   commandId="org.eclipse.ui.help.aboutAction"
                   style="push">
             </command>

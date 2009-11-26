@@ -8,10 +8,10 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import com.example.addressbook.AddressUtil;
 import com.example.addressbook.editing.AddressEditorConstants;
 import com.example.addressbook.editing.AddressIdEditorInput;
 import com.example.addressbook.entities.Address;
+import com.example.addressbook.utils.SelectionUtils;
 
 /**
  * Open address editors for all selected addresses.
@@ -22,7 +22,7 @@ public class OpenAddressEditorHandler extends AbstractHandler {
 		ISelection selection = HandlerUtil.getCurrentSelection(event);
 		IWorkbenchPage activePage = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage();
 
-		for (Address address : AddressUtil.getAddresses(selection)) {
+		for (Address address : SelectionUtils.getIterable(selection, Address.class)) {
 			try {
 				activePage.openEditor(new AddressIdEditorInput(address.getId()),
 						AddressEditorConstants.ADDRESS_EDITOR_ID);

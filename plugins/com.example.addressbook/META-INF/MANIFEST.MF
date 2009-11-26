@@ -9,4 +9,5 @@ Require-Bundle: org.eclipse.ui,
  com.example.addressbook.services
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: com.example.addressbook
+Export-Package: com.example.addressbook,
+ com.example.addressbook.utils
