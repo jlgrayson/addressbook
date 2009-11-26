@@ -24,9 +24,11 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 
 import com.example.addressbook.AddressBookMessages;
+import com.example.addressbook.editing.AddressEditorConstants;
 import com.example.addressbook.editing.AddressIdEditorInput;
 import com.example.addressbook.entities.Address;
 import com.example.addressbook.entities.Country;
@@ -56,6 +58,9 @@ public class AddressEditorPart extends EditorPart {
 	}
 
 	private void createUi(Composite parent) {
+
+		// Set help context for Dynamic Help
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, AddressEditorConstants.HELP_EDIT);
 
 		// Name
 		Label lblName = new Label(parent, SWT.NONE);
@@ -97,7 +102,7 @@ public class AddressEditorPart extends EditorPart {
 		cvCountry.setInput(AddressbookServices.getAddressService().getAllCountries());
 
 		// Layout
-		GridLayoutFactory.fillDefaults().margins(10, 10).spacing(5, 3).numColumns(3).applyTo(parent);
+		GridLayoutFactory.fillDefaults().margins(5, 5).spacing(5, 3).numColumns(3).applyTo(parent);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).span(2, 1).applyTo(txtName);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).span(2, 1).applyTo(txtStreet);
 		GridDataFactory.fillDefaults().hint(50, SWT.DEFAULT).applyTo(txtZip);
