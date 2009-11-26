@@ -17,6 +17,8 @@ public class AddressBookMessages extends NLS {
 	public static String Field_Separator;
 	// String displayed after all form labels
 	public static String Field_Mark;
+	public static String LoadAddresses;
+	public static String RefreshAddressList;
 
 	static {
 		// initialize resource bundle
