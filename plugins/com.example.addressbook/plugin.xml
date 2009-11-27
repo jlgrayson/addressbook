@@ -29,6 +29,12 @@
             name="%Addresses"
             restorable="true">
       </view>
+	  <view
+        	id="org.eclipse.ui.views.ProgressView"
+        	class="org.eclipse.ui.ExtensionFactory:progressView"
+        	icon="/icons/pview.gif"
+			allowMultiple="false"
+        	name="%progress"/>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
