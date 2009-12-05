@@ -29,6 +29,12 @@
             name="%Addresses"
             restorable="true">
       </view>
+	  <view
+        	id="org.eclipse.ui.views.ProgressView"
+        	class="org.eclipse.ui.ExtensionFactory:progressView"
+        	icon="/icons/pview.gif"
+			allowMultiple="false"
+        	name="%progress"/>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -187,7 +193,7 @@
             <with
                   variable="activePartId">
                <equals
-                     value="com.example.addressbook.AddressListViewPart">
+                     value="com.example.addressbook.addresslist">
                </equals>
             </with>
          </activeWhen>
