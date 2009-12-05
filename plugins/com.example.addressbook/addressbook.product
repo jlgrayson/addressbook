@@ -126,10 +126,15 @@ This Agreement is governed by the laws of the State of New York and the intellec
 
    <features>
       <feature id="com.example.addressbook.feature" version="1.0.0"/>
+      <feature id="org.eclipse.help" version="1.1.1.R35x_v20090811-7e7eFAnFEx2XZoYz0uPgIfwD"/>
+      <feature id="org.eclipse.rcp" version="3.5.1.R35x_v20090811-9SA0FxVFqE70OL1ARMrfcO6e7BA6"/>
    </features>
 
    <configurations>
-      <plugin id="com.example.addressbook.services" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="4" />
+      <plugin id="org.springframework.osgi.extender" autoStart="false" startLevel="0" />
    </configurations>
 
 </product>

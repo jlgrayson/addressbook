@@ -103,15 +103,11 @@ Everyone is permitted to copy and distribute copies of this Agreement, but in or
 This Agreement is governed by the laws of the State of New York and the intellectual property laws of the United States of America. No party to this Agreement will bring a legal action under this Agreement more than one year after the cause of action arose. Each party waives its rights to a jury trial in any resulting litigation.
    </license>
 
-   <includes
-         id="org.eclipse.rcp"
-         version="0.0.0"/>
-
    <plugin
          id="com.example.addressbook.services"
          download-size="0"
          install-size="0"
-         version="1.0.0"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
@@ -123,6 +119,76 @@ This Agreement is governed by the laws of the State of New York and the intellec
 
    <plugin
          id="com.example.addressbook"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.springsource.org.aopalliance"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.springframework.util"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.springframework.aop"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.springframework.beans"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.springframework.context"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.springframework.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.springframework.osgi.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.springframework.osgi.extender"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.springframework.osgi.io"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.forms"
          download-size="0"
          install-size="0"
          version="0.0.0"
