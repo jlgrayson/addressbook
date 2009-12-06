@@ -23,6 +23,8 @@ public class AddressBookMessages extends NLS {
 	public static String ValidationError;
 	// General purpose: Validation error message
 	public static String SaveNotAllowedBecauseOfValidationError;
+	public static String LoadAddresses;
+	public static String RefreshAddressList;
 
 	static {
 		// initialize resource bundle

@@ -35,12 +35,14 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
 import com.example.addressbook.AddressBookMessages;
+import com.example.addressbook.editing.AddressEditorConstants;
 import com.example.addressbook.editing.AddressIdEditorInput;
 import com.example.addressbook.entities.Address;
 import com.example.addressbook.services.IAddressService;
@@ -85,6 +87,9 @@ public class AddressEditorPart extends EditorPart {
 		FormToolkit toolkit = new FormToolkit(partComposite.getDisplay());
 		final ScrolledForm form = toolkit.createScrolledForm(partComposite);
 		form.getBody().setLayout(new FillLayout());
+
+		// Set help context for Dynamic Help
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(partComposite, AddressEditorConstants.HELP_EDIT);
 
 		Section section = toolkit.createSection(form.getBody(), Section.TWISTIE | Section.TITLE_BAR);
 		section.setText(AddressBookMessages.Postal_Address);

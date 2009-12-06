@@ -13,7 +13,6 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.4.0",
 Import-Package: com.example.addressbook,
  com.example.addressbook.entities,
  com.example.addressbook.services,
- com.example.addressbook.utils,
  org.eclipse.springframework.util
 Export-Package: com.example.addressbook.editing
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

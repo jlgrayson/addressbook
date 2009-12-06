@@ -1,5 +1,11 @@
 package com.example.addressbook.internal.address.list;
 
+import java.util.List;
+
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -25,6 +31,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.progress.UIJob;
 
 import com.example.addressbook.AddressBookMessages;
 import com.example.addressbook.AddressBookResources;
@@ -33,6 +40,33 @@ import com.example.addressbook.services.IAddressChangeListener;
 import com.example.addressbook.services.IAddressService;
 
 public class AddressListViewPart extends ViewPart {
+
+	/**
+	 * Job which loads the list of addresses and schedules an UIJob to refresh
+	 * the UI afterwards.
+	 */
+	public class LoadAddressesJob extends Job {
+
+		public LoadAddressesJob() {
+			super(AddressBookMessages.LoadAddresses);
+		}
+
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			final List<Address> addresses = addressService.getAllAddresses();
+			UIJob updateAddresesUiJob = new UIJob(AddressBookMessages.RefreshAddressList) {
+
+				@Override
+				public IStatus runInUIThread(IProgressMonitor monitor) {
+					tableViewer.setInput(addresses);
+					return Status.OK_STATUS;
+				}
+			};
+			updateAddresesUiJob.schedule();
+			return Status.OK_STATUS;
+		}
+
+	}
 
 	private TableViewer tableViewer;
 
@@ -163,7 +197,6 @@ public class AddressListViewPart extends ViewPart {
 	}
 
 	public void refresh() {
-		tableViewer.setInput(addressService.getAllAddresses());
+		new LoadAddressesJob().schedule();
 	}
-
 }
