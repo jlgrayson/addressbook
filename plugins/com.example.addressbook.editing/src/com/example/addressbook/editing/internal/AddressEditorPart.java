@@ -31,7 +31,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -91,10 +90,6 @@ public class AddressEditorPart extends EditorPart {
 
 		// Set help context for Dynamic Help
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(partComposite, AddressEditorConstants.HELP_EDIT);
-
-		// Name
-		Label lblName = new Label(partComposite, SWT.NONE);
-		lblName.setText(AddressBookMessages.Name + AddressBookMessages.Field_Mark);
 
 		Section section = toolkit.createSection(form.getBody(), Section.TWISTIE | Section.TITLE_BAR);
 		section.setText(AddressBookMessages.Postal_Address);
