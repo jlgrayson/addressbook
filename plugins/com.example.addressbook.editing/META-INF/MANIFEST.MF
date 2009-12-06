@@ -8,8 +8,7 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.4.0",
  org.eclipse.core.runtime;bundle-version="3.4.0"
 Import-Package: com.example.addressbook,
  com.example.addressbook.entities,
- com.example.addressbook.services,
- com.example.addressbook.utils
+ com.example.addressbook.services
 Export-Package: com.example.addressbook.editing
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
