@@ -126,7 +126,6 @@ This Agreement is governed by the laws of the State of New York and the intellec
 
    <features>
       <feature id="com.example.addressbook.feature" version="1.0.0"/>
-      <feature id="org.eclipse.rcp" version="0.0.0"/>
    </features>
 
 
