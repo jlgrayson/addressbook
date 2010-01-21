@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.5"?>
 
-<target name="Eclipse RCP 3.5">
+<target name="Eclipse RCP">
 <locations>
 <location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
-<unit id="org.eclipse.help.source.feature.group" version="1.1.1.R35x_v20090811-7e7eFAnFEx2XZoYz0uPgIfwD"/>
-<unit id="org.eclipse.help.feature.group" version="1.1.1.R35x_v20090811-7e7eFAnFEx2XZoYz0uPgIfwD"/>
-<repository location="http://download.eclipse.org/releases/galileo"/>
-</location>
-<location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
-<unit id="org.eclipse.equinox.executable.feature.group" version="3.3.200.R35x_v20090724-7M-FneFF9aMTyz0pw04ONXn"/>
-<repository location="http://download.eclipse.org/releases/galileo"/>
-</location>
-<location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
 <unit id="org.eclipse.rcp.sdk.id" version="3.5.1.M20090917-0800"/>
+<unit id="org.eclipse.equinox.executable.feature.group" version="3.3.200.R35x_v20090724-7M-FneFF9aMTyz0pw04ONXn"/>
 <repository location="http://download.eclipse.org/releases/galileo"/>
 </location>
 </locations>
