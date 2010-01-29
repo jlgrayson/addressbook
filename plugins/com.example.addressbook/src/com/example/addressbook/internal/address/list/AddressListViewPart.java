@@ -106,7 +106,7 @@ public class AddressListViewPart extends ViewPart {
 
 		// Create JFace viewer
 		tableViewer = new TableViewer(tableComposite, SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL);
-		tableViewer.setContentProvider(new ArrayContentProvider());
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 
 		// Configure underlying SWT table
 		final Table table = tableViewer.getTable();

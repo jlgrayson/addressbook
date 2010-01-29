@@ -128,7 +128,7 @@ public class AddressEditorPart extends EditorPart {
 		cvCountry = new ComboViewer(parent, SWT.READ_ONLY);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).span(2, 1).applyTo(
 				cvCountry.getCombo());
-		cvCountry.setContentProvider(new ArrayContentProvider());
+		cvCountry.setContentProvider(ArrayContentProvider.getInstance());
 		cvCountry.setLabelProvider(new CountryLabelProvider());
 		cvCountry.setInput(addressService.getAllCountries());
 
