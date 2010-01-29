@@ -10,6 +10,6 @@
 <unit id="org.eclipse.rcp.sdk.id" version="3.5.1.M20090917-0800"/>
 <repository location="http://download.eclipse.org/releases/galileo"/>
 </location>
-<location path="${container_loc}/target_extras/" type="Directory"/>
+<location path="${project_loc}/target_extras/" type="Directory"/>
 </locations>
 </target>
