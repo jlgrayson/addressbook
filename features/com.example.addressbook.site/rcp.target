@@ -11,5 +11,9 @@
 <unit id="org.eclipse.ui.forms" version="3.4.1.v20090714_35x"/>
 <repository location="http://download.eclipse.org/releases/galileo"/>
 </location>
+<location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
+<unit id="org.eclipse.rcp.nl_de.feature.group" version="3.5.0"/>
+<repository location="http://github.com/ralfebert/rcp_babel.git/site/"/>
+</location>
 </locations>
 </target>

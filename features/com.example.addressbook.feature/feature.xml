@@ -111,6 +111,10 @@ This Agreement is governed by the laws of the State of New York and the intellec
          id="org.eclipse.rcp"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.babel.nls_eclipse_de"
+         version="0.0.0"/>
+
    <plugin
          id="com.example.addressbook.services"
          download-size="0"
