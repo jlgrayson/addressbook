@@ -5,7 +5,7 @@ package com.example.addressbook.entities;
  */
 public class Address {
 
-	private final Integer id;
+	private Integer id;
 	private String name, street, zip, city;
 	private Country country;
 
@@ -20,6 +20,9 @@ public class Address {
 
 	public Address(Address adr) {
 		this(adr.id, adr.name, adr.street, adr.zip, adr.city, adr.country);
+	}
+
+	public Address() {
 	}
 
 	public Integer getId() {
