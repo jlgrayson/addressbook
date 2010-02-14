@@ -12,6 +12,22 @@
       </application>
    </extension>
    <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="com.example.addressbook.application"
+            name="Address Book">
+         <property
+               name="appName"
+               value="Address Book">
+         </property>
+         <property
+               name="aboutText"
+               value="%Address_Book">
+         </property>
+      </product>
+   </extension>
+   <extension
          point="org.eclipse.ui.perspectives">
       <perspective
             class="com.example.addressbook.internal.address.AddressPerspective"
@@ -144,6 +160,14 @@
                id="window"
                label="%Window">
             <command
+                  commandId="org.eclipse.ui.window.preferences"
+                  style="push">
+            </command>
+            <separator
+                  name="com.example.addressbook.separator2"
+                  visible="true">
+            </separator>
+            <command
                   commandId="org.eclipse.ui.window.resetPerspective"
                   style="push">
             </command>
@@ -151,6 +175,22 @@
          <menu
                id="help"
                label="%Help">
+            <command
+                  commandId="org.eclipse.ui.help.helpContents"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.help.helpSearch"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.help.dynamicHelp"
+                  style="push">
+            </command>
+            <separator
+                  name="com.example.addressbook.separator1"
+                  visible="true">
+            </separator>
             <command
                   commandId="org.eclipse.ui.help.aboutAction"
                   style="push">
@@ -200,32 +240,20 @@
       </handler>>
    </extension>
    <extension
-         id="product"
-         point="org.eclipse.core.runtime.products">
-      <product
-            application="com.example.addressbook.application"
-            name="Address Book">
-         <property
-               name="appName"
-               value="Address Book">
-         </property>
-         <property
-               name="aboutText"
-               value="%Address_Book">
-         </property>
-         <property
-               name="preferenceCustomization"
-               value="plugin_customization.ini">
-         </property>
-      </product>
-   </extension>
-   <extension
          point="org.eclipse.ui.bindings">
       <key
             commandId="org.eclipse.ui.help.dynamicHelp"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="F1">
       </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.eclipse.ui.ExtensionFactory:newKeysPreferencePage"
+            id="newKeysPreferencePage"
+            name="Keys">
+      </page>
    </extension>
 
 </plugin>
