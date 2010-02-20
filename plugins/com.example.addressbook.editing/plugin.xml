@@ -7,34 +7,15 @@
             class="com.example.addressbook.editing.internal.AddressEditorPart"
             default="false"
             icon="icons/user_orange.png"
-            id="com.example.addressbook.editor"
+            id="com.example.addressbook.editing.Address"
             name="%Address">
       </editor>
-   </extension>
-   <extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            locationURI="popup:com.example.addressbook.addresslist">
-         <command
-               commandId="com.example.addressbook.editor.open"
-               icon="icons/user_orange.png"
-               id="com.example.addressbook.editor.open.default"
-               style="push">
-         </command>
-      </menuContribution>
-   </extension>
-   <extension
-         point="org.eclipse.ui.commands">
-      <command
-            id="com.example.addressbook.editor.open"
-            name="%OpenAddress">
-      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
             class="com.example.addressbook.editing.internal.OpenAddressEditorHandler"
-            commandId="com.example.addressbook.editor.open">
+            commandId="com.example.addressbook.open">
          <activeWhen>
             <with
                   variable="selection">

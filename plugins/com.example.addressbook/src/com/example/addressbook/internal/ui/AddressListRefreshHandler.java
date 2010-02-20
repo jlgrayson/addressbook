@@ -1,4 +1,4 @@
-package com.example.addressbook.internal.address.list;
+package com.example.addressbook.internal.ui;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;

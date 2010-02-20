@@ -30,18 +30,18 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="com.example.addressbook.internal.address.AddressPerspective"
+            class="com.example.addressbook.internal.ui.AddressPerspective"
             icon="icons/book.png"
-            id="com.example.addressbook.addressPerspective"
+            id="com.example.addressbook.AddressPerspective"
             name="%Addresses">
       </perspective>
    </extension>
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="com.example.addressbook.internal.address.list.AddressListViewPart"
+            class="com.example.addressbook.internal.ui.AddressListViewPart"
             icon="icons/book.png"
-            id="com.example.addressbook.addresslist"
+            id="com.example.addressbook.AddressList"
             name="%Addresses"
             restorable="true">
       </view>
@@ -51,6 +51,13 @@
         	icon="/icons/pview.gif"
 			allowMultiple="false"
         	name="%progress"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="com.example.addressbook.open"
+            name="%Open">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -207,11 +214,18 @@
             </command>
          </toolbar>
       </menuContribution>
+      <menuContribution
+            locationURI="popup:com.example.addressbook.AddressList">
+         <command
+               commandId="com.example.addressbook.open"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.example.addressbook.internal.address.list.AddressListRefreshHandler"
+            class="com.example.addressbook.internal.ui.AddressListRefreshHandler"
             commandId="org.eclipse.ui.file.refresh">
          <activeWhen>
             <with
@@ -223,7 +237,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="com.example.addressbook.internal.address.list.AddressDeleteHandler"
+            class="com.example.addressbook.internal.ui.AddressDeleteHandler"
             commandId="org.eclipse.ui.edit.delete">
          <activeWhen>
             <with
@@ -255,5 +269,4 @@
             name="Keys">
       </page>
    </extension>
-
 </plugin>

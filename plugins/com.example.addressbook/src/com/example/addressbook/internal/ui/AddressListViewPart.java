@@ -1,4 +1,4 @@
-package com.example.addressbook.internal.address.list;
+package com.example.addressbook.internal.ui;
 
 import java.util.List;
 
@@ -16,6 +16,8 @@ import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
@@ -29,10 +31,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.UIJob;
 
+import com.example.addressbook.AddressBook;
 import com.example.addressbook.AddressBookMessages;
 import com.example.addressbook.AddressBookResources;
 import com.example.addressbook.entities.Address;
@@ -94,16 +100,6 @@ public class AddressListViewPart extends ViewPart {
 		// Separate composite to embed the table
 		Composite tableComposite = new Composite(parent, SWT.NONE);
 
-		// Setup layout for parent
-		GridLayoutFactory.fillDefaults().numColumns(1).applyTo(parent);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).applyTo(searchComposite);
-		GridDataFactory.fillDefaults().grab(true, true).applyTo(tableComposite);
-
-		// Setup layout for searchComposite
-		GridLayoutFactory.fillDefaults().numColumns(2).margins(5, 5).applyTo(searchComposite);
-		GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).applyTo(searchLabel);
-		GridDataFactory.fillDefaults().grab(true, false).applyTo(searchText);
-
 		// Create JFace viewer
 		tableViewer = new TableViewer(tableComposite, SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL);
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
@@ -124,12 +120,6 @@ public class AddressListViewPart extends ViewPart {
 			}
 
 		});
-
-		// Setup layout to use percental column widths
-		// Composite with TableColumnLayout may only include the Table widget!
-		TableColumnLayout tableLayout = new TableColumnLayout();
-		tableComposite.setLayout(tableLayout);
-		tableLayout.setColumnData(colName.getColumn(), new ColumnWeightData(100));
 
 		// Sort
 		tableViewer.setComparator(new ViewerComparator() {
@@ -160,6 +150,23 @@ public class AddressListViewPart extends ViewPart {
 
 		});
 
+		// Setup open on double click
+		tableViewer.addDoubleClickListener(new IDoubleClickListener() {
+
+			@Override
+			public void doubleClick(DoubleClickEvent event) {
+				IHandlerService handlerService = (IHandlerService) getSite().getWorkbenchWindow().getWorkbench()
+						.getService(IHandlerService.class);
+				try {
+					handlerService.executeCommand(AddressBook.COMMAND_OPEN, null);
+				} catch (Exception e) {
+					// ignore
+				}
+
+			}
+
+		});
+
 		// Create a context menu using the JFace MenuManager and add a separator
 		// as placeholder for contributions
 		final MenuManager menuManager = new MenuManager();
@@ -171,17 +178,37 @@ public class AddressListViewPart extends ViewPart {
 		getSite().registerContextMenu(menuManager, tableViewer);
 		getSite().setSelectionProvider(tableViewer);
 
-		// Register for update events to refresh the view contents automatically
-		AddressbookServices.getAddressService().addAddressChangeListener(addressChangeListener);
+		// Layout for parent
+		GridLayoutFactory.fillDefaults().numColumns(1).applyTo(parent);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).applyTo(searchComposite);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(tableComposite);
+
+		// Layout for searchComposite
+		GridLayoutFactory.fillDefaults().numColumns(2).margins(5, 5).applyTo(searchComposite);
+		GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).applyTo(searchLabel);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(searchText);
+
+		// Layout for Table
+		TableColumnLayout tableLayout = new TableColumnLayout();
+		tableComposite.setLayout(tableLayout);
+		tableLayout.setColumnData(colName.getColumn(), new ColumnWeightData(100));
 
 		refresh();
+	}
+
+	@Override
+	public void init(IViewSite site) throws PartInitException {
+		super.init(site);
+
+		// Register for update events to refresh the view contents automatically
+		AddressbookServices.getAddressService().addAddressChangeListener(addressChangeListener);
 	}
 
 	@Override
 	public void dispose() {
 		super.dispose();
 		// Remove the change listener because otherwise the address service
-		// would call the view object even when it is already gone
+		// would call the view object even when this view is already gone
 		AddressbookServices.getAddressService().removeAddressChangeListener(addressChangeListener);
 	}
 
@@ -191,6 +218,8 @@ public class AddressListViewPart extends ViewPart {
 	}
 
 	public void refresh() {
-		new LoadAddressesJob().schedule();
+		if (tableViewer != null && !tableViewer.getTable().isDisposed()) {
+			new LoadAddressesJob().schedule();
+		}
 	}
 }

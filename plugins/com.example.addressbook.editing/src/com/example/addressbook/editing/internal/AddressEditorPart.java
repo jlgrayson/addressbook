@@ -28,7 +28,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 
 import com.example.addressbook.AddressBookMessages;
-import com.example.addressbook.editing.AddressEditorConstants;
+import com.example.addressbook.editing.AddressBookEditing;
 import com.example.addressbook.editing.AddressIdEditorInput;
 import com.example.addressbook.entities.Address;
 import com.example.addressbook.entities.Country;
@@ -64,7 +64,7 @@ public class AddressEditorPart extends EditorPart {
 	private void createUi(Composite parent) {
 
 		// Set help context for Dynamic Help
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, AddressEditorConstants.HELP_EDIT);
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, AddressBookEditing.HELP_EDIT);
 
 		// Name
 		Label lblName = new Label(parent, SWT.NONE);
