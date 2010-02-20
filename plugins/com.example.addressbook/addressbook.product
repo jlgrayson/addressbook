@@ -126,6 +126,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
 
    <features>
       <feature id="com.example.addressbook.feature" version="1.0.0"/>
+      <feature id="org.eclipse.equinox.executable" version="3.3.200.R35x_v20090724-7M-FneFF9aMTyz0pw04ONXn"/>
    </features>
 
 
