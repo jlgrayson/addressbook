@@ -6,7 +6,7 @@ public class TestTest {
 
 	@Test
 	public void test() {
-		//fail("test");
+		// fail("test");
 	}
-	
+
 }

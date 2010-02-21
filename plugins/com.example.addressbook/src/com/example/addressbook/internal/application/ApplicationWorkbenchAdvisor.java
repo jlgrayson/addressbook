@@ -6,7 +6,6 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
 import com.example.addressbook.AddressBook;
 
-
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
