@@ -85,7 +85,7 @@ public class AddressListViewPart extends WiredViewPart {
 	};
 
 	@Override
-	public void createUi(Composite parent) {
+	public void createPartControl(Composite parent) {
 
 		// Resources are managed with a ResourceManager and disposed when parent
 		// is disposed
@@ -192,6 +192,8 @@ public class AddressListViewPart extends WiredViewPart {
 		TableColumnLayout tableLayout = new TableColumnLayout();
 		tableComposite.setLayout(tableLayout);
 		tableLayout.setColumnData(colName.getColumn(), new ColumnWeightData(100));
+
+		refresh();
 	}
 
 	@InjectService

@@ -1,13 +1,13 @@
 package com.example.addressbook.editing.internal;
 
 import java.io.ByteArrayInputStream;
+import java.util.Collection;
+import java.util.Collections;
 
 import jgravatar.Gravatar;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.fieldassist.AutoCompleteField;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.progress.UIJob;
 
 import com.example.addressbook.AddressBookMessages;
 import com.example.addressbook.editing.AddressBookEditing;
@@ -50,7 +49,40 @@ import de.ralfebert.rcputils.wired.WiredEditorPart;
  */
 public class AddressEditorPart extends WiredEditorPart<AddressIdEditorInput> {
 
-	public class UpdateGravatarJob extends UIProcess {
+	private final class LoadAddressJob extends UIProcess {
+		private String[] cities;
+		private Collection<Country> countries;
+
+		private LoadAddressJob(Display display) {
+			super(display, "Loading address"); //$NON-NLS-1$
+		}
+
+		@Override
+		protected void runInBackground(IProgressMonitor monitor) {
+			address = (addressService != null) ? addressService.getAddress(getEditorInput().getId()) : null;
+			cities = (addressService != null) ? addressService.getAllCities() : new String[0];
+			countries = (addressService != null) ? addressService.getAllCountries() : Collections.<Country> emptyList();
+		}
+
+		@Override
+		protected void runInUIThread() {
+			if (isActive() && address != null) {
+				new AutoCompleteField(txtCity, new TextContentAdapter(), cities);
+				cvCountry.setInput(countries);
+				txtName.setText(address.getName());
+				txtStreet.setText(address.getStreet());
+				txtZip.setText(address.getZip());
+				txtCity.setText(address.getCity());
+				cvCountry.setSelection(new StructuredSelection(address.getCountry()));
+				txtEmail.setText(address.getEmail());
+				setPartName(address.getName());
+				setDirty(false);
+				updateGravatar();
+			}
+		}
+	}
+
+	private class UpdateGravatarJob extends UIProcess {
 
 		private final String email;
 		private byte[] imageBytes;
@@ -62,7 +94,7 @@ public class AddressEditorPart extends WiredEditorPart<AddressIdEditorInput> {
 
 		@Override
 		protected void runInBackground(IProgressMonitor monitor) {
-			if (StringUtils.isNotBlank(email)) {
+			if (isActive() && StringUtils.isNotBlank(email)) {
 				Gravatar gravatar = new Gravatar();
 				gravatar.setSize(GRAVATAR_SIZE);
 				imageBytes = gravatar.download(email);
@@ -88,6 +120,9 @@ public class AddressEditorPart extends WiredEditorPart<AddressIdEditorInput> {
 
 	private static final int GRAVATAR_SIZE = 60;
 
+	private IAddressService addressService;
+
+	private Address address;
 	private Text txtName;
 	private Text txtStreet;
 	private Text txtZip;
@@ -98,10 +133,8 @@ public class AddressEditorPart extends WiredEditorPart<AddressIdEditorInput> {
 	private boolean dirty;
 	private Label lblGravatar;
 
-	private IAddressService addressService;
-
 	@Override
-	protected void createUi(Composite parent) {
+	public void createPartControl(Composite parent) {
 
 		Color white = parent.getDisplay().getSystemColor(SWT.COLOR_WHITE);
 		parent.setBackground(white);
@@ -158,6 +191,7 @@ public class AddressEditorPart extends WiredEditorPart<AddressIdEditorInput> {
 		field.applyTo(cvCountry.getCombo());
 		field.applyTo(txtEmail);
 
+		refresh();
 		addDirtyOnChangeListeners();
 	}
 
@@ -169,16 +203,14 @@ public class AddressEditorPart extends WiredEditorPart<AddressIdEditorInput> {
 	}
 
 	private void refresh() {
-		Address address = addressService.getAddress(getEditorInput().getId());
-		txtName.setText(address.getName());
-		txtStreet.setText(address.getStreet());
-		txtZip.setText(address.getZip());
-		txtCity.setText(address.getCity());
-		cvCountry.setSelection(new StructuredSelection(address.getCountry()));
-		txtEmail.setText(address.getEmail());
-		setPartName(address.getName());
-		updateGravatar();
-		setDirty(false);
+		if (isActive()) {
+			LoadAddressJob job = new LoadAddressJob(getSite().getShell().getDisplay());
+			job.schedule();
+		}
+	}
+
+	private boolean isActive() {
+		return txtName != null && !txtName.isDisposed();
 	}
 
 	private void addDirtyOnChangeListeners() {
@@ -218,8 +250,6 @@ public class AddressEditorPart extends WiredEditorPart<AddressIdEditorInput> {
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-
-		Address address = addressService.getAddress(getEditorInput().getId());
 		address.setName(txtName.getText());
 		address.setStreet(txtStreet.getText());
 		address.setZip(txtZip.getText());
@@ -235,7 +265,8 @@ public class AddressEditorPart extends WiredEditorPart<AddressIdEditorInput> {
 	}
 
 	private void updateGravatar() {
-		new UpdateGravatarJob(getSite().getShell().getDisplay(), txtEmail.getText()).schedule();
+		String email = address != null ? address.getEmail() : null;
+		new UpdateGravatarJob(getSite().getShell().getDisplay(), email).schedule();
 	}
 
 	@Override
@@ -245,20 +276,13 @@ public class AddressEditorPart extends WiredEditorPart<AddressIdEditorInput> {
 
 	@InjectService
 	public void bindAddressService(final IAddressService addressService) {
-		new UIJob("Binding address editor") { //$NON-NLS-1$
-			@Override
-			public IStatus runInUIThread(IProgressMonitor monitor) {
-				AddressEditorPart.this.addressService = addressService;
-				new AutoCompleteField(txtCity, new TextContentAdapter(), addressService.getAllCities());
-				cvCountry.setInput(addressService.getAllCountries());
-				refresh();
-				return Status.OK_STATUS;
-			}
-		}.schedule();
+		this.addressService = addressService;
+		refresh();
 	}
 
 	public void unbindAddressService(IAddressService addressService) {
-		AddressEditorPart.this.addressService = null;
+		this.addressService = null;
+		refresh();
 	}
 
 }
