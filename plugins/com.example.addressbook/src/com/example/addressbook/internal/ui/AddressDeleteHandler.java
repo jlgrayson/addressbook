@@ -10,7 +10,7 @@ import org.osgi.service.log.LogService;
 import com.example.addressbook.entities.Address;
 import com.example.addressbook.services.IAddressService;
 
-import de.ralfebert.rcputils.jface.selection.SelectionUtils;
+import de.ralfebert.rcputils.selection.SelectionUtils;
 import de.ralfebert.rcputils.wired.WiredHandler;
 
 /**

@@ -242,6 +242,15 @@
             locationURI="popup:com.example.addressbook.AddressList">
          <command
                commandId="com.example.addressbook.open"
+               id="com.example.addressbook.open.default"
+               style="push">
+         </command>
+         <separator
+               name="com.example.addressbook.separator1"
+               visible="true">
+         </separator>
+         <command
+               commandId="org.eclipse.ui.edit.delete"
                style="push">
          </command>
       </menuContribution>

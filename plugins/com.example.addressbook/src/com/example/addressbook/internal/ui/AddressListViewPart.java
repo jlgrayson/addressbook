@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
@@ -14,8 +12,6 @@ import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
@@ -31,8 +27,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.handlers.IHandlerService;
 
 import com.example.addressbook.AddressBook;
 import com.example.addressbook.AddressBookMessages;
@@ -41,6 +35,7 @@ import com.example.addressbook.services.IAddressChangeListener;
 import com.example.addressbook.services.IAddressService;
 
 import de.ralfebert.rcputils.concurrent.UIProcess;
+import de.ralfebert.rcputils.menus.ContextMenu;
 import de.ralfebert.rcputils.wired.WiredViewPart;
 
 public class AddressListViewPart extends WiredViewPart {
@@ -149,33 +144,7 @@ public class AddressListViewPart extends WiredViewPart {
 
 		});
 
-		// Setup open on double click
-		tableViewer.addDoubleClickListener(new IDoubleClickListener() {
-
-			@Override
-			public void doubleClick(DoubleClickEvent event) {
-				IHandlerService handlerService = (IHandlerService) getSite().getWorkbenchWindow().getWorkbench()
-						.getService(IHandlerService.class);
-				try {
-					handlerService.executeCommand(AddressBook.COMMAND_OPEN, null);
-				} catch (Exception e) {
-					// ignore
-				}
-
-			}
-
-		});
-
-		// Create a context menu using the JFace MenuManager and add a separator
-		// as placeholder for contributions
-		final MenuManager menuManager = new MenuManager();
-		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-		// Create a SWT menu and set it to the table widget
-		table.setMenu(menuManager.createContextMenu(table));
-		// Register the context menu with the workbench so contributions can be
-		// made declaratively using org.eclipse.ui.menus
-		getSite().registerContextMenu(menuManager, tableViewer);
-		getSite().setSelectionProvider(tableViewer);
+		new ContextMenu(tableViewer, getSite(), true);
 
 		// Layout for parent
 		GridLayoutFactory.fillDefaults().numColumns(1).applyTo(parent);
@@ -193,6 +162,7 @@ public class AddressListViewPart extends WiredViewPart {
 		tableLayout.setColumnData(colName.getColumn(), new ColumnWeightData(100));
 
 		refresh();
+		parent.layout(true);
 	}
 
 	@InjectService

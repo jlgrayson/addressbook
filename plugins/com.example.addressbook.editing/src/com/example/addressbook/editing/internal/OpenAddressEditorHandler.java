@@ -12,7 +12,7 @@ import com.example.addressbook.editing.AddressBookEditing;
 import com.example.addressbook.editing.AddressIdEditorInput;
 import com.example.addressbook.entities.Address;
 
-import de.ralfebert.rcputils.jface.selection.SelectionUtils;
+import de.ralfebert.rcputils.selection.SelectionUtils;
 
 /**
  * Open address editors for all selected addresses.
