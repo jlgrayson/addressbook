@@ -5,13 +5,20 @@
 <locations>
 <location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
 <unit id="org.eclipse.rcp.sdk.id" version="3.5.1.M20090917-0800"/>
-<unit id="org.junit4" version="4.5.0.v20090824"/>
-<unit id="org.hamcrest.core" version="1.1.0.v20090501071000"/>
 <repository location="http://download.eclipse.org/releases/galileo"/>
 </location>
 <location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
 <unit id="org.eclipse.rcp.nl_de.feature.group" version="3.5.0"/>
 <repository location="http://www.ralfebert.de/projects/releases/"/>
+</location>
+<location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
+<unit id="org.eclipse.swtbot.eclipse.feature.group" version="2.0.0.502-dev-e35"/>
+<repository location="http://download.eclipse.org/technology/swtbot/galileo/dev-build/update-site"/>
+</location>
+<location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
+<unit id="org.junit" version="4.8.1.v4_8_1_v20100114-1600"/>
+<unit id="org.hamcrest.core" version="1.1.0.v20090501071000"/>
+<repository location="http://download.eclipse.org/releases/helios/201002042330/"/>
 </location>
 </locations>
 </target>

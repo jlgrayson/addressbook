@@ -29,4 +29,10 @@
          fragment="true"
          unpack="false"/>
 
+   <plugin
+         id="com.example.addressbook.uitests"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
 </feature>
