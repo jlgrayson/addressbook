@@ -97,7 +97,7 @@ public class AddressBookTests {
 	public void testEditAddress() {
 		SWTBotEditor editor = openAddressEditor();
 		assertEquals("Bernd Meyer", editor.getTitle());
-		assertFalse("Editor without change -> not dirty", editor.isDirty());
+		assertFalse("Editor without change should be not dirty", editor.isDirty());
 		SWTBot editorBot = editor.bot();
 		SWTBotText nameText = editorBot.textWithLabel("Name:");
 		assertTrue("Name field focused", nameText.isActive());
@@ -105,9 +105,9 @@ public class AddressBookTests {
 		editorBot.textWithLabel("Street:").setText("Musterstrasse");
 		editorBot.textWithLabel("Zip, City:").setText("01234");
 
-		assertTrue("Editor after change -> dirty", editor.isDirty());
+		assertTrue("Editor after change should be dirty", editor.isDirty());
 		new CommandFinder().findCommand(CoreMatchers.equalTo("Save")).get(0).click();
-		assertFalse("Editor after save -> not dirty", editor.isDirty());
+		assertFalse("Editor after save should be not dirty", editor.isDirty());
 		editor.close();
 	}
 
