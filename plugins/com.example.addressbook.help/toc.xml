@@ -2,7 +2,7 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="Adressbuch">
-	<topic label="Main Topic"  href="html/maintopic.html"> 
+	<topic label="Adressen"  href="html/maintopic.html"> 
 		<topic label="Sub Topic" href="html/subtopic.html"/> 
 	</topic>
 	<topic label="Main Topic 2"/>
