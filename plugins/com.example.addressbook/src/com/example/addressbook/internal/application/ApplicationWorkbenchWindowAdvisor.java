@@ -24,7 +24,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
 		configurer.setInitialSize(new Point(800, 600));
 		configurer.setShowCoolBar(true);
-		configurer.setShowStatusLine(false);
+		configurer.setShowStatusLine(true);
 		configurer.setShowPerspectiveBar(true);
 		configurer.setShowProgressIndicator(true);
 		configurer.setTitle(AddressBookMessages.Address_Book);
