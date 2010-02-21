@@ -41,6 +41,7 @@ Import-Package: com.example.addressbook,
  org.eclipse.ui.handlers,
  org.eclipse.ui.help,
  org.eclipse.ui.part;ui.workbench=split,
+ org.eclipse.ui.plugin,
  org.eclipse.ui.progress,
  org.osgi.framework;version="1.5.0"
 Export-Package: com.example.addressbook.editing

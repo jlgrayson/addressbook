@@ -3,6 +3,7 @@ package com.example.addressbook.editing.internal;
 import java.io.ByteArrayInputStream;
 
 import jgravatar.Gravatar;
+import jgravatar.GravatarDefaultImage;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.databinding.Binding;
@@ -53,7 +54,7 @@ public class AddressEditorPart extends WiredModelDataBindingEditorPart<AddressId
 	private Text txtName;
 
 	@Override
-	protected void onCreatePartControl(Composite parent) {
+	protected void onCreateUi(Composite parent) {
 
 		// Help Context
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, AddressBookEditing.HELP_EDIT);
@@ -63,7 +64,7 @@ public class AddressEditorPart extends WiredModelDataBindingEditorPart<AddressId
 		txtName = new Text(parent, SWT.BORDER);
 
 		// Gravatar
-		Label lblGravatar = new Label(parent, SWT.BORDER);
+		Label lblGravatar = new Label(parent, SWT.NONE);
 
 		// Steet
 		createLabel(parent, AddressBookMessages.Street);
@@ -175,6 +176,7 @@ public class AddressEditorPart extends WiredModelDataBindingEditorPart<AddressId
 			if (StringUtils.isNotBlank(email)) {
 				Gravatar gravatar = new Gravatar();
 				gravatar.setSize(GRAVATAR_SIZE);
+				gravatar.setDefaultImage(GravatarDefaultImage.IDENTICON);
 				imageBytes = gravatar.download(email);
 			}
 		}
@@ -182,17 +184,22 @@ public class AddressEditorPart extends WiredModelDataBindingEditorPart<AddressId
 		@Override
 		protected void runInUIThread() {
 			Image newImage = null;
+			Image newSmallImage = null;
 			if (imageBytes != null) {
 				newImage = new Image(getDisplay(), new ByteArrayInputStream(imageBytes));
+				newSmallImage = new Image(getDisplay(), newImage.getImageData().scaledTo(24, 24));
 			}
+
+			// set large gravatar image
 			Image oldImage = (Image) uiGravatarImage.getValue();
 			uiGravatarImage.setValue(newImage);
-			setTitleImage(newImage);
 			if (oldImage != null) {
 				oldImage.dispose();
 			}
-		}
 
+			// set small title image
+			setTitleImage(newSmallImage);
+		}
 	}
 
 	private Label createLabel(Composite parent, String text) {

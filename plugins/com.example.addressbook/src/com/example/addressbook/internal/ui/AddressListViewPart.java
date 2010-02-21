@@ -36,7 +36,6 @@ import org.eclipse.ui.handlers.IHandlerService;
 
 import com.example.addressbook.AddressBook;
 import com.example.addressbook.AddressBookMessages;
-import com.example.addressbook.AddressBookResources;
 import com.example.addressbook.entities.Address;
 import com.example.addressbook.services.IAddressChangeListener;
 import com.example.addressbook.services.IAddressService;
@@ -94,7 +93,7 @@ public class AddressListViewPart extends WiredViewPart {
 		// Search control
 		Composite searchComposite = new Composite(parent, SWT.NONE);
 		Label searchLabel = new Label(searchComposite, SWT.NONE);
-		searchLabel.setImage(resources.createImage(AddressBookResources.ICON_MAGNIFIER));
+		searchLabel.setImage(resources.createImage(AddressBook.ICON_MAGNIFIER));
 		final Text searchText = new Text(searchComposite, SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH | SWT.ICON_CANCEL);
 
 		// Separate composite to embed the table
@@ -218,6 +217,8 @@ public class AddressListViewPart extends WiredViewPart {
 	}
 
 	public void refresh() {
-		new LoadAddressesJob(getSite().getShell().getDisplay()).schedule();
+		if (tableViewer != null && !tableViewer.getTable().isDisposed()) {
+			new LoadAddressesJob(getSite().getShell().getDisplay()).schedule();
+		}
 	}
 }
