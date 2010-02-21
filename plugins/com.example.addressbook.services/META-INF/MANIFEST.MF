@@ -9,4 +9,5 @@ Bundle-Vendor: Ralf Ebert
 Bundle-Activator: com.example.addressbook.services.internal.Activator
 Import-Package: com.example.addressbook.entities,
  com.example.addressbook.services,
+ de.ralfebert.rcputils.random,
  org.osgi.framework;version="1.5.0"

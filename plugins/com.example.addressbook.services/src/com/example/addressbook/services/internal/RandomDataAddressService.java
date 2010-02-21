@@ -15,6 +15,8 @@ import com.example.addressbook.entities.Country;
 import com.example.addressbook.services.IAddressChangeListener;
 import com.example.addressbook.services.IAddressService;
 
+import de.ralfebert.rcputils.random.RandomData;
+
 public class RandomDataAddressService implements IAddressService {
 
 	private final AtomicInteger idSequence = new AtomicInteger(0);
@@ -82,8 +84,7 @@ public class RandomDataAddressService implements IAddressService {
 	}
 
 	public Address getAddress(int id) {
-		for (Iterator<Address> i = addresses.iterator(); i.hasNext();) {
-			Address address = i.next();
+		for (Address address : addresses) {
 			if (address.getId() == id) {
 				return new Address(address);
 			}
@@ -101,8 +102,7 @@ public class RandomDataAddressService implements IAddressService {
 			return new Address(createdAdr);
 		} else {
 			// change existing address
-			for (Iterator<Address> i = addresses.iterator(); i.hasNext();) {
-				Address address = i.next();
+			for (Address address : addresses) {
 				if (address.getId() == changedOrNewAddress.getId()) {
 					address.setName(changedOrNewAddress.getName());
 					address.setStreet(changedOrNewAddress.getStreet());
