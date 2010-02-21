@@ -21,6 +21,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -72,33 +73,32 @@ public class AddressEditorPart extends EditorPart {
 
 	private void createUi(Composite parent) {
 
+		Color white = parent.getDisplay().getSystemColor(SWT.COLOR_WHITE);
+		parent.setBackground(white);
+
 		// Set help context for Dynamic Help
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, AddressBookEditing.HELP_EDIT);
 
 		// Name
-		Label lblName = new Label(parent, SWT.NONE);
-		lblName.setText(AddressBookMessages.Name + AddressBookMessages.Field_Mark);
-
+		createLabel(parent, AddressBookMessages.Name);
 		txtName = new Text(parent, SWT.BORDER);
 
 		// Gravatar
 		lblGravatar = new Label(parent, SWT.NONE);
+		lblGravatar.setBackground(white);
 		lblGravatar.setData("org.eclipse.swtbot.widget.key", "gravatar"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		// Street
-		Label lblStreet = new Label(parent, SWT.NONE);
-		lblStreet.setText(AddressBookMessages.Street + AddressBookMessages.Field_Mark);
-
+		createLabel(parent, AddressBookMessages.Street);
 		txtStreet = new Text(parent, SWT.BORDER);
 		txtStreet.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 		// Zip / City
-		Label lblZipCity = new Label(parent, SWT.NONE);
-		lblZipCity.setText(AddressBookMessages.Zip + AddressBookMessages.Field_Separator + AddressBookMessages.City
-				+ AddressBookMessages.Field_Mark);
-
+		createLabel(parent, AddressBookMessages.Zip + AddressBookMessages.Field_Separator + AddressBookMessages.City);
 		txtZip = new Text(parent, SWT.BORDER);
+		txtZip.setBackground(white);
 		txtCity = new Text(parent, SWT.BORDER);
+		txtCity.setBackground(white);
 
 		ControlDecoration decoration = new ControlDecoration(txtCity, SWT.RIGHT | SWT.TOP);
 		Image errorImage = FieldDecorationRegistry.getDefault().getFieldDecoration(
@@ -108,33 +108,35 @@ public class AddressEditorPart extends EditorPart {
 		new AutoCompleteField(txtCity, new TextContentAdapter(), AddressbookServices.getAddressService().getAllCities());
 
 		// Country
-		Label lblCountry = new Label(parent, SWT.NONE);
-		lblCountry.setText(AddressBookMessages.Country + AddressBookMessages.Field_Mark);
-
+		createLabel(parent, AddressBookMessages.Country);
 		cvCountry = new ComboViewer(parent, SWT.READ_ONLY);
 		cvCountry.setContentProvider(ArrayContentProvider.getInstance());
 		cvCountry.setLabelProvider(new CountryLabelProvider());
 		cvCountry.setInput(AddressbookServices.getAddressService().getAllCountries());
 
 		// E-Mail
-		Label lblEmail = new Label(parent, SWT.NONE);
-		lblEmail.setText(AddressBookMessages.Email + AddressBookMessages.Field_Mark);
-
+		createLabel(parent, AddressBookMessages.Email);
 		txtEmail = new Text(parent, SWT.BORDER);
 		txtEmail.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 		// Layout
 		GridLayoutFactory.fillDefaults().margins(10, 10).spacing(6, 3).numColumns(4).applyTo(parent);
-		GridDataFactory simpleField = GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).span(2,
-				1);
-		simpleField.applyTo(txtName);
+		GridDataFactory field = GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).span(2, 1);
+		field.applyTo(txtName);
 		GridDataFactory.fillDefaults().span(1, 5).hint(GRAVATAR_SIZE, GRAVATAR_SIZE).align(SWT.LEFT, SWT.TOP).indent(
 				20, 0).applyTo(lblGravatar);
-		simpleField.applyTo(txtStreet);
+		field.applyTo(txtStreet);
 		GridDataFactory.fillDefaults().hint(50, SWT.DEFAULT).applyTo(txtZip);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).applyTo(txtCity);
-		simpleField.applyTo(cvCountry.getCombo());
-		simpleField.applyTo(txtEmail);
+		field.applyTo(cvCountry.getCombo());
+		field.applyTo(txtEmail);
+	}
+
+	private Label createLabel(Composite parent, String text) {
+		Label label = new Label(parent, SWT.NONE);
+		label.setText(text + AddressBookMessages.Field_Mark);
+		label.setBackground(parent.getBackground());
+		return label;
 	}
 
 	private void loadModel() {

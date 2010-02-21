@@ -269,4 +269,23 @@
             name="Keys">
       </page>
    </extension>
+   <extension
+         point="org.eclipse.ui.themes">
+      <theme
+            id="com.example.addressbook.theme"
+            name="Address Book Theme">
+         <colorOverride
+               id="org.eclipse.ui.workbench.ACTIVE_TAB_BG_START"
+               value="140,175,200">
+         </colorOverride>
+         <colorOverride
+               id="org.eclipse.ui.workbench.ACTIVE_TAB_BG_END"
+               value="140,175,200">
+         </colorOverride>
+         <colorOverride
+               id="org.eclipse.ui.workbench.ACTIVE_TAB_TEXT_COLOR"
+               value="COLOR_WHITE">
+         </colorOverride>
+      </theme>
+   </extension>
 </plugin>
