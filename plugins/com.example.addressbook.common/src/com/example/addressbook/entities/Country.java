@@ -9,7 +9,7 @@ public class Country {
 
 	public Country() {
 	}
-	
+
 	public Country(String name) {
 		super();
 		this.name = name;
@@ -18,7 +18,7 @@ public class Country {
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}

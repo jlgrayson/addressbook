@@ -3,10 +3,10 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Address Book Services
 Bundle-SymbolicName: com.example.addressbook.services
 Bundle-Version: 1.0.0
-Export-Package: com.example.addressbook.entities,
- com.example.addressbook.services
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: Ralf Ebert
 Bundle-Activator: com.example.addressbook.services.internal.Activator
-Import-Package: org.osgi.framework;version="1.5.0"
+Import-Package: com.example.addressbook.entities,
+ com.example.addressbook.services,
+ org.osgi.framework;version="1.5.0"
