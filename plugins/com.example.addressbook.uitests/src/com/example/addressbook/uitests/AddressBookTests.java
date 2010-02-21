@@ -17,6 +17,7 @@ import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.IntResult;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
+import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotLabel;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
@@ -137,7 +138,18 @@ public class AddressBookTests {
     	final SWTBotLabel gravatar = editorBot.labelWithId("gravatar");
 		assertNull(gravatar.image());
     	editor.save();
-    	assertNotNull(gravatar.image());
+    	editorBot.waitUntil(new DefaultCondition() {
+			
+			@Override
+			public boolean test() throws Exception {
+				return gravatar.image()!=null;
+			}
+			
+			@Override
+			public String getFailureMessage() {
+				return "no gravatar loaded";
+			}
+		});
     	int gravatarSize = UIThreadRunnable.syncExec(new IntResult() {
 			
 			@Override
@@ -145,7 +157,7 @@ public class AddressBookTests {
 				return gravatar.widget.getSize().x;
 			}
 		});
-		assertEquals(50, gravatarSize);
+		assertEquals(60, gravatarSize);
 	}
     
 }
