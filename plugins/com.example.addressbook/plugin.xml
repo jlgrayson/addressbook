@@ -55,7 +55,7 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             class="com.example.addressbook.internal.ui.AddressPerspective"
-            icon="icons/book.png"
+            icon="icons/book_16.png"
             id="com.example.addressbook.AddressPerspective"
             name="%Addresses">
       </perspective>
