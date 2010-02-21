@@ -5,7 +5,8 @@
 <locations>
 <location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
 <unit id="org.eclipse.rcp.sdk.id" version="3.5.1.M20090917-0800"/>
-<unit id="org.eclipse.equinox.executable.feature.group" version="3.3.200.R35x_v20090724-7M-FneFF9aMTyz0pw04ONXn"/>
+<unit id="org.junit4" version="4.5.0.v20090824"/>
+<unit id="org.hamcrest.core" version="1.1.0.v20090501071000"/>
 <repository location="http://download.eclipse.org/releases/galileo"/>
 </location>
 </locations>
