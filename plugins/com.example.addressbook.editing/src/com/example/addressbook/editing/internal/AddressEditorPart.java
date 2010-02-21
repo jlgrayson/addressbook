@@ -1,5 +1,10 @@
 package com.example.addressbook.editing.internal;
 
+import java.io.ByteArrayInputStream;
+
+import jgravatar.Gravatar;
+
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.fieldassist.AutoCompleteField;
 import org.eclipse.jface.fieldassist.ControlDecoration;
@@ -40,13 +45,17 @@ import com.example.addressbook.services.AddressbookServices;
  */
 public class AddressEditorPart extends EditorPart {
 
+	private static final int GRAVATAR_SIZE = 50;
+
 	private Text txtName;
 	private Text txtStreet;
 	private Text txtZip;
 	private Text txtCity;
 	private ComboViewer cvCountry;
+	private Text txtEmail;
 
 	private boolean dirty;
+	private Label lblGravatar;
 
 	@Override
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
@@ -71,6 +80,10 @@ public class AddressEditorPart extends EditorPart {
 		lblName.setText(AddressBookMessages.Name + AddressBookMessages.Field_Mark);
 
 		txtName = new Text(parent, SWT.BORDER);
+
+		// Gravatar
+		lblGravatar = new Label(parent, SWT.NONE);
+		lblGravatar.setData("org.eclipse.swtbot.widget.key", "gravatar"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		// Street
 		Label lblStreet = new Label(parent, SWT.NONE);
@@ -99,19 +112,29 @@ public class AddressEditorPart extends EditorPart {
 		lblCountry.setText(AddressBookMessages.Country + AddressBookMessages.Field_Mark);
 
 		cvCountry = new ComboViewer(parent, SWT.READ_ONLY);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).span(2, 1).applyTo(
-				cvCountry.getCombo());
 		cvCountry.setContentProvider(ArrayContentProvider.getInstance());
 		cvCountry.setLabelProvider(new CountryLabelProvider());
 		cvCountry.setInput(AddressbookServices.getAddressService().getAllCountries());
 
+		// E-Mail
+		Label lblEmail = new Label(parent, SWT.NONE);
+		lblEmail.setText(AddressBookMessages.Email + AddressBookMessages.Field_Mark);
+
+		txtEmail = new Text(parent, SWT.BORDER);
+		txtEmail.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+
 		// Layout
-		GridLayoutFactory.fillDefaults().margins(5, 5).spacing(5, 3).numColumns(3).applyTo(parent);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).span(2, 1).applyTo(txtName);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).span(2, 1).applyTo(txtStreet);
+		GridLayoutFactory.fillDefaults().margins(10, 10).spacing(6, 3).numColumns(4).applyTo(parent);
+		GridDataFactory simpleField = GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).span(2,
+				1);
+		simpleField.applyTo(txtName);
+		GridDataFactory.fillDefaults().span(1, 5).hint(GRAVATAR_SIZE, GRAVATAR_SIZE).align(SWT.LEFT, SWT.TOP).indent(
+				20, 0).applyTo(lblGravatar);
+		simpleField.applyTo(txtStreet);
 		GridDataFactory.fillDefaults().hint(50, SWT.DEFAULT).applyTo(txtZip);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).applyTo(txtCity);
-
+		simpleField.applyTo(cvCountry.getCombo());
+		simpleField.applyTo(txtEmail);
 	}
 
 	private void loadModel() {
@@ -121,7 +144,9 @@ public class AddressEditorPart extends EditorPart {
 		txtZip.setText(address.getZip());
 		txtCity.setText(address.getCity());
 		cvCountry.setSelection(new StructuredSelection(address.getCountry()));
+		txtEmail.setText(address.getEmail());
 		setPartName(address.getName());
+		updateGravatar();
 	}
 
 	private void addDirtyOnChangeListeners() {
@@ -137,6 +162,7 @@ public class AddressEditorPart extends EditorPart {
 		txtStreet.addModifyListener(modifyListener);
 		txtZip.addModifyListener(modifyListener);
 		txtCity.addModifyListener(modifyListener);
+		txtEmail.addModifyListener(modifyListener);
 
 		ISelectionChangedListener changedListener = new ISelectionChangedListener() {
 
@@ -168,11 +194,30 @@ public class AddressEditorPart extends EditorPart {
 		address.setCity(txtCity.getText());
 		IStructuredSelection selection = (IStructuredSelection) cvCountry.getSelection();
 		address.setCountry((Country) selection.getFirstElement());
+		address.setEmail(txtEmail.getText());
 
 		AddressbookServices.getAddressService().saveAddress(address);
 
 		loadModel();
 		setDirty(false);
+	}
+
+	private void updateGravatar() {
+		String email = txtEmail.getText();
+		Image newImage = null;
+		if (StringUtils.isNotBlank(email)) {
+			Gravatar gravatar = new Gravatar();
+			gravatar.setSize(GRAVATAR_SIZE);
+			byte[] imageBytes = gravatar.download(email);
+			if (imageBytes != null) {
+				newImage = new Image(lblGravatar.getDisplay(), new ByteArrayInputStream(imageBytes));
+			}
+		}
+		if (lblGravatar.getImage() != null) {
+			lblGravatar.getImage().dispose();
+		}
+		lblGravatar.setImage(newImage);
+		lblGravatar.getParent().layout();
 	}
 
 	@Override

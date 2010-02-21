@@ -30,11 +30,17 @@ public class RandomDataAddressService implements IAddressService {
 		}
 
 		addresses = new ArrayList<Address>();
-		RandomData rd = new RandomData(1);
 		for (int i = 1; i <= 50; i++) {
-			addresses.add(new Address(idSequence.incrementAndGet(), rd.somePersonName(), rd.someStreet(), rd
-					.someZipCode(), rd.someCity(), rd.someElement(countries)));
-			rd.newData();
+			RandomData rd = new RandomData(i);
+			Address address = new Address();
+			address.setId(idSequence.incrementAndGet());
+			address.setName(rd.somePersonName());
+			address.setStreet(rd.someStreet());
+			address.setZip(rd.someZipCode());
+			address.setCity(rd.someCity());
+			address.setCountry(rd.someElement(countries));
+			address.setEmail(rd.someEmail());
+			addresses.add(address);
 		}
 
 	}
@@ -88,9 +94,8 @@ public class RandomDataAddressService implements IAddressService {
 	public Address saveAddress(Address changedOrNewAddress) {
 		if (changedOrNewAddress.getId() == null) {
 			// create new address
-			Address createdAdr = new Address(idSequence.incrementAndGet(), changedOrNewAddress.getName(),
-					changedOrNewAddress.getStreet(), changedOrNewAddress.getZip(), changedOrNewAddress.getCity(),
-					changedOrNewAddress.getCountry());
+			Address createdAdr = new Address(changedOrNewAddress);
+			createdAdr.setId(idSequence.incrementAndGet());
 			addresses.add(createdAdr);
 			fireAddressChange();
 			return new Address(createdAdr);
@@ -104,6 +109,7 @@ public class RandomDataAddressService implements IAddressService {
 					address.setZip(changedOrNewAddress.getZip());
 					address.setCity(changedOrNewAddress.getCity());
 					address.setCountry(changedOrNewAddress.getCountry());
+					address.setEmail(changedOrNewAddress.getEmail());
 					fireAddressChange();
 					return getAddress(address.getId());
 				}

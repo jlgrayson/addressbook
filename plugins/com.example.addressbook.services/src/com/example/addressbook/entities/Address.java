@@ -8,18 +8,16 @@ public class Address {
 	private Integer id;
 	private String name, street, zip, city;
 	private Country country;
-
-	public Address(Integer id, String name, String street, String zip, String city, Country country) {
-		this.id = id;
-		this.name = name;
-		this.street = street;
-		this.zip = zip;
-		this.city = city;
-		this.country = country;
-	}
+	private String email;
 
 	public Address(Address adr) {
-		this(adr.id, adr.name, adr.street, adr.zip, adr.city, adr.country);
+		this.id = adr.id;
+		this.name = adr.name;
+		this.street = adr.street;
+		this.zip = adr.zip;
+		this.city = adr.city;
+		this.country = adr.country;
+		this.email = adr.email;
 	}
 
 	public Address() {
@@ -32,7 +30,7 @@ public class Address {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -73,12 +71,17 @@ public class Address {
 		this.country = country;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + id;
-		return result;
+		return id;
 	}
 
 	@Override
@@ -97,8 +100,9 @@ public class Address {
 
 	@Override
 	public String toString() {
-		return String.format("Address [id=%s, name=%s, street=%s, zip=%s, country=%s, city=%s]", id, name, street, zip, //$NON-NLS-1$
-				country, city);
+		return String.format(
+				"Address [id=%s, name=%s, street=%s, zip=%s, country=%s, city=%s, email=%s]", id, name, street, zip, //$NON-NLS-1$
+				country, city, email);
 	}
 
 }
