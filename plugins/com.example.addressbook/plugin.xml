@@ -25,6 +25,30 @@
                name="aboutText"
                value="%Address_Book">
          </property>
+         <property
+               name="windowImages"
+               value="icons/book_16.png,icons/book_32.png,icons/book_48.png,icons/book_64.png,icons/book_128.png">
+         </property>
+         <property
+               name="aboutImage"
+               value="icons/alt_about.gif">
+         </property>
+         <property
+               name="startupForegroundColor"
+               value="5DA8E5">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="5,260,290,20">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="5,280,290,15">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
       </product>
    </extension>
    <extension
@@ -40,7 +64,7 @@
          point="org.eclipse.ui.views">
       <view
             class="com.example.addressbook.internal.ui.AddressListViewPart"
-            icon="icons/book.png"
+            icon="icons/book_16.png"
             id="com.example.addressbook.AddressList"
             name="%Addresses"
             restorable="true">
@@ -276,11 +300,11 @@
             name="Address Book Theme">
          <colorOverride
                id="org.eclipse.ui.workbench.ACTIVE_TAB_BG_START"
-               value="140,175,200">
+               value="93,168,229">
          </colorOverride>
          <colorOverride
                id="org.eclipse.ui.workbench.ACTIVE_TAB_BG_END"
-               value="140,175,200">
+               value="140,190,230">
          </colorOverride>
          <colorOverride
                id="org.eclipse.ui.workbench.ACTIVE_TAB_TEXT_COLOR"

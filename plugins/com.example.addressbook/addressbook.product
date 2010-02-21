@@ -4,6 +4,7 @@
 <product name="Address Book" id="com.example.addressbook.product" application="com.example.addressbook.application" version="1.0.0" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
+      <image path="/com.example.addressbook/icons/alt_about.gif"/>
       <text>
          %Address_Book
       </text>
@@ -16,14 +17,19 @@
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
-   <windowImages/>
+   <windowImages i16="/com.example.addressbook/icons/book_16.png" i32="/com.example.addressbook/icons/book_32.png" i48="/com.example.addressbook/icons/book_48.png" i64="/com.example.addressbook/icons/book_64.png" i128="/com.example.addressbook/icons/book_128.png"/>
 
+   <splash
+      startupProgressRect="5,280,290,15"
+      startupMessageRect="5,260,290,20"
+      startupForegroundColor="5DA8E5" />
    <launcher>
       <solaris/>
       <win useIco="false">
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
    </vm>
