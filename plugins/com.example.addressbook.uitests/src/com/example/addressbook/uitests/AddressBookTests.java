@@ -73,6 +73,14 @@ public class AddressBookTests {
 
 	@Test
 	public void testOpenAddress() {
+		final SWTBotTable table = getAddressTable();
+
+		table.select("Bernd Meyer", "Christa Schäfer");
+		table.contextMenu("&Open").click();
+		assertEquals("Two editors opened", 2, bot.editors().size());
+	}
+
+	private SWTBotTable getAddressTable() {
 		final SWTBotTable table = bot.viewByTitle("Addresses").bot().table();
 
 		bot.waitUntil(new DefaultCondition() {
@@ -88,9 +96,7 @@ public class AddressBookTests {
 			}
 		});
 
-		table.select("Bernd Meyer", "Christa Schäfer");
-		table.contextMenu("&Open").click();
-		assertEquals("Two editors opened", 2, bot.editors().size());
+		return table;
 	}
 
 	@Test
@@ -126,6 +132,26 @@ public class AddressBookTests {
 
 		});
 		return bot.activeEditor();
+	}
+
+	@Test
+	public void testDelete() {
+		final SWTBotTable addresses = getAddressTable();
+		final String name = "Dagmar Richter";
+		addresses.select(name);
+		addresses.contextMenu("Delete").click();
+		bot.waitUntil(new DefaultCondition() {
+
+			@Override
+			public boolean test() throws Exception {
+				return !addresses.containsItem(name);
+			}
+
+			@Override
+			public String getFailureMessage() {
+				return "Deleted item still visible";
+			}
+		});
 	}
 
 	@Test
