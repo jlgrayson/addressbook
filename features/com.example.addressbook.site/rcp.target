@@ -37,8 +37,8 @@
 <repository location="http://download.eclipse.org/releases/helios/"/>
 </location>
 <location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
-<unit id="de.ralfebert.rcputils.feature.feature.group" version="1.0.0.201002211954"/>
-<unit id="de.ralfebert.rcputils.feature.source.feature.group" version="1.0.0.201002211954"/>
+<unit id="de.ralfebert.rcputils.feature.feature.group" version="2.0.0"/>
+<unit id="de.ralfebert.rcputils.feature.source.feature.group" version="2.0.0"/>
 <repository location="http://www.ralfebert.de/projects/releases/rcputils/"/>
 </location>
 </locations>
