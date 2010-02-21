@@ -30,7 +30,6 @@
       </win>
    </launcher>
 
-
    <vm>
    </vm>
 
@@ -134,5 +133,11 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <feature id="com.example.addressbook.feature" version="1.0.0"/>
    </features>
 
+   <configurations>
+      <plugin id="com.example.addressbook.services" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="4" />
+   </configurations>
 
 </product>
