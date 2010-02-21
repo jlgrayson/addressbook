@@ -9,5 +9,9 @@
 <unit id="org.hamcrest.core" version="1.1.0.v20090501071000"/>
 <repository location="http://download.eclipse.org/releases/galileo"/>
 </location>
+<location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
+<unit id="org.eclipse.rcp.nl_de.feature.group" version="3.5.0"/>
+<repository location="http://www.ralfebert.de/projects/releases/"/>
+</location>
 </locations>
 </target>
