@@ -1,11 +1,9 @@
 package com.example.addressbook.internal.ui;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -24,52 +22,54 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.riena.core.wire.InjectService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.IHandlerService;
-import org.eclipse.ui.part.ViewPart;
-import org.eclipse.ui.progress.UIJob;
 
 import com.example.addressbook.AddressBook;
 import com.example.addressbook.AddressBookMessages;
 import com.example.addressbook.AddressBookResources;
 import com.example.addressbook.entities.Address;
-import com.example.addressbook.services.AddressbookServices;
 import com.example.addressbook.services.IAddressChangeListener;
+import com.example.addressbook.services.IAddressService;
 
-public class AddressListViewPart extends ViewPart {
+import de.ralfebert.rcputils.concurrent.UIProcess;
+import de.ralfebert.rcputils.wired.WiredViewPart;
+
+public class AddressListViewPart extends WiredViewPart {
+
+	private IAddressService addressService;
 
 	/**
 	 * Job which loads the list of addresses and schedules an UIJob to refresh
 	 * the UI afterwards.
 	 */
-	public class LoadAddressesJob extends Job {
+	public class LoadAddressesJob extends UIProcess {
 
-		public LoadAddressesJob() {
-			super(AddressBookMessages.LoadAddresses);
+		private List<Address> addresses;
+
+		public LoadAddressesJob(Display display) {
+			super(display, AddressBookMessages.LoadAddresses);
 		}
 
 		@Override
-		protected IStatus run(IProgressMonitor monitor) {
-			final List<Address> addresses = AddressbookServices.getAddressService().getAllAddresses();
-			UIJob updateAddresesUiJob = new UIJob(AddressBookMessages.RefreshAddressList) {
+		protected void runInBackground(IProgressMonitor monitor) {
+			addresses = (addressService != null) ? addressService.getAllAddresses() : Collections.<Address> emptyList();
+		}
 
-				@Override
-				public IStatus runInUIThread(IProgressMonitor monitor) {
-					tableViewer.setInput(addresses);
-					return Status.OK_STATUS;
-				}
-			};
-			updateAddresesUiJob.schedule();
-			return Status.OK_STATUS;
+		@Override
+		protected void runInUIThread() {
+			if (tableViewer != null && !tableViewer.getTable().isDisposed()) {
+				tableViewer.setInput(addresses);
+			}
 		}
 
 	}
@@ -85,7 +85,7 @@ public class AddressListViewPart extends ViewPart {
 	};
 
 	@Override
-	public void createPartControl(Composite parent) {
+	public void createUi(Composite parent) {
 
 		// Resources are managed with a ResourceManager and disposed when parent
 		// is disposed
@@ -192,24 +192,22 @@ public class AddressListViewPart extends ViewPart {
 		TableColumnLayout tableLayout = new TableColumnLayout();
 		tableComposite.setLayout(tableLayout);
 		tableLayout.setColumnData(colName.getColumn(), new ColumnWeightData(100));
+	}
 
+	@InjectService
+	public void bindAddressService(IAddressService addressService) {
+		this.addressService = addressService;
+		// Register for update events to refresh the view contents automatically
+		addressService.addAddressChangeListener(addressChangeListener);
 		refresh();
 	}
 
-	@Override
-	public void init(IViewSite site) throws PartInitException {
-		super.init(site);
-
-		// Register for update events to refresh the view contents automatically
-		AddressbookServices.getAddressService().addAddressChangeListener(addressChangeListener);
-	}
-
-	@Override
-	public void dispose() {
-		super.dispose();
+	public void unbindAddressService(IAddressService addressService) {
+		this.addressService = null;
 		// Remove the change listener because otherwise the address service
 		// would call the view object even when this view is already gone
-		AddressbookServices.getAddressService().removeAddressChangeListener(addressChangeListener);
+		addressService.removeAddressChangeListener(addressChangeListener);
+		refresh();
 	}
 
 	@Override
@@ -218,8 +216,6 @@ public class AddressListViewPart extends ViewPart {
 	}
 
 	public void refresh() {
-		if (tableViewer != null && !tableViewer.getTable().isDisposed()) {
-			new LoadAddressesJob().schedule();
-		}
+		new LoadAddressesJob(getSite().getShell().getDisplay()).schedule();
 	}
 }

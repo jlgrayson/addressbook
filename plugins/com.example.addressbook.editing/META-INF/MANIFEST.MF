@@ -7,14 +7,19 @@ Bundle-Vendor: Ralf Ebert
 Import-Package: com.example.addressbook,
  com.example.addressbook.entities,
  com.example.addressbook.services,
+ de.ralfebert.rcputils.concurrent,
+ de.ralfebert.rcputils.jface.selection,
+ de.ralfebert.rcputils.wired,
  jgravatar,
  org.apache.commons.lang;version="2.1.0",
  org.eclipse.core.commands,
  org.eclipse.core.runtime;version="3.4.0",
+ org.eclipse.core.runtime.jobs,
  org.eclipse.jface.fieldassist,
  org.eclipse.jface.layout,
  org.eclipse.jface.resource,
  org.eclipse.jface.viewers,
+ org.eclipse.riena.core.wire,
  org.eclipse.swt,
  org.eclipse.swt.events,
  org.eclipse.swt.graphics,
@@ -23,7 +28,9 @@ Import-Package: com.example.addressbook,
  org.eclipse.ui;ui.workbench=split,
  org.eclipse.ui.handlers,
  org.eclipse.ui.help,
- org.eclipse.ui.part;ui.workbench=split
+ org.eclipse.ui.part;ui.workbench=split,
+ org.eclipse.ui.progress,
+ org.osgi.framework;version="1.5.0"
 Export-Package: com.example.addressbook.editing
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

@@ -6,6 +6,8 @@ import jgravatar.Gravatar;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.fieldassist.AutoCompleteField;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
@@ -18,6 +20,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.riena.core.wire.InjectService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -25,28 +28,65 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.part.EditorPart;
+import org.eclipse.ui.progress.UIJob;
 
 import com.example.addressbook.AddressBookMessages;
 import com.example.addressbook.editing.AddressBookEditing;
 import com.example.addressbook.editing.AddressIdEditorInput;
 import com.example.addressbook.entities.Address;
 import com.example.addressbook.entities.Country;
-import com.example.addressbook.services.AddressbookServices;
+import com.example.addressbook.services.IAddressService;
+
+import de.ralfebert.rcputils.concurrent.UIProcess;
+import de.ralfebert.rcputils.wired.WiredEditorPart;
 
 /**
  * Editor part implementation for editing Address objects using the
  * AddressBookService.
  */
-public class AddressEditorPart extends EditorPart {
+public class AddressEditorPart extends WiredEditorPart<AddressIdEditorInput> {
 
-	private static final int GRAVATAR_SIZE = 50;
+	public class UpdateGravatarJob extends UIProcess {
+
+		private final String email;
+		private byte[] imageBytes;
+
+		public UpdateGravatarJob(Display display, String email) {
+			super(display, "Update gravatar"); //$NON-NLS-1$
+			this.email = email;
+		}
+
+		@Override
+		protected void runInBackground(IProgressMonitor monitor) {
+			if (StringUtils.isNotBlank(email)) {
+				Gravatar gravatar = new Gravatar();
+				gravatar.setSize(GRAVATAR_SIZE);
+				imageBytes = gravatar.download(email);
+			}
+		}
+
+		@Override
+		protected void runInUIThread() {
+			Image newImage = null;
+			if (imageBytes != null) {
+				newImage = new Image(lblGravatar.getDisplay(), new ByteArrayInputStream(imageBytes));
+			}
+			Image oldImage = lblGravatar.getImage();
+			lblGravatar.setImage(newImage);
+			setTitleImage(newImage);
+			if (oldImage != null) {
+				oldImage.dispose();
+			}
+			lblGravatar.getParent().layout();
+		}
+
+	}
+
+	private static final int GRAVATAR_SIZE = 60;
 
 	private Text txtName;
 	private Text txtStreet;
@@ -58,20 +98,10 @@ public class AddressEditorPart extends EditorPart {
 	private boolean dirty;
 	private Label lblGravatar;
 
-	@Override
-	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
-		setSite(site);
-		setInput(input);
-	}
+	private IAddressService addressService;
 
 	@Override
-	public void createPartControl(Composite parent) {
-		createUi(parent);
-		loadModel();
-		addDirtyOnChangeListeners();
-	}
-
-	private void createUi(Composite parent) {
+	protected void createUi(Composite parent) {
 
 		Color white = parent.getDisplay().getSystemColor(SWT.COLOR_WHITE);
 		parent.setBackground(white);
@@ -105,14 +135,11 @@ public class AddressEditorPart extends EditorPart {
 				FieldDecorationRegistry.DEC_CONTENT_PROPOSAL).getImage();
 		decoration.setImage(errorImage);
 
-		new AutoCompleteField(txtCity, new TextContentAdapter(), AddressbookServices.getAddressService().getAllCities());
-
 		// Country
 		createLabel(parent, AddressBookMessages.Country);
 		cvCountry = new ComboViewer(parent, SWT.READ_ONLY);
 		cvCountry.setContentProvider(ArrayContentProvider.getInstance());
 		cvCountry.setLabelProvider(new CountryLabelProvider());
-		cvCountry.setInput(AddressbookServices.getAddressService().getAllCountries());
 
 		// E-Mail
 		createLabel(parent, AddressBookMessages.Email);
@@ -130,6 +157,8 @@ public class AddressEditorPart extends EditorPart {
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).applyTo(txtCity);
 		field.applyTo(cvCountry.getCombo());
 		field.applyTo(txtEmail);
+
+		addDirtyOnChangeListeners();
 	}
 
 	private Label createLabel(Composite parent, String text) {
@@ -139,8 +168,8 @@ public class AddressEditorPart extends EditorPart {
 		return label;
 	}
 
-	private void loadModel() {
-		Address address = AddressbookServices.getAddressService().getAddress(getEditorInput().getId());
+	private void refresh() {
+		Address address = addressService.getAddress(getEditorInput().getId());
 		txtName.setText(address.getName());
 		txtStreet.setText(address.getStreet());
 		txtZip.setText(address.getZip());
@@ -149,6 +178,7 @@ public class AddressEditorPart extends EditorPart {
 		txtEmail.setText(address.getEmail());
 		setPartName(address.getName());
 		updateGravatar();
+		setDirty(false);
 	}
 
 	private void addDirtyOnChangeListeners() {
@@ -189,7 +219,7 @@ public class AddressEditorPart extends EditorPart {
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 
-		Address address = AddressbookServices.getAddressService().getAddress(getEditorInput().getId());
+		Address address = addressService.getAddress(getEditorInput().getId());
 		address.setName(txtName.getText());
 		address.setStreet(txtStreet.getText());
 		address.setZip(txtZip.getText());
@@ -198,33 +228,14 @@ public class AddressEditorPart extends EditorPart {
 		address.setCountry((Country) selection.getFirstElement());
 		address.setEmail(txtEmail.getText());
 
-		AddressbookServices.getAddressService().saveAddress(address);
+		addressService.saveAddress(address);
 
-		loadModel();
+		refresh();
 		setDirty(false);
 	}
 
 	private void updateGravatar() {
-		String email = txtEmail.getText();
-		Image newImage = null;
-		if (StringUtils.isNotBlank(email)) {
-			Gravatar gravatar = new Gravatar();
-			gravatar.setSize(GRAVATAR_SIZE);
-			byte[] imageBytes = gravatar.download(email);
-			if (imageBytes != null) {
-				newImage = new Image(lblGravatar.getDisplay(), new ByteArrayInputStream(imageBytes));
-			}
-		}
-		if (lblGravatar.getImage() != null) {
-			lblGravatar.getImage().dispose();
-		}
-		lblGravatar.setImage(newImage);
-		lblGravatar.getParent().layout();
-	}
-
-	@Override
-	public AddressIdEditorInput getEditorInput() {
-		return (AddressIdEditorInput) super.getEditorInput();
+		new UpdateGravatarJob(getSite().getShell().getDisplay(), txtEmail.getText()).schedule();
 	}
 
 	@Override
@@ -232,14 +243,22 @@ public class AddressEditorPart extends EditorPart {
 		txtName.setFocus();
 	}
 
-	@Override
-	public void doSaveAs() {
-		throw new UnsupportedOperationException();
+	@InjectService
+	public void bindAddressService(final IAddressService addressService) {
+		new UIJob("Binding address editor") { //$NON-NLS-1$
+			@Override
+			public IStatus runInUIThread(IProgressMonitor monitor) {
+				AddressEditorPart.this.addressService = addressService;
+				new AutoCompleteField(txtCity, new TextContentAdapter(), addressService.getAllCities());
+				cvCountry.setInput(addressService.getAllCountries());
+				refresh();
+				return Status.OK_STATUS;
+			}
+		}.schedule();
 	}
 
-	@Override
-	public boolean isSaveAsAllowed() {
-		return false;
+	public void unbindAddressService(IAddressService addressService) {
+		AddressEditorPart.this.addressService = null;
 	}
 
 }
