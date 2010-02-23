@@ -46,8 +46,6 @@ import de.ralfebert.rcputils.wired.WiredModelDataBindingEditorPart;
  */
 public class AddressEditorPart extends WiredModelDataBindingEditorPart<AddressIdEditorInput, Address> {
 
-	private static final int GRAVATAR_SIZE = 60;
-
 	private IObservableValue uiName, uiCountryChoices, uiCountry, uiStreet, uiZip, uiCity, uiEmail, uiGravatarImage;
 
 	private IAddressService addressService;
@@ -100,8 +98,8 @@ public class AddressEditorPart extends WiredModelDataBindingEditorPart<AddressId
 		GridLayoutFactory.fillDefaults().margins(10, 10).spacing(6, 3).numColumns(4).applyTo(parent);
 		GridDataFactory field = GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).span(2, 1);
 		field.applyTo(txtName);
-		GridDataFactory.fillDefaults().span(1, 5).hint(GRAVATAR_SIZE, GRAVATAR_SIZE).align(SWT.LEFT, SWT.TOP).indent(
-				20, 0).applyTo(lblGravatar);
+		GridDataFactory.fillDefaults().span(1, 5).hint(AddressBookEditing.GRAVATAR_SIZE,
+				AddressBookEditing.GRAVATAR_SIZE).align(SWT.LEFT, SWT.TOP).indent(20, 0).applyTo(lblGravatar);
 		field.applyTo(txtStreet);
 		GridDataFactory.fillDefaults().hint(50, SWT.DEFAULT).applyTo(txtZip);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).applyTo(txtCity);
@@ -175,7 +173,7 @@ public class AddressEditorPart extends WiredModelDataBindingEditorPart<AddressId
 		protected void runInBackground(IProgressMonitor monitor) {
 			if (StringUtils.isNotBlank(email)) {
 				Gravatar gravatar = new Gravatar();
-				gravatar.setSize(GRAVATAR_SIZE);
+				gravatar.setSize(AddressBookEditing.GRAVATAR_SIZE);
 				gravatar.setDefaultImage(GravatarDefaultImage.IDENTICON);
 				imageBytes = gravatar.download(email);
 			}
@@ -187,7 +185,8 @@ public class AddressEditorPart extends WiredModelDataBindingEditorPart<AddressId
 			Image newSmallImage = null;
 			if (imageBytes != null) {
 				newImage = new Image(getDisplay(), new ByteArrayInputStream(imageBytes));
-				newSmallImage = new Image(getDisplay(), newImage.getImageData().scaledTo(24, 24));
+				newSmallImage = new Image(getDisplay(), newImage.getImageData().scaledTo(
+						AddressBookEditing.GRAVATAR_SIZE_SMALL, AddressBookEditing.GRAVATAR_SIZE_SMALL));
 			}
 
 			// set large gravatar image

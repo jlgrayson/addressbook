@@ -13,4 +13,8 @@ public class AddressBookEditing {
 	// Help contexts
 	public static final String HELP_EDIT = PLUGIN_ID + ".edit"; //$NON-NLS-1$
 
+	// Settings
+	public static final int GRAVATAR_SIZE = 60;
+	public static final int GRAVATAR_SIZE_SMALL = 24;
+
 }
