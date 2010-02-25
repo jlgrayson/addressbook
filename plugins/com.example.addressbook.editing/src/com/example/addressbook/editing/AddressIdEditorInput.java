@@ -27,7 +27,7 @@ public class AddressIdEditorInput implements IEditorInput {
 	}
 
 	public String getName() {
-		return AddressBookMessages.Address + " " + id; //$NON-NLS-1$
+		return AddressBookMessages.get().Address + " " + id; //$NON-NLS-1$
 	}
 
 	public IPersistableElement getPersistable() {

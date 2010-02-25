@@ -1,16 +1,18 @@
 package com.example.addressbook.editing;
 
-import org.eclipse.osgi.util.NLS;
+import de.ralfebert.singlesource.NLS;
 
-public class AddressEditorMessages extends NLS {
+public class AddressEditorMessages {
 
-	private static final String BUNDLE_NAME = "com.example.addressbook.editing.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = AddressBookEditing.PLUGIN_ID + ".messages"; //$NON-NLS-1$
 
-	public static String ZipValidator_Message;
+	public String ZipValidator_Message;
 
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, AddressEditorMessages.class);
+	public static AddressEditorMessages get() {
+		return NLS.get(BUNDLE_NAME, AddressEditorMessages.class);
+	}
+
+	private AddressEditorMessages() {
 	}
 
 }

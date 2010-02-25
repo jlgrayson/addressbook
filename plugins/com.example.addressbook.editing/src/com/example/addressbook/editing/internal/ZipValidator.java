@@ -15,7 +15,7 @@ class ZipValidator implements IValidator {
 		if (str.matches("\\d{5}")) { //$NON-NLS-1$
 			return ValidationStatus.ok();
 		} else {
-			return ValidationStatus.error(MessageFormat.format(AddressEditorMessages.ZipValidator_Message, str));
+			return ValidationStatus.error(MessageFormat.format(AddressEditorMessages.get().ZipValidator_Message, str));
 		}
 	}
 

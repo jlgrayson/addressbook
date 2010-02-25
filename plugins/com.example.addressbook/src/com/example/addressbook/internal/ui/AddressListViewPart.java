@@ -12,6 +12,8 @@ import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
@@ -27,6 +29,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.handlers.IHandlerService;
 
 import com.example.addressbook.AddressBook;
 import com.example.addressbook.AddressBookMessages;
@@ -51,7 +54,7 @@ public class AddressListViewPart extends WiredViewPart {
 		private List<Address> addresses;
 
 		public LoadAddressesJob(Display display) {
-			super(display, AddressBookMessages.LoadAddresses);
+			super(display, AddressBookMessages.get().LoadAddresses);
 		}
 
 		@Override
@@ -89,14 +92,15 @@ public class AddressListViewPart extends WiredViewPart {
 		Composite searchComposite = new Composite(parent, SWT.NONE);
 		Label searchLabel = new Label(searchComposite, SWT.NONE);
 		searchLabel.setImage(resources.createImage(AddressBook.ICON_MAGNIFIER));
-		final Text searchText = new Text(searchComposite, SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH | SWT.ICON_CANCEL);
+		// TODO: RAP: SWT.SEARCH | SWT.ICON_SEARCH | SWT.ICON_CANCEL
+		final Text searchText = new Text(searchComposite, SWT.BORDER);
 
 		// Separate composite to embed the table
 		Composite tableComposite = new Composite(parent, SWT.NONE);
 
 		// Create JFace viewer
 		tableViewer = new TableViewer(tableComposite, SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL);
-		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		tableViewer.setContentProvider(new ArrayContentProvider());
 
 		// Configure underlying SWT table
 		final Table table = tableViewer.getTable();
@@ -105,7 +109,7 @@ public class AddressListViewPart extends WiredViewPart {
 
 		// Create column "Name"
 		TableViewerColumn colName = new TableViewerColumn(tableViewer, SWT.NONE);
-		colName.getColumn().setText(AddressBookMessages.Name);
+		colName.getColumn().setText(AddressBookMessages.get().Name);
 		colName.setLabelProvider(new CellLabelProvider() {
 
 			@Override
@@ -144,7 +148,21 @@ public class AddressListViewPart extends WiredViewPart {
 
 		});
 
-		new ContextMenu(tableViewer, getSite(), true);
+		// TODO: RAP: Menu.setDefaultItem
+		new ContextMenu(tableViewer, getSite(), false);
+		tableViewer.addDoubleClickListener(new IDoubleClickListener() {
+
+			@Override
+			public void doubleClick(DoubleClickEvent event) {
+				IHandlerService handlerService = (IHandlerService) getSite().getWorkbenchWindow().getService(
+						IHandlerService.class);
+				try {
+					handlerService.executeCommand(AddressBook.COMMAND_OPEN, null);
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+		});
 
 		// Layout for parent
 		GridLayoutFactory.fillDefaults().numColumns(1).applyTo(parent);

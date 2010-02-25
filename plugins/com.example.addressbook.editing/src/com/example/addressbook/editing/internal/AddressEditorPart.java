@@ -14,7 +14,6 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
-import org.eclipse.jface.internal.databinding.provisional.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -58,30 +57,32 @@ public class AddressEditorPart extends WiredModelDataBindingEditorPart<AddressId
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, AddressBookEditing.HELP_EDIT);
 
 		// Name
-		createLabel(parent, AddressBookMessages.Name);
+		createLabel(parent, AddressBookMessages.get().Name);
 		txtName = new Text(parent, SWT.BORDER);
 
 		// Gravatar
 		Label lblGravatar = new Label(parent, SWT.NONE);
 
 		// Steet
-		createLabel(parent, AddressBookMessages.Street);
+		createLabel(parent, AddressBookMessages.get().Street);
 		Text txtStreet = new Text(parent, SWT.BORDER);
 
 		// Zip, City
-		createLabel(parent, AddressBookMessages.Zip + AddressBookMessages.Field_Separator + AddressBookMessages.City);
+		createLabel(parent, AddressBookMessages.get().Zip + AddressBookMessages.get().Field_Separator
+				+ AddressBookMessages.get().City);
 		Text txtZip = new Text(parent, SWT.BORDER);
 		Text txtCity = new Text(parent, SWT.BORDER);
 
 		// Country
-		createLabel(parent, AddressBookMessages.Country);
+		createLabel(parent, AddressBookMessages.get().Country);
 		ComboViewer cvCountry = new ComboViewer(parent, SWT.READ_ONLY);
 		Combo cbCountry = cvCountry.getCombo();
-		cvCountry.setContentProvider(ArrayContentProvider.getInstance());
+		// TODO: RAP: ArrayContentProvider.getInstance()
+		cvCountry.setContentProvider(new ArrayContentProvider());
 		cvCountry.setLabelProvider(new CountryLabelProvider());
 
 		// E-Mail
-		createLabel(parent, AddressBookMessages.Email);
+		createLabel(parent, AddressBookMessages.get().Email);
 		Text txtEmail = new Text(parent, SWT.BORDER);
 
 		// UI Observables
@@ -131,7 +132,8 @@ public class AddressEditorPart extends WiredModelDataBindingEditorPart<AddressId
 		UpdateValueStrategy zipUiToModel = new UpdateValueStrategy();
 		zipUiToModel.setAfterConvertValidator(new ZipValidator());
 		Binding zipBinding = bindingContext.bindValue(uiZip, modelZip, zipUiToModel, null);
-		ControlDecorationSupport.create(zipBinding, SWT.TOP | SWT.RIGHT);
+		// TODO: RAP: ControlDecorationSupport
+		// ControlDecorationSupport.create(zipBinding, SWT.TOP | SWT.RIGHT);
 
 		bindingContext.bindValue(uiCity, modelCity);
 		bindingContext.bindValue(uiCountry, modelCountry);
@@ -203,7 +205,7 @@ public class AddressEditorPart extends WiredModelDataBindingEditorPart<AddressId
 
 	private Label createLabel(Composite parent, String text) {
 		Label label = new Label(parent, SWT.NONE);
-		label.setText(text + AddressBookMessages.Field_Mark);
+		label.setText(text + AddressBookMessages.get().Field_Mark);
 		label.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		return label;
 	}
