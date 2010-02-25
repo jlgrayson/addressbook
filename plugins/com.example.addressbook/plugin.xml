@@ -74,7 +74,7 @@
         	class="org.eclipse.ui.ExtensionFactory:progressView"
         	icon="/icons/pview.gif"
 			allowMultiple="false"
-        	name="%progress"/>
+        	name="%Progress"/>
    </extension>
    <extension
          point="org.eclipse.ui.commands">

@@ -188,7 +188,7 @@ public class AddressListViewPart extends WiredViewPart {
 
 	public void refresh() {
 		if (tableViewer != null && !tableViewer.getTable().isDisposed()) {
-			new LoadAddressesJob(getSite().getShell().getDisplay()).schedule();
+			new LoadAddressesJob(tableViewer.getTable().getDisplay()).schedule();
 		}
 	}
 }

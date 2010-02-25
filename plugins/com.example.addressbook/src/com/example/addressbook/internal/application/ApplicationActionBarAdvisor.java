@@ -11,6 +11,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		super(configurer);
 	}
 
+	@Override
 	protected void makeActions(IWorkbenchWindow window) {
 		// Some commands need to be registered for the respective commands to
 		// work. See https://bugs.eclipse.org/bugs/show_bug.cgi?id=270007
