@@ -201,7 +201,7 @@ public class AddressBookTests {
 			}
 		});
 		assertEquals(60, gravatarSize);
-		assertEquals(24, editor.getReference().getTitleImage().getImageData().width);
+		assertEquals(20, editor.getReference().getTitleImage().getImageData().width);
 	}
 
 }

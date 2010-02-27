@@ -15,6 +15,6 @@ public class AddressBookEditing {
 
 	// Settings
 	public static final int GRAVATAR_SIZE = 60;
-	public static final int GRAVATAR_SIZE_SMALL = 24;
+	public static final int GRAVATAR_SIZE_SMALL = 20;
 
 }
