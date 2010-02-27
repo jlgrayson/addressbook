@@ -19,6 +19,7 @@ import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotLabel;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -73,14 +74,14 @@ public class AddressBookTests {
 
 	@Test
 	public void testOpenAddress() {
-		final SWTBotTable table = getAddressTable();
+		final SWTBotTable table = addressTable();
 
 		table.select("Bernd Meyer", "Christa Schäfer");
 		table.contextMenu("&Open").click();
 		assertEquals("Two editors opened", 2, bot.editors().size());
 	}
 
-	private SWTBotTable getAddressTable() {
+	private SWTBotTable addressTable() {
 		final SWTBotTable table = bot.viewByTitle("Addresses").bot().table();
 
 		bot.waitUntil(new DefaultCondition() {
@@ -101,7 +102,7 @@ public class AddressBookTests {
 
 	@Test
 	public void testEditAddress() {
-		SWTBotEditor editor = openAddressEditor();
+		SWTBotEditor editor = openEditor(new AddressIdEditorInput(5), AddressBookEditing.EDITOR_ADDRESS);
 		assertEquals("Bernd Meyer", editor.getTitle());
 		assertFalse("Editor without change should be not dirty", editor.isDirty());
 		SWTBot editorBot = editor.bot();
@@ -117,14 +118,14 @@ public class AddressBookTests {
 		editor.close();
 	}
 
-	private SWTBotEditor openAddressEditor() {
+	private SWTBotEditor openEditor(final IEditorInput input, final String editorId) {
 		UIThreadRunnable.syncExec(new VoidResult() {
 
 			@Override
 			public void run() {
 				IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 				try {
-					page.openEditor(new AddressIdEditorInput(5), AddressBookEditing.EDITOR_ADDRESS);
+					page.openEditor(input, editorId);
 				} catch (PartInitException e) {
 					fail(e.getMessage());
 				}
@@ -136,7 +137,7 @@ public class AddressBookTests {
 
 	@Test
 	public void testDelete() {
-		final SWTBotTable addresses = getAddressTable();
+		final SWTBotTable addresses = addressTable();
 		final String name = "Dagmar Richter";
 		addresses.select(name);
 		addresses.contextMenu("Delete").click();
@@ -156,7 +157,7 @@ public class AddressBookTests {
 
 	@Test
 	public void testGravatar() throws Exception {
-		SWTBotEditor editor = openAddressEditor();
+		SWTBotEditor editor = openEditor(new AddressIdEditorInput(5), AddressBookEditing.EDITOR_ADDRESS);
 		SWTBot editorBot = editor.bot();
 		editorBot.textWithLabel("E-mail:").setText("info@ralfebert.de");
 		final SWTBotLabel gravatar = editorBot.labelWithId("gravatar");
