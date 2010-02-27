@@ -17,6 +17,7 @@
 <unit id="org.eclipse.help.feature.group" version="1.1.1.R35x_v20090811-7e7eFAnFEx2XZoYz0uPgIfwD"/>
 <unit id="org.eclipse.equinox.executable.feature.group" version="3.3.200.R35x_v20090724-7M-FneFF9aMTyz0pw04ONXn"/>
 <unit id="org.eclipse.ui.forms" version="3.4.1.v20090714_35x"/>
+<unit id="org.junit" version="3.8.2.v20090203-1005"/>
 <repository location="http://eclipsemirror.yoxos.com/eclipse.org/releases/galileo/"/>
 </location>
 <location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
