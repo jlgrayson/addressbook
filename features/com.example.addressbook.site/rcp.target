@@ -38,8 +38,8 @@
 <repository location="http://eclipsemirror.yoxos.com/eclipse.org/releases/helios/"/>
 </location>
 <location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
-<unit id="de.ralfebert.rcputils.feature.feature.group" version="2.0.1"/>
-<unit id="de.ralfebert.rcputils.feature.source.feature.group" version="2.0.1"/>
+<unit id="de.ralfebert.rcputils.feature.feature.group" version="2.0.2"/>
+<unit id="de.ralfebert.rcputils.feature.source.feature.group" version="2.0.2"/>
 <repository location="http://www.ralfebert.de/projects/releases/rcputils/"/>
 </location>
 </locations>
