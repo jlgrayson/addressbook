@@ -146,7 +146,8 @@ public class AddressListViewPart extends WiredViewPart {
 
 		});
 
-		new ContextMenu(tableViewer, getSite(), true);
+		ContextMenu contextMenu = new ContextMenu(tableViewer, getSite());
+		contextMenu.setDefaultItemHandling(true);
 
 		// Layout for parent
 		GridLayoutFactory.fillDefaults().numColumns(1).applyTo(parent);
