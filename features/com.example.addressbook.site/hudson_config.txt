@@ -1,0 +1,34 @@
+## Requirements
+
+* Hudson server with Buckminster and Git Plug-in
+* Buckminster 1.1 (1.2 for running unit tests)
+
+
+## Free style job "addressbook_rcp" (target platform)
+
+* Source Code Management Git, URL of repository `git://github.com/ralfebert/addressbook.git`, Branch specifier `master`, Clean after checkout
+* Run Buckminster:
+
+	importtargetdefinition -A ${WORKSPACE}/features/com.example.addressbook.site/rcp.target
+
+* Archive and publish an Eclipse Target Platform, path `.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/`, Name `addressbook_rcp`
+
+
+## Free style job "addressbook"
+
+* Source Code Management Git, URL of repository `git://github.com/ralfebert/addressbook.git`, Branch specifier `master`, Clean after checkout
+* Run Buckminster, Target Platform `addressbook_rcp`:
+
+	import '${WORKSPACE}/features/com.example.addressbook.site/site.cquery'
+	build
+	perform -D target.os=linux -D target.ws=gtk -D target.arch=x86_64 com.example.addressbook.site#create.product.zip
+
+* Archive artefacts:
+
+	buckminster.output/com.example.addressbook.site_*-eclipse.feature/addressbook*.zip
+
+* Optionally on Buckminster 1.2: Unit tests, Publish JUnit test results `test-reports/*.xml`, add these commands after `build`:
+
+	junit -l '/com.example.addressbook.tests/AddressBookUnitTests.launch' -o '${WORKSPACE}/test-reports/AddressBookUnitTests.xml'
+	junit -l '/com.example.addressbook.uitests/AddressBookUITests.launch' -o '${WORKSPACE}/test-reports/AddressBookUITests.xml'
+
