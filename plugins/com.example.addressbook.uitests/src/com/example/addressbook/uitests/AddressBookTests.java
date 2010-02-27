@@ -7,12 +7,14 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.finders.CommandFinder;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
+import org.eclipse.swtbot.swt.finder.results.BoolResult;
 import org.eclipse.swtbot.swt.finder.results.IntResult;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
@@ -28,6 +30,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.example.addressbook.editing.AddressBookEditing;
@@ -79,6 +82,21 @@ public class AddressBookTests {
 		table.select("Bernd Meyer", "Christa Schäfer");
 		table.contextMenu("&Open").click();
 		assertEquals("Two editors opened", 2, bot.editors().size());
+	}
+
+	@Test
+	@Ignore("Determining if scrollbars are visible: http://www.eclipse.org/forums/index.php?t=msg&th=163461&start=0&")
+	public void testTableScrolling() {
+		final SWTBotTable table = addressTable();
+		boolean hscroll = UIThreadRunnable.syncExec(new BoolResult() {
+
+			@Override
+			public Boolean run() {
+				ScrollBar bar = table.widget.getHorizontalBar();
+				return bar != null && bar.isVisible();
+			}
+		});
+		assertFalse("no horizontal scrolling in address table", hscroll);
 	}
 
 	private SWTBotTable addressTable() {

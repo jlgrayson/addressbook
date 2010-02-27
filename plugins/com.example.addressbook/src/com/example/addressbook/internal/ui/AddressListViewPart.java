@@ -63,9 +63,11 @@ public class AddressListViewPart extends WiredViewPart {
 		protected void runInUIThread() {
 			if (tableViewer != null && !tableViewer.getTable().isDisposed()) {
 				tableViewer.setInput(addresses);
+				// WORKAROUND: Unnecessary horizontal scrollbar
+				// See https://bugs.eclipse.org/bugs/show_bug.cgi?id=304128
+				tableViewer.getTable().getParent().layout();
 			}
 		}
-
 	}
 
 	private TableViewer tableViewer;
@@ -162,7 +164,6 @@ public class AddressListViewPart extends WiredViewPart {
 		tableLayout.setColumnData(colName.getColumn(), new ColumnWeightData(100));
 
 		refresh();
-		parent.layout(true);
 	}
 
 	@InjectService
