@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Address Book E-Mail Plug-in
+Bundle-SymbolicName: com.example.addressbook.email;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Ralf Ebert
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: com.example.addressbook.entities,
+ de.ralfebert.rcputils.selection,
+ org.eclipse.core.commands,
+ org.eclipse.jface.viewers,
+ org.eclipse.swt.program,
+ org.eclipse.ui;ui.workbench=split,
+ org.eclipse.ui.handlers

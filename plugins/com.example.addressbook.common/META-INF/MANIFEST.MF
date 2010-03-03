@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Common
+Bundle-Name: Address Book Service Interfaces
 Bundle-SymbolicName: com.example.addressbook.common
 Bundle-Version: 1.0.0.qualifier
-Bundle-Vendor: EXAMPLE
+Bundle-Vendor: Ralf Ebert
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: com.example.addressbook.entities,
  com.example.addressbook.services
