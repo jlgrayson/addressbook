@@ -44,6 +44,7 @@ import de.ralfebert.rcputils.wired.WiredModelDataBindingEditorPart;
  * Editor part implementation for editing Address objects using the
  * AddressBookService.
  */
+@SuppressWarnings("restriction")
 public class AddressEditorPart extends WiredModelDataBindingEditorPart<AddressIdEditorInput, Address> {
 
 	private IObservableValue uiName, uiCountryChoices, uiCountry, uiStreet, uiZip, uiCity, uiEmail, uiGravatarImage;
