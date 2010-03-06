@@ -103,7 +103,7 @@ public class AddressEditorPart extends WiredModelDataBindingEditorPart<AddressId
 				AddressBookEditing.GRAVATAR_SIZE).align(SWT.LEFT, SWT.TOP).indent(20, 0).applyTo(lblGravatar);
 		field.applyTo(txtStreet);
 		GridDataFactory.fillDefaults().hint(50, SWT.DEFAULT).applyTo(txtZip);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).applyTo(txtCity);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).indent(5, 0).grab(true, false).applyTo(txtCity);
 		field.applyTo(cbCountry);
 		field.applyTo(txtEmail);
 
