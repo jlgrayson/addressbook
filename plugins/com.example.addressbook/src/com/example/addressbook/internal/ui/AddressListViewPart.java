@@ -14,6 +14,9 @@ import org.eclipse.riena.core.wire.InjectService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.PartInitException;
 
 import com.example.addressbook.AddressBookMessages;
 import com.example.addressbook.entities.Address;
@@ -26,6 +29,8 @@ import de.ralfebert.rcputils.tables.TableViewerBuilder;
 import de.ralfebert.rcputils.wired.WiredViewPart;
 
 public class AddressListViewPart extends WiredViewPart {
+
+	private static final String MEMENTO_LAST_SEARCH = "LastSearch"; //$NON-NLS-1$
 
 	private IAddressService addressService;
 
@@ -67,11 +72,18 @@ public class AddressListViewPart extends WiredViewPart {
 
 	};
 
+	private SearchComposite search;
+	private String lastSearch;
+
 	@Override
 	public void createPartControl(Composite parent) {
 
 		// Search control
-		final SearchComposite search = new SearchComposite(parent);
+		search = new SearchComposite(parent);
+
+		if (lastSearch != null) {
+			search.observeText().setValue(lastSearch);
+		}
 
 		// Separate composite to embed the table
 		Composite tableComposite = new Composite(parent, SWT.NONE);
@@ -96,6 +108,7 @@ public class AddressListViewPart extends WiredViewPart {
 			public void handleChange(ChangeEvent event) {
 				addressList.getTableViewer().refresh();
 			}
+
 		});
 
 		ContextMenu contextMenu = new ContextMenu(addressList.getTableViewer(), getSite());
@@ -107,6 +120,18 @@ public class AddressListViewPart extends WiredViewPart {
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(tableComposite);
 
 		refresh();
+	}
+
+	@Override
+	public void saveState(IMemento memento) {
+		String searchText = (String) search.observeText().getValue();
+		memento.putString(MEMENTO_LAST_SEARCH, searchText);
+	}
+
+	@Override
+	public void init(IViewSite site, IMemento memento) throws PartInitException {
+		super.init(site, memento);
+		lastSearch = memento.getString(MEMENTO_LAST_SEARCH);
 	}
 
 	@InjectService
