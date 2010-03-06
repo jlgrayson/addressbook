@@ -5,7 +5,7 @@
          point="org.eclipse.ui.commands">
       <command
             id="com.example.addressbook.email"
-            name="E-Mail senden">
+            name="%SendEmail">
       </command>
    </extension>
    <extension

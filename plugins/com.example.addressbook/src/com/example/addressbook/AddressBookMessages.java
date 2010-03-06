@@ -4,10 +4,11 @@ import org.eclipse.osgi.util.NLS;
 
 public class AddressBookMessages extends NLS {
 
-	private static final String BUNDLE_NAME = "com.example.addressbook.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "OSGI-INF.l10n.bundle"; //$NON-NLS-1$
 
 	public static String Address_Book;
 	public static String Address;
+	public static String Addresses;
 	public static String Name;
 	public static String Street;
 	public static String Zip;
@@ -26,6 +27,13 @@ public class AddressBookMessages extends NLS {
 
 	public static String LoadAddresses;
 	public static String RefreshAddressList;
+
+	public static String File;
+	public static String Edit;
+	public static String Window;
+	public static String Help;
+	public static String Progress;
+	public static String Open;
 
 	static {
 		// initialize resource bundle

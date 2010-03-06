@@ -4,8 +4,9 @@ import org.eclipse.osgi.util.NLS;
 
 public class AddressEditorMessages extends NLS {
 
-	private static final String BUNDLE_NAME = "com.example.addressbook.editing.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "OSGI-INF.l10n.bundle"; //$NON-NLS-1$
 
+	public static String Address;
 	public static String ZipValidator_Message;
 
 	static {
