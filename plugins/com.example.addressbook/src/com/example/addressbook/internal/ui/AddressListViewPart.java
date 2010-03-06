@@ -131,7 +131,9 @@ public class AddressListViewPart extends WiredViewPart {
 	@Override
 	public void init(IViewSite site, IMemento memento) throws PartInitException {
 		super.init(site, memento);
-		lastSearch = memento.getString(MEMENTO_LAST_SEARCH);
+		if (memento != null) {
+			lastSearch = memento.getString(MEMENTO_LAST_SEARCH);
+		}
 	}
 
 	@InjectService
