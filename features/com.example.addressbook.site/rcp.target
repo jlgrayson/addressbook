@@ -29,10 +29,6 @@
 <repository location="http://www.ralfebert.de/projects/releases/"/>
 </location>
 <location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
-<unit id="org.eclipse.swtbot.eclipse.feature.group" version="2.0.0.502-dev-e35"/>
-<repository location="http://eclipsemirror.yoxos.com/eclipse.org/technology/swtbot/galileo/dev-build/update-site"/>
-</location>
-<location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
 <unit id="org.junit" version="4.8.1.v4_8_1_v20100114-1600"/>
 <unit id="org.hamcrest.core" version="1.1.0.v20090501071000"/>
 <repository location="http://eclipsemirror.yoxos.com/eclipse.org/releases/helios/"/>
@@ -41,6 +37,10 @@
 <unit id="de.ralfebert.rcputils.feature.feature.group" version="2.0.2"/>
 <unit id="de.ralfebert.rcputils.feature.source.feature.group" version="2.0.2"/>
 <repository location="http://www.ralfebert.de/projects/releases/rcputils/"/>
+</location>
+<location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
+<unit id="org.eclipse.swtbot.eclipse.feature.group" version="2.0.0.536-dev-e35"/>
+<repository location="http://eclipsemirror.yoxos.com/eclipse.org/technology/swtbot/galileo/dev-build/update-site"/>
 </location>
 </locations>
 </target>
