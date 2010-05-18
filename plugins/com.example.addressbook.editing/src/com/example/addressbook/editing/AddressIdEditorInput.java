@@ -38,7 +38,7 @@ public class AddressIdEditorInput implements IEditorInput {
 		return getName();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class adapter) {
 		return null;
 	}

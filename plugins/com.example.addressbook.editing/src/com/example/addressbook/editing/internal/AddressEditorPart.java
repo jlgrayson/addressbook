@@ -12,9 +12,9 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
-import org.eclipse.jface.internal.databinding.provisional.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -44,7 +44,6 @@ import de.ralfebert.rcputils.wired.WiredModelDataBindingEditorPart;
  * Editor part implementation for editing Address objects using the
  * AddressBookService.
  */
-@SuppressWarnings("restriction")
 public class AddressEditorPart extends WiredModelDataBindingEditorPart<AddressIdEditorInput, Address> {
 
 	private IObservableValue uiName, uiCountryChoices, uiCountry, uiStreet, uiZip, uiCity, uiEmail, uiGravatarImage;
