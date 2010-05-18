@@ -6,9 +6,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ScrollBar;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.finders.CommandFinder;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
@@ -23,12 +21,9 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotLabel;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.WorkbenchException;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -43,37 +38,7 @@ public class AddressBookTests {
 
 	@Before
 	public void setup() {
-		// Zugriffe auf das UI / SWT-Komponenten muss im
-		// UI-Thread erfolgen
-		UIThreadRunnable.syncExec(new VoidResult() {
-			public void run() {
-				resetWorkbench();
-			}
-		});
-	}
-
-	/**
-	 * Ggf. offene Fenster schließen, alle Editoren schliessen, aktuelle
-	 * Perspektive zuruecksetzen, Standard-Perspektive aktivieren, diese auch
-	 * zurücksetzen
-	 */
-	private void resetWorkbench() {
-		try {
-			IWorkbench workbench = PlatformUI.getWorkbench();
-			IWorkbenchWindow workbenchWindow = workbench.getActiveWorkbenchWindow();
-			IWorkbenchPage page = workbenchWindow.getActivePage();
-			Shell activeShell = Display.getCurrent().getActiveShell();
-			if (activeShell != null && activeShell != workbenchWindow.getShell()) {
-				activeShell.close();
-			}
-			page.closeAllEditors(false);
-			page.resetPerspective();
-			String defaultPerspectiveId = workbench.getPerspectiveRegistry().getDefaultPerspective();
-			workbench.showPerspective(defaultPerspectiveId, workbenchWindow);
-			page.resetPerspective();
-		} catch (WorkbenchException e) {
-			throw new RuntimeException(e);
-		}
+		bot.resetWorkbench();
 	}
 
 	@Test
