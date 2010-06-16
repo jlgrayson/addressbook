@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.6"?>
 
-<target name="Schulung RCP Advanced">
+<target name="RCP Advanced + p2">
 <locations>
 <location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
 <unit id="org.eclipse.rcp.sdk.id" version="0.0.0"/>
 <unit id="org.eclipse.equinox.executable.feature.group" version="0.0.0"/>
-<unit id="org.junit" version="4.8.1.v4_8_1_v20100114-1600"/>
-<unit id="org.junit.source" version="4.8.1.v4_8_1_v20100114-1600"/>
+<unit id="org.junit" version="4.8.1.v4_8_1_v20100427-1100"/>
+<unit id="org.junit.source" version="4.8.1.v4_8_1_v20100427-1100"/>
 <unit id="org.hamcrest.core" version="0.0.0"/>
 <unit id="org.hamcrest.core.source" version="0.0.0"/>
 <unit id="org.eclipse.help.source.feature.group" version="0.0.0"/>
@@ -21,6 +21,9 @@
 <unit id="org.eclipse.equinox.log" version="0.0.0"/>
 <unit id="org.eclipse.equinox.log.source" version="0.0.0"/>
 <unit id="org.apache.oro" version="0.0.0"/>
+<unit id="org.eclipse.equinox.p2.user.ui.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.equinox.p2.user.ui.source.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.core.net" version="0.0.0"/>
 <repository location="http://eclipsemirror.yoxos.com/eclipse.org/releases/helios/"/>
 </location>
 <location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
