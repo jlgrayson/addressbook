@@ -6,6 +6,7 @@ import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
 import com.example.addressbook.AddressBook;
+import com.example.p2.simpleupdate.utils.P2Util;
 
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
@@ -23,6 +24,11 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 	public void initialize(IWorkbenchConfigurer configurer) {
 		super.initialize(configurer);
 		configurer.setSaveAndRestore(true);
+	}
+
+	@Override
+	public void preStartup() {
+		P2Util.checkForUpdates();
 	}
 
 }

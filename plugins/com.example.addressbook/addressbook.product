@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Address Book" id="com.example.addressbook.product" application="com.example.addressbook.application" version="1.0.0" useFeatures="true" includeLaunchers="true">
+<product name="Address Book" uid="com.example.addressbook.pproduct" id="com.example.addressbook.product" application="com.example.addressbook.application" version="1.0.0" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/com.example.addressbook/icons/alt_about.gif"/>

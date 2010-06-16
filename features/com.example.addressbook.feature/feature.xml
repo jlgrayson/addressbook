@@ -115,6 +115,10 @@ This Agreement is governed by the laws of the State of New York and the intellec
          id="org.eclipse.help"
          version="0.0.0"/>
 
+   <includes
+         id="com.example.p2.simpleupdate"
+         version="0.0.0"/>
+
    <plugin
          id="com.example.addressbook.services"
          download-size="0"
