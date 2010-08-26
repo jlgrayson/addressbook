@@ -24,11 +24,11 @@
 <unit id="org.eclipse.equinox.p2.user.ui.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.equinox.p2.user.ui.source.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.core.net" version="0.0.0"/>
-<repository location="http://eclipsemirror.yoxos.com/eclipse.org/releases/helios/"/>
+<repository location="http://download.eclipse.org/releases/helios/"/>
 </location>
 <location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
-<unit id="org.eclipse.swtbot.eclipse.feature.group" version="0.0.0"/>
-<repository location="http://eclipsemirror.yoxos.com/eclipse.org/technology/swtbot/helios/dev-build/update-site"/>
+<unit id="org.eclipse.swtbot.eclipse.feature.group" version="2.0.0.595-dev-e36"/>
+<repository location="http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site"/>
 </location>
 <location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
 <unit id="de.ralfebert.rcputils.feature.feature.group" version="2.0.2"/>
