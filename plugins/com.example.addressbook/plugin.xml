@@ -223,18 +223,6 @@
                   visible="true">
             </separator>
             <command
-                  commandId="com.example.p2.simpleupdate.update"
-                  style="push">
-            </command>
-            <command
-                  commandId="com.example.p2.simpleupdate.install"
-                  style="push">
-            </command>
-            <separator
-                  name="com.example.addressbook.separator2"
-                  visible="true">
-            </separator>
-            <command
                   commandId="org.eclipse.ui.help.aboutAction"
                   style="push">
             </command>
