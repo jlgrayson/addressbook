@@ -27,10 +27,6 @@
 <repository location="http://download.eclipse.org/releases/helios/"/>
 </location>
 <location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
-<unit id="org.eclipse.swtbot.eclipse.feature.group" version="2.0.0.595-dev-e36"/>
-<repository location="http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site"/>
-</location>
-<location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
 <unit id="de.ralfebert.rcputils.feature.feature.group" version="2.0.2"/>
 <unit id="de.ralfebert.rcputils.feature.source.feature.group" version="2.0.2"/>
 <repository location="http://www.ralfebert.de/projects/releases/rcputils/"/>
@@ -42,6 +38,10 @@
 <unit id="jgravatar" version="1.0.0.201002210556"/>
 <unit id="jgravatar.source" version="1.0.0.201002210556"/>
 <repository location="http://www.ralfebert.de/projects/releases/"/>
+</location>
+<location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
+<unit id="org.eclipse.swtbot.eclipse.feature.group" version="2.0.1.20101106_1831-73ca7af-dev-e36"/>
+<repository location="http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site"/>
 </location>
 </locations>
 </target>
