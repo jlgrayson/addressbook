@@ -40,7 +40,7 @@
 <repository location="http://www.ralfebert.de/projects/releases/"/>
 </location>
 <location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
-<unit id="org.eclipse.swtbot.eclipse.feature.group" version="2.0.1.20101106_1831-73ca7af-dev-e36"/>
+<unit id="org.eclipse.swtbot.eclipse.feature.group" version="2.0.4.20110304_0338-e5aff47-dev-e36"/>
 <repository location="http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site"/>
 </location>
 </locations>
